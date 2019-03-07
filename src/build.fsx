@@ -68,12 +68,14 @@ Target.create "Build" (fun _ ->
 Target.create "CreateArtifacts" (fun _ ->
 
     Directory.ensure "artifacts"
+    Directory.ensure "nugetworking"
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
             Publish = false
             OutputPath = "artifacts"
             Version = version
+            WorkingDir = "nugetworking"
         }
 
     NuGetPack setNuGetParams ("src" @@ "MassTransit.SmtpGateway" @@ "*.csproj")
