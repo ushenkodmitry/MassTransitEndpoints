@@ -22,7 +22,7 @@ open Fake.IO
 let configuration           = Environment.environVarOrDefault "configuration"            "Release"
 let debugsymbols            = Environment.environVarOrDefault "debugsymbols"             "False"
 let optimize                = Environment.environVarOrDefault "optimize"                 "True"
-let targetframeworkversion  = Environment.environVarOrDefault "targetframeworkversion"   "netcoreapp2.2"
+let targetframeworkversion  = Environment.environVarOrDefault "targetframeworkversion"   "netstandard2.0"
 let version                 = AppVeyor.Environment.BuildVersion
 
 
