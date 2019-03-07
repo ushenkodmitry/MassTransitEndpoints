@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <Compile Include="..\MassTransit\RoutedBy.cs" Link="RoutedBy.cs" />
-    <Compile Include="..\Messages\Messages\MailSent.cs" Link="Messages\MailSent.cs" />
-    <Compile Include="..\Messages\Messages\SendMail.cs" Link="Messages\SendMail.cs" />
+    <Compile Include="..\Messages\SmtpGateway\MailSent.cs" Link="Messages\MailSent.cs" />
+    <Compile Include="..\Messages\SmtpGateway\SendMail.cs" Link="Messages\SendMail.cs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,7 +9,7 @@
     <Import_RootNamespace>Messages</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Messages\MailSent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Messages\SendMail.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SmtpGateway\MailSent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SmtpGateway\SendMail.cs" />
   </ItemGroup>
 </Project>
