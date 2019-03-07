@@ -76,6 +76,10 @@ Target.create "CreateArtifacts" (fun _ ->
             OutputPath = "artifacts"
             Version = version
             WorkingDir = "nugetworking"
+            Properties = 
+                [
+                    "Configuration", configuration
+                ]
         }
 
     NuGetPack setNuGetParams ("src" @@ "MassTransit.SmtpGateway" @@ "MassTransit.SmtpGateway.csproj")
