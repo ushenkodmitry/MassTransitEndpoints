@@ -16,8 +16,9 @@ image:
 
 install:
     - sh: wget https://dot.net/v1/dotnet-install.sh
-    - sh: ./dotnet-install.sh
-    - sh: dotnet tool install fake-cli -g
+    - sh: sudo chmod +x ./dotnet-install.sh
+    - sh: sudo ./dotnet-install.sh
+    - sh: sudo dotnet tool install fake-cli -g
 
 build_script:
     - sh: fake run ./build.fsx
