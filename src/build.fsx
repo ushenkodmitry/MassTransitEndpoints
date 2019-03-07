@@ -3,20 +3,26 @@ source https://api.nuget.org/v3/index.json
 nuget FSharp.Core
 nuget Fake.IO.FileSystem
 nuget Fake.DotNet.Cli
+nuget Fake.DotNet.NuGet
+nuget Fake.BuildServer.Appveyor
 nuget Fake.Core.Globbing
 nuget Fake.Core.Target //"
+#load "./.fake/build.fsx/intellisense.fsx"
 
 open Fake.IO
 open Fake.Core.Globbing.Operators
 open Fake.Core
 open Fake.DotNet
 open Fake.IO.FileSystemOperators
+open Fake.DotNet.NuGet.NuGet
+open Fake.BuildServer
+
 
 let configuration           = Environment.environVarOrDefault "configuration"            "Debug"
 let debugsymbols            = Environment.environVarOrDefault "debugsymbols"             "True"
 let optimize                = Environment.environVarOrDefault "optimize"                 "False"
 let targetframeworkversion  = Environment.environVarOrDefault "targetframeworkversion"   "netcoreapp2.2"
-let artifacts               = "artifacts"
+let version                 = AppVeyor.Environment.BuildVersion
 
 
 Target.create "Initialize" (fun _ ->
@@ -58,10 +64,24 @@ Target.create "Build" (fun _ ->
 
 )
 
+Target.create "CreateArtifacts" (fun _ ->
+
+    let setNuGetParams (defaults: NuGetParams) =
+        { defaults with
+            Publish = false
+            OutputPath = "artifacts"
+            Version = version
+        }
+
+    NuGetPack setNuGetParams ("src" @@ "MassTransit.SmtpGateway" @@ "*.csproj")
+    NuGetPack setNuGetParams ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "*.csproj")
+)
+
 open Fake.Core.TargetOperators
 
 "Initialize"
     ==> "Restore"
     ==> "Build"
+    ==> "CreateArtifacts"
 
-Target.runOrDefault "Build"
+Target.runOrDefault "CreateArtifacts"

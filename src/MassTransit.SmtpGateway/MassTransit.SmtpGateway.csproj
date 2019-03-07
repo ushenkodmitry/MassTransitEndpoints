@@ -5,6 +5,13 @@
     <AssemblyName>MassTransit.SmtpGateway</AssemblyName>
     <RootNamespace>MassTransit.SmtpGateway</RootNamespace>
     <LangVersion>latest</LangVersion>
+    <Version>1.0.0</Version>
+    <Authors>Ushenko Dmitry</Authors>
+    <Company />
+    <PackageProjectUrl>https://github.com/ushenkodmitry/MassTransitServices</PackageProjectUrl>
+    <PackageIconUrl></PackageIconUrl>
+    <RepositoryUrl>https://github.com/ushenkodmitry/MassTransitServices.git</RepositoryUrl>
+    <PackageTags>MassTransit Smtp</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
