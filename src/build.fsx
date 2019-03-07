@@ -78,8 +78,8 @@ Target.create "CreateArtifacts" (fun _ ->
             WorkingDir = "nugetworking"
         }
 
-    NuGetPack setNuGetParams ("src" @@ "MassTransit.SmtpGateway" @@ "*.csproj")
-    NuGetPack setNuGetParams ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "*.csproj")
+    NuGetPack setNuGetParams ("src" @@ "MassTransit.SmtpGateway" @@ "MassTransit.SmtpGateway.csproj")
+    NuGetPack setNuGetParams ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "MassTransit.SmtpGateway.Integration.csproj")
 )
 
 open Fake.Core.TargetOperators
