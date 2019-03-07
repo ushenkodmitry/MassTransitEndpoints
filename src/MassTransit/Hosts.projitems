@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>39806e17-dee9-4b2c-b881-e749e3694b63</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Hosts</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AutofacModules\BusModule.OverrideDefaultBusEndpointQueueName.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AutofacModules\BusModule.AddConsumers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AutofacModules\BusModule.UseSerializer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AutofacModules\BusModule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AutofacModules\ConsumersModule.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\AutoMapperConfigurator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\ConfigurationExtensions.AutoMapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\IAutoMapperConfigurator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Configuration\PipeConfigurators\AutoMapperPipeSpecification.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Contexts\AutoMapperContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)HostedServices\MassTransitHostedService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Pipeline\Filters\AutoMapperFilter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RabbitMqOptions\BusOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RabbitMqOptions\EndpointOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RabbitMqOptions\HostOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RoutedBy.cs" />
+  </ItemGroup>
+</Project>

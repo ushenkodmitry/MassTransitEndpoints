@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.438
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "System", "System\System.shproj", "{00B63FCA-8F44-4997-9D59-2E8FE9F4A528}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MassTransit", "MassTransit\MassTransit.shproj", "{39806E17-DEE9-4B2C-B881-E749E3694B63}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.SmtpGateway.Integration", "MassTransit.SmtpGateway.Integration\MassTransit.SmtpGateway.Integration.csproj", "{743140B0-38F0-4DA9-A56D-00F9E704E61A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SMTPGATEWAY", "SMTPGATEWAY", "{CEB53367-7980-44E0-8820-9BEE456E6BBF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".misc", ".misc", "{32858E2C-A961-4A46-BB48-70B6821AF070}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Messages", "Messages\Messages.shproj", "{9AFE8CC2-BFF1-45D9-979B-F9B09E7CE106}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.SmtpGateway", "MassTransit.SmtpGateway\MassTransit.SmtpGateway.csproj", "{EC64420C-3262-4A8F-8BCF-8BF1D141A06A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{D4F6B076-541E-485F-81BC-2B276F69715C}"
+	ProjectSection(SolutionItems) = preProject
+		..\appveyor.yml = ..\appveyor.yml
+		build.fsx = build.fsx
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		System\System.projitems*{00b63fca-8f44-4997-9d59-2e8fe9f4a528}*SharedItemsImports = 13
+		MassTransit\Hosts.projitems*{39806e17-dee9-4b2c-b881-e749e3694b63}*SharedItemsImports = 13
+		Messages\Messages.projitems*{9afe8cc2-bff1-45d9-979b-f9b09e7ce106}*SharedItemsImports = 13
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{743140B0-38F0-4DA9-A56D-00F9E704E61A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{743140B0-38F0-4DA9-A56D-00F9E704E61A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{743140B0-38F0-4DA9-A56D-00F9E704E61A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{743140B0-38F0-4DA9-A56D-00F9E704E61A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC64420C-3262-4A8F-8BCF-8BF1D141A06A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC64420C-3262-4A8F-8BCF-8BF1D141A06A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC64420C-3262-4A8F-8BCF-8BF1D141A06A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC64420C-3262-4A8F-8BCF-8BF1D141A06A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{743140B0-38F0-4DA9-A56D-00F9E704E61A} = {CEB53367-7980-44E0-8820-9BEE456E6BBF}
+		{EC64420C-3262-4A8F-8BCF-8BF1D141A06A} = {CEB53367-7980-44E0-8820-9BEE456E6BBF}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9AD2991F-A3DE-4988-8B42-AF00FA71A833}
+	EndGlobalSection
+EndGlobal
