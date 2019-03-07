@@ -16,6 +16,7 @@ open Fake.DotNet
 open Fake.IO.FileSystemOperators
 open Fake.DotNet.NuGet.NuGet
 open Fake.BuildServer
+open Fake.IO
 
 
 let configuration           = Environment.environVarOrDefault "configuration"            "Debug"
@@ -65,6 +66,8 @@ Target.create "Build" (fun _ ->
 )
 
 Target.create "CreateArtifacts" (fun _ ->
+
+    Directory.ensure "artifacts"
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
