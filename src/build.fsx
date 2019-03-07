@@ -16,6 +16,7 @@ let configuration           = Environment.environVarOrDefault "configuration"   
 let debugsymbols            = Environment.environVarOrDefault "debugsymbols"             "True"
 let optimize                = Environment.environVarOrDefault "optimize"                 "False"
 let targetframeworkversion  = Environment.environVarOrDefault "targetframeworkversion"   "netcoreapp2.2"
+let artifacts               = "artifacts"
 
 
 Target.create "Initialize" (fun _ ->
@@ -25,7 +26,6 @@ Target.create "Initialize" (fun _ ->
     Trace.trace <| sprintf "debugsymbols:           %s" debugsymbols
     Trace.trace <| sprintf "targetframeworkversion  %s" targetframeworkversion
     Trace.trace <| sprintf "optimize:               %s" optimize
-    Trace.trace <| sprintf "solution:               %s" solution
 
 )
 
