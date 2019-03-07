@@ -15,12 +15,10 @@ image:
     - Ubuntu1804
 
 install:
-    - sh: >-
-        wget https://dot.net/v1/dotnet-install.sh
-        ./dotnet-install.sh
-        dotnet tool install fake-cli -g
-    - sh: 
+    - sh: wget https://dot.net/v1/dotnet-install.sh
+    - sh: ./dotnet-install.sh
+    - sh: dotnet tool install fake-cli -g
 
 build_script:
-    - sh: >-
+    - sh: fake run ./build.fsx
                     
