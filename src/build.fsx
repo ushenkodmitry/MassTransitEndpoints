@@ -19,9 +19,9 @@ open Fake.BuildServer
 open Fake.IO
 
 
-let configuration           = Environment.environVarOrDefault "configuration"            "Debug"
-let debugsymbols            = Environment.environVarOrDefault "debugsymbols"             "True"
-let optimize                = Environment.environVarOrDefault "optimize"                 "False"
+let configuration           = Environment.environVarOrDefault "configuration"            "Release"
+let debugsymbols            = Environment.environVarOrDefault "debugsymbols"             "False"
+let optimize                = Environment.environVarOrDefault "optimize"                 "True"
 let targetframeworkversion  = Environment.environVarOrDefault "targetframeworkversion"   "netcoreapp2.2"
 let version                 = AppVeyor.Environment.BuildVersion
 
