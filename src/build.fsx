@@ -78,10 +78,21 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
             Version = version
             WorkingDir = "nugetworking"
             ProjectFile = ("src" @@ "MassTransit.SmtpGateway" @@ "MassTransit.SmtpGateway.csproj")
-            Tags = "MassTransit, Smtp"
+            Tags = "MassTransit Smtp"
             Properties = 
                 [
                     "Configuration", configuration
+                ]
+            DependenciesByFramework = 
+                [
+                    { 
+                        FrameworkVersion = "netstandard2.0"
+                        Dependencies = 
+                        [
+                            "MassTransit", "5.3.2"
+                            "MailKit", "2.1.3"
+                        ]
+                    }
                 ]
         }
 
@@ -102,10 +113,20 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
             Version = version
             WorkingDir = "nugetworking"
             ProjectFile = ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "MassTransit.SmtpGateway.Integration.csproj")
-            Tags = "MassTransit, Smtp"
+            Tags = "MassTransit Smtp"
             Properties = 
                 [
                     "Configuration", configuration
+                ]
+            DependenciesByFramework = 
+                [
+                    { 
+                        FrameworkVersion = "netstandard2.0"
+                        Dependencies = 
+                        [
+                            "MassTransit", "5.3.2"
+                        ]
+                    }
                 ]
         }
 
