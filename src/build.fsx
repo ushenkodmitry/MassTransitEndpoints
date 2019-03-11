@@ -117,7 +117,7 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
 
 Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
 
-    let nugetworking = ("nugetworking" @@ "smtpgateway")
+    let nugetworking = ("nugetworking" @@ "smtpgatewayintegration")
 
     Directory.ensure "artifacts"
     Directory.ensure nugetworking
