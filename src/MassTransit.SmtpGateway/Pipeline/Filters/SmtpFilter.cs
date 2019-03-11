@@ -78,9 +78,8 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
             {
                 await AuthenticationCompleted.ConfigureAwait(false);
 
-                var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _context.CancellationToken);
-
-                await _smtpClient.SendAsync(message, cancellationTokenSource.Token).ConfigureAwait(false);
+                using (var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _context.CancellationToken))
+                    await _smtpClient.SendAsync(message, cancellationTokenSource.Token).ConfigureAwait(false);
             }
         }
     }
