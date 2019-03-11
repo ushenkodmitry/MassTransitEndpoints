@@ -15,7 +15,9 @@ open Fake.DotNet
 open Fake.IO.FileSystemOperators
 open Fake.DotNet.NuGet.NuGet
 open Fake.BuildServer
+open Fake.IO.Globbing.Operators;
 open Fake.Core
+open Fake.IO
 open Fake.IO
 
 
@@ -73,8 +75,10 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
     Directory.ensure "artifacts"
     Directory.ensure "nugetworking"
 
-    Shell.cd ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion)
-    Shell.copyFiles "nugetworking" ["MassTransit.SmtpGateway.dll"]
+    !! ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.dll")
+    ++ ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.xml")
+        |> Shell.copy "nugetworking"
+    
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
@@ -114,8 +118,9 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
     Directory.ensure "artifacts"
     Directory.ensure "nugetworking"
 
-    Shell.cd ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion)
-    Shell.copyFiles "nugetworking" ["MassTransit.SmtpGateway.Integration.dll"]
+    !! ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.Integration.dll")
+    ++ ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.Integration.xml")
+        |> Shell.copy "nugetworking"
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
