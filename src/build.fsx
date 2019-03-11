@@ -71,6 +71,7 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
+            Project = "MassTransit.SmtpGateway"
             Publish = false
             Description = "Smtp service for MassTransit"
             Authors = ["Ushenko Dmitry"]
@@ -106,6 +107,7 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
+            Project = "MassTransit.SmtpGateway.Integration"
             Publish = false
             Description = "Integration package for SmtpGateway"
             Authors = ["Ushenko Dmitry"]
