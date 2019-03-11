@@ -10,7 +10,6 @@ nuget Fake.Core.Target //"
 #load "./.fake/build.fsx/intellisense.fsx"
 
 open Fake.IO
-open Fake.Core.Globbing.Operators
 open Fake.Core
 open Fake.DotNet
 open Fake.IO.FileSystemOperators
@@ -65,7 +64,7 @@ Target.create "Build" (fun _ ->
 
 )
 
-Target.create "CreateArtifacts" (fun _ ->
+Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
 
     Directory.ensure "artifacts"
     Directory.ensure "nugetworking"
@@ -73,9 +72,12 @@ Target.create "CreateArtifacts" (fun _ ->
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
             Publish = false
+            Description = "Smtp service for MassTransit"
+            Authors = ["Ushenko Dmitry"]
             OutputPath = "artifacts"
             Version = version
             WorkingDir = "nugetworking"
+            Tags = "MassTransit, Smtp"
             Properties = 
                 [
                     "Configuration", configuration
@@ -91,6 +93,6 @@ open Fake.Core.TargetOperators
 "Initialize"
     ==> "Restore"
     ==> "Build"
-    ==> "CreateArtifacts"
+    ==> "CreateSmtpGatewayArtifacts"
 
-Target.runOrDefault "CreateArtifacts"
+Target.runOrDefault "CreateSmtpGatewayArtifacts"

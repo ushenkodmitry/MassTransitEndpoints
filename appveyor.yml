@@ -20,7 +20,7 @@ nuget:
 artifacts:
     - path: artifacts/*.*nupkg
 
-version: 0.0.1-develop{build}
+version: 0.0.1-develop.{build}
 
 configuration: Debug
 
