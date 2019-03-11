@@ -23,6 +23,10 @@ version: 0.0.1-{branch}{build}
 
 configuration: Debug
 
+environment:
+    debugsymbols: true
+    optimization: false
+
 
 for:
 - 
@@ -33,3 +37,7 @@ for:
     version: 0.0.1
 
     configuration: Release
+
+    environment:
+        debugsymbols: false
+        optimization: true

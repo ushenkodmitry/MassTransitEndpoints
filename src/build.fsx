@@ -25,6 +25,9 @@ let optimize                = Environment.environVarOrDefault "optimize"        
 let targetframeworkversion  = Environment.environVarOrDefault "targetframeworkversion"   "netstandard2.0"
 
 
+let shouldPublish = AppVeyor.Environment.RepoBranch = "master"
+
+
 Target.create "Initialize" (fun _ ->
 
     Trace.trace <| sprintf "working dir:            %s" __SOURCE_DIRECTORY__
@@ -135,6 +138,12 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
     NuGetPack setNuGetParams "package.nuspec"
 )
 
+Target.create "PublishToNuget" (fun _ ->
+
+    Trace.log "Publishing..."
+
+)
+
 Target.createFinal "Finalize" ignore
 
 open Fake.Core.TargetOperators
@@ -144,6 +153,7 @@ open Fake.Core.TargetOperators
     ==> "Build"
     ==> "CreateSmtpGatewayArtifacts"
     ==> "CreateSmtpGatewayIntegrationArtifacts"
+    =?> ("PublishToNuget",                         shouldPublish)                                   
     ==> "Finalize"
 
 Target.runOrDefault "Finalize"
