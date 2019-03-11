@@ -1,31 +1,36 @@
-version: 0.0.1.{build}
-
-branches:
-  only:
-    - develop
-    - master
-
-skip_tags: true
-
-artifacts:
-    - path: artifacts/*.*nupkg
-      name: Packages
-
-image: Visual Studio 2017
-
-configuration: Release
-
 install:
     - cmd: dotnet tool install fake-cli -g
 
 build_script:
     - cmd: fake run ./src/build.fsx
 
-nuget:
-  project_feed: true
+skip_tags: true
+
+image: Visual Studio 2017
 
 cache:
-  - packages -> **\packages.config
-  - '%LocalAppData%\NuGet\Cache'    
-  - '%LocalAppData%\NuGet\v3-cache'
-  - '%UserProfile%\.nuget'
+    - packages -> **\packages.config
+    - '%LocalAppData%\NuGet\Cache'    
+    - '%LocalAppData%\NuGet\v3-cache'
+    - '%UserProfile%\.nuget'
+
+nuget:
+    project_feed: true
+
+artifacts:
+    - path: artifacts/*.*nupkg
+
+version: 0.0.1-develop{build}
+
+configuration: Debug
+
+
+for:
+-
+    branches:
+        only:
+            - master
+
+    version: 0.0.1
+
+    configuration: Release

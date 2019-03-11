@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".misc", ".misc", "{32858E2C-A961-4A46-BB48-70B6821AF070}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		..\README.md.txt = ..\README.md.txt
 	EndProjectSection
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Messages", "Messages\Messages.shproj", "{9AFE8CC2-BFF1-45D9-979B-F9B09E7CE106}"
