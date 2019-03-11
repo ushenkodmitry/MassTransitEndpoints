@@ -19,4 +19,7 @@ install:
 
 build_script:
     - cmd: fake run ./src/build.fsx
+
+nuget:
+  project_feed: true
                     
