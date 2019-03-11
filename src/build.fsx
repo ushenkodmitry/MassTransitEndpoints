@@ -72,12 +72,14 @@ Target.create "Build" (fun _ ->
 
 Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
 
+    let nugetworking = ("nugetworking" @@ "smtpgateway")
+
     Directory.ensure "artifacts"
-    Directory.ensure "nugetworking"
+    Directory.ensure nugetworking
 
     !! ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.dll")
     ++ ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.xml")
-        |> Shell.copy "nugetworking"
+        |> Shell.copy nugetworking
     
 
     let setNuGetParams (defaults: NuGetParams) =
@@ -110,17 +112,19 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
 
     NuGetPack setNuGetParams "package.nuspec"
 
-    Directory.delete "nugetworking"
+    Directory.delete nugetworking
 )
 
 Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
 
+    let nugetworking = ("nugetworking" @@ "smtpgateway")
+
     Directory.ensure "artifacts"
-    Directory.ensure "nugetworking"
+    Directory.ensure nugetworking
 
     !! ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.Integration.dll")
     ++ ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.Integration.xml")
-        |> Shell.copy "nugetworking"
+        |> Shell.copy nugetworking
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
@@ -151,7 +155,7 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
 
     NuGetPack setNuGetParams "package.nuspec"
 
-    Directory.delete "nugetworking"
+    Directory.delete nugetworking
 )
 
 Target.create "PublishToNuget" (fun _ ->
