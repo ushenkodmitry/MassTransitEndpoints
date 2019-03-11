@@ -15,7 +15,7 @@ open Fake.DotNet
 open Fake.IO.FileSystemOperators
 open Fake.DotNet.NuGet.NuGet
 open Fake.BuildServer
-open Fake.IO
+open Fake.Core
 
 
 let configuration           = AppVeyor.Environment.Configuration
@@ -77,6 +77,7 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
             OutputPath = "artifacts"
             Version = version
             WorkingDir = "nugetworking"
+            ProjectFile = ("src" @@ "MassTransit.SmtpService" @@ "MassTransit.SmtpService.csproj")
             Tags = "MassTransit, Smtp"
             Properties = 
                 [
@@ -84,9 +85,34 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
                 ]
         }
 
-    NuGetPack setNuGetParams ("src" @@ "MassTransit.SmtpGateway" @@ "MassTransit.SmtpGateway.csproj")
-    NuGetPack setNuGetParams ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "MassTransit.SmtpGateway.Integration.csproj")
+    NuGetPack setNuGetParams "package.nuspec"
 )
+
+Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
+
+    Directory.ensure "artifacts"
+    Directory.ensure "nugetworking"
+
+    let setNuGetParams (defaults: NuGetParams) =
+        { defaults with
+            Publish = false
+            Description = "Integration package for SmtpGateway"
+            Authors = ["Ushenko Dmitry"]
+            OutputPath = "artifacts"
+            Version = version
+            WorkingDir = "nugetworking"
+            ProjectFile = ("src" @@ "MassTransit.SmtpService.Integration" @@ "MassTransit.SmtpService.Integration.csproj")
+            Tags = "MassTransit, Smtp"
+            Properties = 
+                [
+                    "Configuration", configuration
+                ]
+        }
+
+    NuGetPack setNuGetParams "package.nuspec"
+)
+
+Target.createFinal "Finalize" ignore
 
 open Fake.Core.TargetOperators
 
@@ -94,5 +120,7 @@ open Fake.Core.TargetOperators
     ==> "Restore"
     ==> "Build"
     ==> "CreateSmtpGatewayArtifacts"
+    ==> "CreateSmtpGatewayIntegrationArtifacts"
+    ==> "Finalize"
 
-Target.runOrDefault "CreateSmtpGatewayArtifacts"
+Target.runOrDefault "Finalize"
