@@ -9,7 +9,6 @@ skip_tags: true
 image: Visual Studio 2017
 
 cache:
-    - packages -> **\packages.config
     - '%LocalAppData%\NuGet\Cache'    
     - '%LocalAppData%\NuGet\v3-cache'
     - '%UserProfile%\.nuget'
@@ -20,13 +19,13 @@ nuget:
 artifacts:
     - path: artifacts/*.*nupkg
 
-version: 0.0.1-develop.{build}
+version: 0.0.1-{branch}{build}
 
 configuration: Debug
 
 
 for:
--
+- 
     branches:
         only:
             - master

@@ -18,11 +18,11 @@ open Fake.BuildServer
 open Fake.IO
 
 
-let configuration           = Environment.environVarOrDefault "configuration"            "Release"
+let configuration           = AppVeyor.Environment.Configuration
+let version                 = AppVeyor.Environment.BuildVersion
 let debugsymbols            = Environment.environVarOrDefault "debugsymbols"             "False"
 let optimize                = Environment.environVarOrDefault "optimize"                 "True"
 let targetframeworkversion  = Environment.environVarOrDefault "targetframeworkversion"   "netstandard2.0"
-let version                 = AppVeyor.Environment.BuildVersion
 
 
 Target.create "Initialize" (fun _ ->
