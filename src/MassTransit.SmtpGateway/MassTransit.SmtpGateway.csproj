@@ -14,6 +14,10 @@
     <PackageTags>MassTransit Smtp</PackageTags>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="MassTransit.SmtpGateway.csproj.DotSettings" />
   </ItemGroup>
