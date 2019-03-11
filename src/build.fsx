@@ -73,7 +73,7 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
     Directory.ensure "artifacts"
     Directory.ensure "nugetworking"
 
-    Shell.cd ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration)
+    Shell.cd ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion)
     Shell.copyFiles "nugetworking" ["MassTransit.SmtpGateway.dll"; "MassTransit.SmtpGateway.xml"]
 
     let setNuGetParams (defaults: NuGetParams) =
@@ -114,7 +114,7 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
     Directory.ensure "artifacts"
     Directory.ensure "nugetworking"
 
-    Shell.cd ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration)
+    Shell.cd ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion)
     Shell.copyFiles "nugetworking" ["MassTransit.SmtpGateway.Integration.dll"; "MassTransit.SmtpGateway.Integration.xml"]
 
     let setNuGetParams (defaults: NuGetParams) =
