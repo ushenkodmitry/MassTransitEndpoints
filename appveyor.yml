@@ -19,7 +19,7 @@ nuget:
 artifacts:
     - path: artifacts/*.*nupkg
 
-version: 0.0.1-{branch}{build}
+version: 0.0.2-{branch}{build}
 
 configuration: Debug
 
@@ -34,7 +34,7 @@ for:
         only:
             - master
 
-    version: 0.0.1
+    version: 0.0.2
 
     configuration: Release
 
