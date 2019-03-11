@@ -11,8 +11,9 @@ artifacts:
     - path: artifacts/*.*nupkg
       name: Packages
 
-image:
-    - Visual Studio 2017
+image: Visual Studio 2017
+
+configuration: Release
 
 install:
     - cmd: dotnet tool install fake-cli -g
@@ -22,4 +23,9 @@ build_script:
 
 nuget:
   project_feed: true
-                    
+
+cache:
+  - packages -> **\packages.config
+  - '%LocalAppData%\NuGet\Cache'    
+  - '%LocalAppData%\NuGet\v3-cache'
+  - '%UserProfile%\.nuget'
