@@ -16,6 +16,7 @@ open Fake.IO.FileSystemOperators
 open Fake.DotNet.NuGet.NuGet
 open Fake.BuildServer
 open Fake.Core
+open Fake.IO
 
 
 let configuration           = AppVeyor.Environment.Configuration
@@ -72,6 +73,9 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
     Directory.ensure "artifacts"
     Directory.ensure "nugetworking"
 
+    Shell.cd ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration)
+    Shell.copyFiles "nugetworking" ["MassTransit.SmtpGateway.dll"; "MassTransit.SmtpGateway.xml"]
+
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
             Project = "MassTransit.SmtpGateway"
@@ -101,12 +105,17 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
         }
 
     NuGetPack setNuGetParams "package.nuspec"
+
+    Directory.delete "nugetworking"
 )
 
 Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
 
     Directory.ensure "artifacts"
     Directory.ensure "nugetworking"
+
+    Shell.cd ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration)
+    Shell.copyFiles "nugetworking" ["MassTransit.SmtpGateway.Integration.dll"; "MassTransit.SmtpGateway.Integration.xml"]
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
@@ -136,6 +145,8 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
         }
 
     NuGetPack setNuGetParams "package.nuspec"
+
+    Directory.delete "nugetworking"
 )
 
 Target.create "PublishToNuget" (fun _ ->
