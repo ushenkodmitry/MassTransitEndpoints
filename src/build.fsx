@@ -77,11 +77,11 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
 
     let workingdir = (nugetworking @@ "smtpgateway")
 
-    Directory.ensure nugetworking
+    Directory.ensure workingdir
 
     !! ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.dll")
     ++ ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.xml")
-        |> Shell.copy nugetworking
+        |> Shell.copy workingdir
     
 
     let setNuGetParams (defaults: NuGetParams) =
@@ -93,7 +93,6 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
             OutputPath = artifacts
             Version = version
             WorkingDir = workingdir
-            ProjectFile = ("src" @@ "MassTransit.SmtpGateway" @@ "MassTransit.SmtpGateway.csproj")
             Tags = "MassTransit Smtp"
             Properties = 
                 [
@@ -119,11 +118,11 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
 
     let workingdir = (nugetworking @@ "smtpgatewayintegration")
 
-    Directory.ensure nugetworking
+    Directory.ensure workingdir
 
     !! ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.Integration.dll")
     ++ ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.Integration.xml")
-        |> Shell.copy nugetworking
+        |> Shell.copy workingdir
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
@@ -134,7 +133,6 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
             OutputPath = artifacts
             Version = version
             WorkingDir = workingdir
-            ProjectFile = ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "MassTransit.SmtpGateway.Integration.csproj")
             Tags = "MassTransit Smtp"
             Properties = 
                 [
@@ -155,7 +153,7 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
     NuGetPack setNuGetParams "package.nuspec"
 )
 
-Target.create "PublishToNuget" (fun _ ->
+Target.create "Publish" (fun _ ->
 
     Trace.log "Publishing..."
 
@@ -174,7 +172,7 @@ open Fake.Core.TargetOperators
     ==> "Build"
     ==> "CreateSmtpGatewayArtifacts"
     ==> "CreateSmtpGatewayIntegrationArtifacts"
-    =?> ("PublishToNuget",                         shouldPublish)                                   
+    =?> ("Publish",                         shouldPublish)                                   
     ==> "Finalize"
 
 Target.runOrDefault "Finalize"
