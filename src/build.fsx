@@ -82,7 +82,7 @@ Target.create "Build" (fun _ ->
 
 Target.create "WipeOutput" (fun _ ->
 
-    let targetDir = ("src" @@ "**" @@ "bin" @@ configuration @@ targetframeworkversion)
+    let targetDir = ("src" @@ "**" @@ "bin" @@ configuration @@ "lib" @@ targetframeworkversion)
 
     !! (targetDir @@ "*.*")
     -- (targetDir @@ "*.dll")
