@@ -1,6 +1,6 @@
 #r "paket:
 source https://api.nuget.org/v3/index.json
-nuget FSharp.Core
+nuget FSharp.Core                           4.5.0.0
 nuget Fake.IO.FileSystem
 nuget Fake.DotNet.Cli
 nuget Fake.DotNet.NuGet
@@ -16,9 +16,6 @@ open Fake.IO.FileSystemOperators
 open Fake.DotNet.NuGet.NuGet
 open Fake.BuildServer
 open Fake.IO.Globbing.Operators;
-open Fake.Core
-open Fake.IO
-open Fake.IO
 
 
 let configuration           = AppVeyor.Environment.Configuration
@@ -31,6 +28,7 @@ let targetframeworkversion  = Environment.environVarOrDefault "targetframeworkve
 let shouldPublish = AppVeyor.Environment.RepoBranch = "master"
 
 let nugetworking = "nugetworking"
+let artifacts = "artifacts"
 
 
 Target.create "Initialize" (fun _ ->
@@ -40,6 +38,9 @@ Target.create "Initialize" (fun _ ->
     Trace.trace <| sprintf "debugsymbols:           %s" debugsymbols
     Trace.trace <| sprintf "targetframeworkversion  %s" targetframeworkversion
     Trace.trace <| sprintf "optimize:               %s" optimize
+    Trace.trace <| sprintf "artifacts dir:          %s" artifacts
+
+    Directory.ensure artifacts
 
 )
 
@@ -76,7 +77,6 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
 
     let workingdir = (nugetworking @@ "smtpgateway")
 
-    Directory.ensure "artifacts"
     Directory.ensure nugetworking
 
     !! ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.dll")
@@ -90,7 +90,7 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
             Publish = false
             Description = "Smtp service for MassTransit"
             Authors = ["Ushenko Dmitry"]
-            OutputPath = "artifacts"
+            OutputPath = artifacts
             Version = version
             WorkingDir = workingdir
             ProjectFile = ("src" @@ "MassTransit.SmtpGateway" @@ "MassTransit.SmtpGateway.csproj")
@@ -119,7 +119,6 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
 
     let workingdir = (nugetworking @@ "smtpgatewayintegration")
 
-    Directory.ensure "artifacts"
     Directory.ensure nugetworking
 
     !! ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.Integration.dll")
@@ -132,7 +131,7 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
             Publish = false
             Description = "Integration package for SmtpGateway"
             Authors = ["Ushenko Dmitry"]
-            OutputPath = "artifacts"
+            OutputPath = artifacts
             Version = version
             WorkingDir = workingdir
             ProjectFile = ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "MassTransit.SmtpGateway.Integration.csproj")
