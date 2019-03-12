@@ -90,7 +90,7 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
             Authors = ["Ushenko Dmitry"]
             OutputPath = "artifacts"
             Version = version
-            WorkingDir = "nugetworking"
+            WorkingDir = nugetworking
             ProjectFile = ("src" @@ "MassTransit.SmtpGateway" @@ "MassTransit.SmtpGateway.csproj")
             Tags = "MassTransit Smtp"
             Properties = 
@@ -134,7 +134,7 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
             Authors = ["Ushenko Dmitry"]
             OutputPath = "artifacts"
             Version = version
-            WorkingDir = "nugetworking"
+            WorkingDir = nugetworking
             ProjectFile = ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "MassTransit.SmtpGateway.Integration.csproj")
             Tags = "MassTransit Smtp"
             Properties = 

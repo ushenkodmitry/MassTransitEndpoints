@@ -17,7 +17,7 @@ nuget:
     project_feed: true
 
 artifacts:
-    - path: artifacts/*.*nupkg
+    - path: artifacts/*.nupkg
 
 version: 0.0.2-{branch}{build}
 
