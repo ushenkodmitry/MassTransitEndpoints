@@ -18,20 +18,20 @@ namespace MassTransit.Pipeline.Filters
     {
         public Task Send(TContext context, IPipe<TContext> next)
         {
-            MailGatewayContext mailGatewayContext = new ConsumeMailGatewayContext(context);
+            SmtpGatewayContext smtpGatewayContext = new ConsumeSmtpGatewayContext(context);
 
-            context.GetOrAddPayload(() => mailGatewayContext);
+            context.GetOrAddPayload(() => smtpGatewayContext);
 
             return next.Send(context);
         }
 
         public void Probe(ProbeContext context) => _ = context.CreateFilterScope(nameof(SmtpGatewayFilter<TContext>));
 
-        sealed class ConsumeMailGatewayContext : MailGatewayContext
+        sealed class ConsumeSmtpGatewayContext : SmtpGatewayContext
         {
             readonly ConsumeContext _context;
 
-            public ConsumeMailGatewayContext(ConsumeContext context) => _context = context;
+            public ConsumeSmtpGatewayContext(ConsumeContext context) => _context = context;
 
             public Task SendMail(Action<ISendBuilder> build, CancellationToken cancellationToken = default)
             {

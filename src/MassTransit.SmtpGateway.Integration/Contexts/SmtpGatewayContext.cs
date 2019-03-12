@@ -5,7 +5,7 @@ using MassTransit.SmtpGateway;
 
 namespace MassTransit.Contexts
 {
-    public interface MailGatewayContext
+    public interface SmtpGatewayContext
     {
         Task SendMail(Action<ISendBuilder> builder, CancellationToken cancellationToken = default);
     }
