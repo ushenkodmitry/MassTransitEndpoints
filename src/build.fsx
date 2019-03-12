@@ -27,7 +27,6 @@ let targetframeworkversion  = Environment.environVarOrDefault "targetframeworkve
 
 let shouldPublish = AppVeyor.Environment.RepoBranch = "master"
 
-let nugetworking = "nugetworking"
 let artifacts = "artifacts"
 
 
@@ -48,6 +47,14 @@ Target.create "Initialize" (fun _ ->
 Target.create "Restore" (fun _ ->
 
     DotNet.restore id |> ignore
+
+)
+
+Target.create "CleanOutput" (fun _ ->
+
+    !! ("src" @@ "**" @@ "bin")
+    ++ ("src" @@ "**" @@ "obj")
+        |> Shell.deleteDirs
 
 )
 
@@ -73,16 +80,14 @@ Target.create "Build" (fun _ ->
 
 )
 
+Target.create "WipeOutput" (fun _ ->
+
+    !! ("src" @@ "**" @@ "bin" @@ configuration @@ targetframeworkversion @@ "*.json")
+        |> File.deleteAll
+
+)
+
 Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
-
-    let workingdir = (nugetworking @@ "smtpgateway")
-
-    Directory.ensure workingdir
-
-    !! ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.dll")
-    ++ ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.xml")
-        |> Shell.copy workingdir
-    
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
@@ -92,7 +97,7 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
             Authors = ["Ushenko Dmitry"]
             OutputPath = artifacts
             Version = version
-            WorkingDir = workingdir
+            WorkingDir = ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration)
             Tags = "MassTransit Smtp"
             Properties = 
                 [
@@ -102,11 +107,11 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
                 [
                     { 
                         FrameworkVersion = "netstandard2.0"
-                        Dependencies = 
-                        [
-                            "MassTransit", "5.3.2"
-                            "MailKit", "2.1.3"
-                        ]
+                        Dependencies = [ "MassTransit", "5.3.2"; "MailKit", "2.1.3"; "NETStandard.Library", "2.0.3" ]
+                    };
+                    { 
+                        FrameworkVersion = "net45"
+                        Dependencies = [ "MassTransit", "5.3.2"; "MailKit", "2.1.3" ]
                     }
                 ]
         }
@@ -116,14 +121,6 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
 
 Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
 
-    let workingdir = (nugetworking @@ "smtpgatewayintegration")
-
-    Directory.ensure workingdir
-
-    !! ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.Integration.dll")
-    ++ ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion @@ "MassTransit.SmtpGateway.Integration.xml")
-        |> Shell.copy workingdir
-
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
             Project = "MassTransit.SmtpGateway.Integration"
@@ -132,7 +129,7 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
             Authors = ["Ushenko Dmitry"]
             OutputPath = artifacts
             Version = version
-            WorkingDir = workingdir
+            WorkingDir = ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "bin" @@ configuration)
             Tags = "MassTransit Smtp"
             Properties = 
                 [
@@ -142,10 +139,11 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
                 [
                     { 
                         FrameworkVersion = "netstandard2.0"
-                        Dependencies = 
-                        [
-                            "MassTransit", "5.3.2"
-                        ]
+                        Dependencies = [ "MassTransit", "5.3.2"; "NETStandard.Library", "2.0.3" ]
+                    };
+                    { 
+                        FrameworkVersion = "net45"
+                        Dependencies = [ "MassTransit", "5.3.2" ]
                     }
                 ]
         }
@@ -159,17 +157,15 @@ Target.create "Publish" (fun _ ->
 
 )
 
-Target.createFinal "Finalize" (fun _ ->
-
-    Directory.delete nugetworking
-
-)
+Target.createFinal "Finalize" ignore
 
 open Fake.Core.TargetOperators
 
 "Initialize"
     ==> "Restore"
+    ==> "CleanOutput"
     ==> "Build"
+    ==> "WipeOutput"
     ==> "CreateSmtpGatewayArtifacts"
     ==> "CreateSmtpGatewayIntegrationArtifacts"
     =?> ("Publish",                         shouldPublish)                                   
