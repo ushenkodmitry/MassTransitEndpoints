@@ -87,14 +87,12 @@ Target.create "WipeOutput" (fun _ ->
     !! (targetDir @@ "*.*")
     -- (targetDir @@ "*.dll")
     -- (targetDir @@ "*.xml")
+    -- (targetDir @@ "*.pdb")
         |> File.deleteAll
 
 )
 
 Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
-
-    Shell.mkdir ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ "lib")
-    Shell.mv ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion) ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ "lib")
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
@@ -128,10 +126,6 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
 )
 
 Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
-
-    Shell.mkdir ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "bin" @@ configuration @@ "lib")
-    Shell.mv ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "bin" @@ configuration @@ targetframeworkversion) ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "bin" @@ configuration @@ "lib")
-
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
