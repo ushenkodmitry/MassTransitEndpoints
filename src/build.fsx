@@ -82,12 +82,19 @@ Target.create "Build" (fun _ ->
 
 Target.create "WipeOutput" (fun _ ->
 
-    !! ("src" @@ "**" @@ "bin" @@ configuration @@ targetframeworkversion @@ "*.json")
+    let targetDir = ("src" @@ "**" @@ "bin" @@ configuration @@ targetframeworkversion)
+
+    !! (targetDir @@ "*.*")
+    -- (targetDir @@ "*.dll")
+    -- (targetDir @@ "*.xml")
         |> File.deleteAll
 
 )
 
 Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
+
+    Shell.mkdir ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ "lib")
+    Shell.mv ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ targetframeworkversion) ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration @@ "lib")
 
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
@@ -99,6 +106,7 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
             Version = version
             WorkingDir = ("src" @@ "MassTransit.SmtpGateway" @@ "bin" @@ configuration)
             Tags = "MassTransit Smtp"
+            SymbolPackage = NugetSymbolPackage.None
             Properties = 
                 [
                     "Configuration", configuration
@@ -121,6 +129,10 @@ Target.create "CreateSmtpGatewayArtifacts" (fun _ ->
 
 Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
 
+    Shell.mkdir ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "bin" @@ configuration @@ "lib")
+    Shell.mv ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "bin" @@ configuration @@ targetframeworkversion) ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "bin" @@ configuration @@ "lib")
+
+
     let setNuGetParams (defaults: NuGetParams) =
         { defaults with
             Project = "MassTransit.SmtpGateway.Integration"
@@ -131,6 +143,7 @@ Target.create "CreateSmtpGatewayIntegrationArtifacts" (fun _ ->
             Version = version
             WorkingDir = ("src" @@ "MassTransit.SmtpGateway.Integration" @@ "bin" @@ configuration)
             Tags = "MassTransit Smtp"
+            SymbolPackage = NugetSymbolPackage.None
             Properties = 
                 [
                     "Configuration", configuration
