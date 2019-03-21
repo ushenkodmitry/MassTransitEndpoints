@@ -1,5 +1,4 @@
 ﻿using System;
-using MassTransit.SmtpGateway.Messages;
 
 namespace MassTransit.SmtpGateway
 {
@@ -28,7 +27,5 @@ namespace MassTransit.SmtpGateway
         ISendBuilder Cc(Action<IMailboxesBuilder> cc);
 
         ISendBuilder Bcc(Action<IMailboxesBuilder> bcc);
-
-        SendMail Build();
     }
 }
