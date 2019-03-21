@@ -9,7 +9,7 @@ Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "MassTransit", "MassTransit\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.SmtpGateway.Integration", "MassTransit.SmtpGateway.Integration\MassTransit.SmtpGateway.Integration.csproj", "{743140B0-38F0-4DA9-A56D-00F9E704E61A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SMTPGATEWAY", "SMTPGATEWAY", "{CEB53367-7980-44E0-8820-9BEE456E6BBF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SMTP-GATEWAY", "SMTP-GATEWAY", "{CEB53367-7980-44E0-8820-9BEE456E6BBF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".misc", ".misc", "{32858E2C-A961-4A46-BB48-70B6821AF070}"
 	ProjectSection(SolutionItems) = preProject
@@ -27,6 +27,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{D4F6B0
 		build.fsx = build.fsx
 		..\package.nuspec = ..\package.nuspec
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IMAP-GATEWAY", "IMAP-GATEWAY", "{F1055E42-6E33-41D6-AEA8-2424295047DA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.ImapGateway", "MassTransit.ImapGateway\MassTransit.ImapGateway.csproj", "{88630AC4-FB91-44A0-9F2D-18276D9C74A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.ImapGateway.Integration", "MassTransit.ImapGateway.Integration\MassTransit.ImapGateway.Integration.csproj", "{A44377F9-14F8-4F3D-84C1-03A32CD09D31}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JIRA-SERVICEDESK-CONNECTOR", "JIRA-SERVICEDESK-CONNECTOR", "{346B2971-FD65-405B-9BD3-C42E4B2B0FEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.JiraSerivedeskConnector", "MassTransit.JiraSerivedeskConnector\MassTransit.JiraSerivedeskConnector.csproj", "{F5A0CFB9-EB2F-4197-B358-58D2F8BC3992}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -47,6 +57,18 @@ Global
 		{EC64420C-3262-4A8F-8BCF-8BF1D141A06A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC64420C-3262-4A8F-8BCF-8BF1D141A06A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC64420C-3262-4A8F-8BCF-8BF1D141A06A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88630AC4-FB91-44A0-9F2D-18276D9C74A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88630AC4-FB91-44A0-9F2D-18276D9C74A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88630AC4-FB91-44A0-9F2D-18276D9C74A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88630AC4-FB91-44A0-9F2D-18276D9C74A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A44377F9-14F8-4F3D-84C1-03A32CD09D31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A44377F9-14F8-4F3D-84C1-03A32CD09D31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A44377F9-14F8-4F3D-84C1-03A32CD09D31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A44377F9-14F8-4F3D-84C1-03A32CD09D31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5A0CFB9-EB2F-4197-B358-58D2F8BC3992}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5A0CFB9-EB2F-4197-B358-58D2F8BC3992}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5A0CFB9-EB2F-4197-B358-58D2F8BC3992}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5A0CFB9-EB2F-4197-B358-58D2F8BC3992}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -54,6 +76,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{743140B0-38F0-4DA9-A56D-00F9E704E61A} = {CEB53367-7980-44E0-8820-9BEE456E6BBF}
 		{EC64420C-3262-4A8F-8BCF-8BF1D141A06A} = {CEB53367-7980-44E0-8820-9BEE456E6BBF}
+		{88630AC4-FB91-44A0-9F2D-18276D9C74A3} = {F1055E42-6E33-41D6-AEA8-2424295047DA}
+		{A44377F9-14F8-4F3D-84C1-03A32CD09D31} = {F1055E42-6E33-41D6-AEA8-2424295047DA}
+		{F5A0CFB9-EB2F-4197-B358-58D2F8BC3992} = {346B2971-FD65-405B-9BD3-C42E4B2B0FEC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9AD2991F-A3DE-4988-8B42-AF00FA71A833}

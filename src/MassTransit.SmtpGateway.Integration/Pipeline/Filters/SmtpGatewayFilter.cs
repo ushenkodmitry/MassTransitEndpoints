@@ -5,13 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Builders;
 using GreenPipes;
-using MassTransit.Contexts;
-using MassTransit.SmtpGateway;
+using MassTransit.SmtpGateway.Contexts;
 using MassTransit.SmtpGateway.Messages;
 
-namespace MassTransit.Pipeline.Filters
+namespace MassTransit.SmtpGateway.Pipeline.Filters
 {
     public sealed class SmtpGatewayFilter<TContext> : IFilter<TContext>
         where TContext : class, ConsumeContext

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using GreenPipes;
-using MassTransit.Pipeline.Filters;
+using MassTransit.SmtpGateway.Pipeline.Filters;
 
 namespace MassTransit.Configuration.PipeConfigurators
 {

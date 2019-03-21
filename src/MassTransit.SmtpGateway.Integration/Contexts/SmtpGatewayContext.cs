@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using MassTransit.SmtpGateway;
 
-namespace MassTransit.Contexts
+namespace MassTransit.SmtpGateway.Contexts
 {
     public interface SmtpGatewayContext
     {

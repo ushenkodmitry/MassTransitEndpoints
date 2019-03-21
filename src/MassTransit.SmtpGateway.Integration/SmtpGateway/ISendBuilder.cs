@@ -1,5 +1,4 @@
 ﻿using System;
-using Builders;
 using MassTransit.SmtpGateway.Messages;
 
 namespace MassTransit.SmtpGateway

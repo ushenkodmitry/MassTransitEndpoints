@@ -1,4 +1,4 @@
-﻿namespace Builders
+﻿namespace MassTransit.SmtpGateway
 {
     public interface IMailboxesBuilder
     {
