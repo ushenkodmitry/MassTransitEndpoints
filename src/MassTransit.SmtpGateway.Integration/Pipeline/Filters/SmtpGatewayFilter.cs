@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using GreenPipes;
+using MassTransit.Logging;
 using MassTransit.SmtpGateway.Contexts;
 using MassTransit.SmtpGateway.Messages;
 
@@ -14,8 +15,12 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
     public sealed class SmtpGatewayFilter<TContext> : IFilter<TContext>
         where TContext : class, ConsumeContext
     {
+        static readonly ILog _log = Logger.Get<SmtpGatewayFilter<TContext>>();
+
         public Task Send(TContext context, IPipe<TContext> next)
         {
+            _log.Debug(() => "Sending through filter.");
+
             SmtpGatewayContext smtpGatewayContext = new ConsumeSmtpGatewayContext(context);
 
             context.GetOrAddPayload(() => smtpGatewayContext);

@@ -17,6 +17,8 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
 
         public async Task Send(TContext context, IPipe<TContext> next)
         {
+            _log.Debug(() => "Sending through filter.");
+
             OptionsContext optionsContext = context.GetPayload<OptionsContext>();
 
             using (var smtpClient = new SmtpClient())
