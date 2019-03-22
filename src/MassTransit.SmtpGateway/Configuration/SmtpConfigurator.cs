@@ -1,4 +1,5 @@
-﻿using MassTransit.SmtpGateway.Options;
+﻿using System;
+using MassTransit.SmtpGateway.Options;
 
 namespace MassTransit.SmtpGateway.Configuration
 {
@@ -11,5 +12,21 @@ namespace MassTransit.SmtpGateway.Configuration
         public void UseOptions(ServerOptions options) => ServerOptions = options;
 
         public void UseOptions(BehaviorOptions options) => BehaviorOptions = options;
+
+        public void UseOptions(Action<ServerOptions> buildOptions)
+        {
+            ServerOptions options = new ServerOptions();
+            buildOptions(options);
+
+            UseOptions(options);
+        }
+
+        public void UseOptions(Action<BehaviorOptions> buildOptions)
+        {
+            BehaviorOptions options = new BehaviorOptions();
+            buildOptions(options);
+
+            UseOptions(options);
+        }
     }
 }
