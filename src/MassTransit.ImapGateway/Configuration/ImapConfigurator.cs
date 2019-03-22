@@ -1,15 +1,15 @@
-﻿using MassTransit.SmtpGateway.Options;
+﻿using MassTransit.ImapGateway.Options;
 
-namespace MassTransit.SmtpGateway.Configuration
+namespace MassTransit.ImapGateway.Configuration
 {
-    sealed class SmtpConfigurator : ISmtpConfigurator
+    sealed class ImapConfigurator : IImapConfigurator
     {
         public ServerOptions ServerOptions { get; private set; }
 
         public BehaviorOptions BehaviorOptions { get; private set; }
 
-        public void UseOptions(ServerOptions options) => ServerOptions = options;
-
         public void UseOptions(BehaviorOptions options) => BehaviorOptions = options;
+
+        public void UseOptions(ServerOptions options) => ServerOptions = options;
     }
 }

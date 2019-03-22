@@ -7,6 +7,12 @@
 
   <ItemGroup>
     <Folder Include="Messages\" />
+    <Folder Include="ImapGateway\" />
+    <Folder Include="Contexts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="5.3.2" />
   </ItemGroup>
 
 </Project>

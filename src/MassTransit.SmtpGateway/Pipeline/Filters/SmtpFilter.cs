@@ -1,12 +1,9 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using GreenPipes;
 using MailKit.Net.Smtp;
 using MassTransit.Logging;
-using MassTransit.SmtpGateway.Configuration;
 using MassTransit.SmtpGateway.Contexts;
-using MassTransit.SmtpGateway.Options;
 using MimeKit;
 
 namespace MassTransit.SmtpGateway.Pipeline.Filters
@@ -16,48 +13,30 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
     {
         static readonly ILog _log = Logger.Get<SmtpFilter<TContext>>();
 
-        readonly ServerOptions _serverOptions;
-
-        readonly Task _authenticationCompleted;
-
         readonly SmtpClient _smtpClient;
 
-        Timer _noOpTimer;
-
-        public SmtpFilter(Action<ISmtpConfigurator> configureSmtp)
+        public async Task Send(TContext context, IPipe<TContext> next)
         {
-            var configurator = new SmtpConfigurator();
-            configureSmtp(configurator);
-            _serverOptions = configurator.Options;
+            OptionsContext optionsContext = context.GetPayload<OptionsContext>();
 
-            var smtpClient = new SmtpClient();
-            _authenticationCompleted = smtpClient
-                .ConnectAsync(configurator.Options.Host, configurator.Options.Port)
-                .ContinueWith(_ => _smtpClient.AuthenticateAsync(configurator.Options.Username, configurator.Options.Password))
-                .ContinueWith(_ =>
-                {
-                    if (_serverOptions.NoOp.HasValue)
-                        _noOpTimer = new Timer(state => _smtpClient.NoOp(), null, 0, (uint)_serverOptions.NoOp.Value.TotalMilliseconds);
+            using (var smtpClient = new SmtpClient())
+            {
+                var authenticationCompleted = smtpClient
+                    .ConnectAsync(optionsContext.ServerOptions.Host, optionsContext.ServerOptions.Port, optionsContext.ServerOptions.UseSsl)
+                    .ContinueWith(_ => smtpClient.AuthenticateAsync(optionsContext.ServerOptions.Username, optionsContext.ServerOptions.Password))
+                    .Unwrap();
 
-                    return Task.CompletedTask;
-                }).Unwrap();
-            _smtpClient = smtpClient;
+                SmtpContext smtpContext = new ConsumeSmtpContext(context, _smtpClient, authenticationCompleted);
+
+                context.GetOrAddPayload(() => smtpContext);
+
+                await next.Send(context).ConfigureAwait(false);
+
+                await _smtpClient.DisconnectAsync(true, context.CancellationToken).ConfigureAwait(false);
+            }
         }
 
-        public Task Send(TContext context, IPipe<TContext> next)
-        {
-            SmtpContext smtpContext = new ConsumeSmtpContext(context, _smtpClient, _authenticationCompleted);
-
-            context.GetOrAddPayload(() => smtpContext);
-
-            return next.Send(context);
-        }
-
-        public void Probe(ProbeContext context)
-        {
-            var scope = context.CreateFilterScope(nameof(SmtpFilter<TContext>));
-            scope.Set(_serverOptions);
-        }
+        public void Probe(ProbeContext context) => context.CreateFilterScope(nameof(SmtpFilter<TContext>));
 
         sealed class ConsumeSmtpContext : SmtpContext
         {
@@ -80,6 +59,14 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
 
                 using (var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _context.CancellationToken))
                     await _smtpClient.SendAsync(message, cancellationTokenSource.Token).ConfigureAwait(false);
+            }
+
+            public async Task Noop(CancellationToken cancellationToken)
+            {
+                await AuthenticationCompleted.ConfigureAwait(false);
+
+                using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken))
+                    await _smtpClient.NoOpAsync(cts.Token).ConfigureAwait(false);
             }
         }
     }

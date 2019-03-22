@@ -11,5 +11,9 @@
         public string Username { get; set; }
 
         public string Password { get; set; }
+
+        public bool UseCompression { get; set; }
+
+        public bool UseUtf8 { get; set; }
     }
 }

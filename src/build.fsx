@@ -1,6 +1,6 @@
 #r "paket:
 source https://api.nuget.org/v3/index.json
-nuget FSharp.Core                           4.5.0.0
+nuget FSharp.Core
 nuget Fake.IO.FileSystem
 nuget Fake.DotNet.Cli
 nuget Fake.DotNet.NuGet

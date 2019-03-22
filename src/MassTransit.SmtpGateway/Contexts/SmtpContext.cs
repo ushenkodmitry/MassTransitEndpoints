@@ -9,5 +9,7 @@ namespace MassTransit.SmtpGateway.Contexts
         Task AuthenticationCompleted { get; }
 
         Task Send(MimeMessage message, CancellationToken cancellationToken = default);
+
+        Task Noop(CancellationToken cancellationToken);
     }
 }

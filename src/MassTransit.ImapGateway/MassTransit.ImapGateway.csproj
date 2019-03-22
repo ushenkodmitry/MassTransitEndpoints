@@ -9,9 +9,4 @@
     <PackageReference Include="MassTransit" Version="5.3.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Configuration\" />
-    <Folder Include="Pipeline\Filters\" />
-  </ItemGroup>
-
 </Project>
