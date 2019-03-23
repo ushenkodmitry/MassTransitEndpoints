@@ -2,6 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
+        <Title>RazorRenderer service to use with MassTransit</Title>
+        <Authors>Ushenko Dmitry</Authors>
+        <PackageProjectUrl>https://github.com/ushenkodmitry/MassTransitServices</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/ushenkodmitry/MassTransitServices.git</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageTags>MassTransit Razor Template</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
