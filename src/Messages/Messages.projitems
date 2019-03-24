@@ -9,6 +9,8 @@
     <Import_RootNamespace>Messages</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)RazorRenderer\RenderKeyedTemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RazorRenderer\TemplateRendered.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpGateway\MailSent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpGateway\SendMail.cs" />
   </ItemGroup>
