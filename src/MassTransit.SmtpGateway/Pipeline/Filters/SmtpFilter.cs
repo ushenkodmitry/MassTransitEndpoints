@@ -13,8 +13,6 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
     {
         static readonly ILog _log = Logger.Get<SmtpFilter<TContext>>();
 
-        readonly SmtpClient _smtpClient;
-
         public async Task Send(TContext context, IPipe<TContext> next)
         {
             _log.Debug(() => "Sending through filter.");
@@ -28,13 +26,13 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
                     .ContinueWith(_ => smtpClient.AuthenticateAsync(optionsContext.ServerOptions.Username, optionsContext.ServerOptions.Password))
                     .Unwrap();
 
-                SmtpContext smtpContext = new ConsumeSmtpContext(context, _smtpClient, authenticationCompleted);
+                SmtpContext smtpContext = new ConsumeSmtpContext(context, smtpClient, authenticationCompleted);
 
                 context.GetOrAddPayload(() => smtpContext);
 
                 await next.Send(context).ConfigureAwait(false);
 
-                await _smtpClient.DisconnectAsync(true, context.CancellationToken).ConfigureAwait(false);
+                await smtpClient.DisconnectAsync(true, context.CancellationToken).ConfigureAwait(false);
             }
         }
 

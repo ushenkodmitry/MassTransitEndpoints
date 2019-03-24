@@ -11,10 +11,7 @@ namespace HostedServices
 
         public MassTransitHostedService(IBusControl bus) => _bus = bus;
 
-        public async Task StartAsync(CancellationToken cancellationToken)
-        {
-            _ = await _bus.StartAsync(cancellationToken).ConfigureAwait(false);
-        }
+        public Task StartAsync(CancellationToken cancellationToken) => _bus.StartAsync(cancellationToken);
 
         public Task StopAsync(CancellationToken cancellationToken) => _bus.StopAsync(cancellationToken);
     }
