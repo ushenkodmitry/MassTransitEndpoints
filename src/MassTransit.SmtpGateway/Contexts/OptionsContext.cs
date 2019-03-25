@@ -5,5 +5,7 @@ namespace MassTransit.SmtpGateway.Contexts
     public interface OptionsContext
     {
         ServerOptions ServerOptions { get; }
+
+        BehaviorOptions BehaviorOptions { get; }
     }
 }

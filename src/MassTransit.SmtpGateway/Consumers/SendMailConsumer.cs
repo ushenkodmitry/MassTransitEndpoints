@@ -28,6 +28,8 @@ namespace MassTransit.SmtpGateway.Consumers
 
         static MimeMessage CreateMimeMessage(ConsumeContext<SendMail> context)
         {
+            string unitSeparator = char.ConvertFromUtf32(31);
+
             MimeMessage mimeMessage = new MimeMessage
             {
                 Importance = (MessageImportance)Enum.Parse(typeof(MessageImportance), context.Message.Importance),
@@ -36,6 +38,46 @@ namespace MassTransit.SmtpGateway.Consumers
                 MessageId = context.Message.MessageId,
                 Subject = context.Message.Subject,
             };
+
+            Array.ForEach(context.Message.From, from =>
+            {
+                var splitted = from.Split(new[] { unitSeparator }, StringSplitOptions.None);
+
+                if (splitted.Length == 1)
+                    mimeMessage.From.Add(new MailboxAddress(splitted[0]));
+                else
+                    mimeMessage.From.Add(new MailboxAddress(splitted[0], splitted[1]));
+            });
+
+            Array.ForEach(context.Message.To, to =>
+            {
+                var splitted = to.Split(new[] { unitSeparator }, StringSplitOptions.None);
+
+                if (splitted.Length == 1)
+                    mimeMessage.To.Add(new MailboxAddress(splitted[0]));
+                else
+                    mimeMessage.To.Add(new MailboxAddress(splitted[0], splitted[1]));
+            });
+
+            Array.ForEach(context.Message.Cc ?? new string[0], to =>
+            {
+                var splitted = to.Split(new[] { unitSeparator }, StringSplitOptions.None);
+
+                if (splitted.Length == 1)
+                    mimeMessage.Cc.Add(new MailboxAddress(splitted[0]));
+                else
+                    mimeMessage.Cc.Add(new MailboxAddress(splitted[0], splitted[1]));
+            });
+
+            Array.ForEach(context.Message.Bcc ?? new string[0], to =>
+            {
+                var splitted = to.Split(new[] { unitSeparator }, StringSplitOptions.None);
+
+                if (splitted.Length == 1)
+                    mimeMessage.Bcc.Add(new MailboxAddress(splitted[0]));
+                else
+                    mimeMessage.Bcc.Add(new MailboxAddress(splitted[0], splitted[1]));
+            });
 
             var mimeParts =
                 context.Message.AttachmentsMeta

@@ -36,20 +36,21 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
 
             public ConsumeSmtpGatewayContext(ConsumeContext context) => _context = context;
 
-            public Task SendMail(Action<ISendBuilder> build, CancellationToken cancellationToken = default)
+            public async Task SendMail(Action<ISendBuilder> build, CancellationToken cancellationToken)
             {
-                CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken);
-
-                using (SendBuilder builder = new SendBuilder())
+                using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken))
                 {
-                    if (_context.CorrelationId.HasValue)
-                        builder.WithCorrelationId(_context.CorrelationId.Value);
+                    using (SendBuilder builder = new SendBuilder())
+                    {
+                        if (_context.CorrelationId.HasValue)
+                            builder.WithCorrelationId(_context.CorrelationId.Value);
 
-                    build(builder);
+                        build(builder);
 
-                    SendMail sendMail = builder.Build();
+                        SendMail sendMail = builder.Build();
 
-                    return _context.Publish(sendMail, cts.Token);
+                        await _context.Publish(sendMail, cts.Token).ConfigureAwait(false);
+                    }
                 }
             }
 

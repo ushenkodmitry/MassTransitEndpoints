@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.438
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28714.193
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "System", "System\System.shproj", "{00B63FCA-8F44-4997-9D59-2E8FE9F4A528}"
 EndProject
@@ -32,15 +32,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IMAP-GATEWAY", "IMAP-GATEWA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.ImapGateway", "MassTransit.ImapGateway\MassTransit.ImapGateway.csproj", "{88630AC4-FB91-44A0-9F2D-18276D9C74A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.ImapGateway.Integration", "MassTransit.ImapGateway.Integration\MassTransit.ImapGateway.Integration.csproj", "{A44377F9-14F8-4F3D-84C1-03A32CD09D31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.ImapGateway.Integration", "MassTransit.ImapGateway.Integration\MassTransit.ImapGateway.Integration.csproj", "{A44377F9-14F8-4F3D-84C1-03A32CD09D31}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "JIRA-SERVICEDESK-CONNECTOR", "JIRA-SERVICEDESK-CONNECTOR", "{346B2971-FD65-405B-9BD3-C42E4B2B0FEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.JiraSerivedeskConnector", "MassTransit.JiraSerivedeskConnector\MassTransit.JiraSerivedeskConnector.csproj", "{F5A0CFB9-EB2F-4197-B358-58D2F8BC3992}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.JiraSerivedeskConnector", "MassTransit.JiraSerivedeskConnector\MassTransit.JiraSerivedeskConnector.csproj", "{F5A0CFB9-EB2F-4197-B358-58D2F8BC3992}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RAZOR-RENDERER", "RAZOR-RENDERER", "{1C36D189-7276-4A6D-BEA7-24E01399B3A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.RazorRenderer", "MassTransit.RazorRenderer\MassTransit.RazorRenderer.csproj", "{24FCB5F1-52F4-4773-B4A5-D5DA632471D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.RazorRenderer", "MassTransit.RazorRenderer\MassTransit.RazorRenderer.csproj", "{24FCB5F1-52F4-4773-B4A5-D5DA632471D5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.SmtpGateway.Tests", "MassTransit.SmtpGateway.Tests\MassTransit.SmtpGateway.Tests.csproj", "{E20B7D9C-D7FA-4B4A-B9BE-327DAD88814A}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -77,6 +79,10 @@ Global
 		{24FCB5F1-52F4-4773-B4A5-D5DA632471D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24FCB5F1-52F4-4773-B4A5-D5DA632471D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24FCB5F1-52F4-4773-B4A5-D5DA632471D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E20B7D9C-D7FA-4B4A-B9BE-327DAD88814A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E20B7D9C-D7FA-4B4A-B9BE-327DAD88814A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E20B7D9C-D7FA-4B4A-B9BE-327DAD88814A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E20B7D9C-D7FA-4B4A-B9BE-327DAD88814A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -88,6 +94,7 @@ Global
 		{A44377F9-14F8-4F3D-84C1-03A32CD09D31} = {F1055E42-6E33-41D6-AEA8-2424295047DA}
 		{F5A0CFB9-EB2F-4197-B358-58D2F8BC3992} = {346B2971-FD65-405B-9BD3-C42E4B2B0FEC}
 		{24FCB5F1-52F4-4773-B4A5-D5DA632471D5} = {1C36D189-7276-4A6D-BEA7-24E01399B3A0}
+		{E20B7D9C-D7FA-4B4A-B9BE-327DAD88814A} = {CEB53367-7980-44E0-8820-9BEE456E6BBF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9AD2991F-A3DE-4988-8B42-AF00FA71A833}

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace MassTransit.SmtpGateway.Pipeline.Filters
 {
     public sealed class OptionsFilter<TContext> : IFilter<TContext>
-        where TContext : class, ConsumeContext
+        where TContext : class, PipeContext
     {
         static readonly ILog _log = Logger.Get<OptionsFilter<TContext>>();
 
