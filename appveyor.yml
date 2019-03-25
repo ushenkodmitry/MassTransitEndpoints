@@ -27,6 +27,10 @@ environment:
     debugsymbols: true
     optimization: false
 
+branches:
+    only:
+        - master
+        - develop
 
 for:
 - 
