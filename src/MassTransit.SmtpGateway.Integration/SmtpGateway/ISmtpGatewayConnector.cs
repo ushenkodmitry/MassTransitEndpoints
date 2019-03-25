@@ -4,9 +4,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MassTransit.SmtpGateway.Contexts
+namespace MassTransit.SmtpGateway
 {
-    public interface SmtpGatewayContext
+    public interface ISmtpGatewayConnector
     {
         Task SendMail(Action<ISendBuilder> build, CancellationToken cancellationToken = default);
 
