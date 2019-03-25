@@ -2,6 +2,7 @@
 using MailKit.Net.Imap;
 using MassTransit.ImapGateway.Contexts;
 using MassTransit.Logging;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,9 +13,10 @@ namespace MassTransit.ImapGateway.Pipeline.Filters
     {
         static readonly ILog _log = Logger.Get<ImapFilter<TContext>>();
 
-        public void Probe(ProbeContext context) => context.CreateFilterScope(nameof(ImapFilter<TContext>));
+        void IProbeSite.Probe(ProbeContext context) => context.CreateFilterScope(nameof(ImapFilter<TContext>));
 
-        public async Task Send(TContext context, IPipe<TContext> next)
+        [DebuggerNonUserCode]
+        async Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
             _log.Debug(() => "Sending through filter.");
 

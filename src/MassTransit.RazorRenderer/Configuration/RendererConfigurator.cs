@@ -1,5 +1,5 @@
 using System;
-using MassTransit.Options;
+using MassTransit.RazorRenderer.Options;
 
 namespace MassTransit.RazorRenderer.Configuration.PipeConfigurators
 {

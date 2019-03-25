@@ -1,4 +1,6 @@
+using System.Diagnostics;
 using System.Dynamic;
+using System.IO;
 using System.Threading.Tasks;
 using GreenPipes;
 using MassTransit.Logging;
@@ -12,7 +14,8 @@ namespace MassTransit.RazorRenderer.Pipeline.Filters
     {
         static readonly ILog _log = Logger.Get<RendererFilter<TContext>>();
 
-        public Task Send(TContext context, IPipe<TContext> next)
+        [DebuggerNonUserCode]
+        Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
             _log.Debug(() => "Sending through filter.");
             
@@ -25,7 +28,7 @@ namespace MassTransit.RazorRenderer.Pipeline.Filters
             return next.Send(context);
         }
 
-        public void Probe(ProbeContext context) => context.CreateFilterScope(nameof(RendererFilter<TContext>));
+        void IProbeSite.Probe(ProbeContext context) => context.CreateFilterScope(nameof(RendererFilter<TContext>));
 
         sealed class ConsumeRendererContext : RendererContext
         {
@@ -35,8 +38,13 @@ namespace MassTransit.RazorRenderer.Pipeline.Filters
             {
                 var builder = new RazorLightEngineBuilder().UseMemoryCachingProvider();
 
-                if (string.IsNullOrWhiteSpace(templateFolder))
-                    builder = builder.UseFilesystemProject(templateFolder);
+                if (!string.IsNullOrWhiteSpace(templateFolder))
+                {
+                    if (Path.IsPathRooted(templateFolder))
+                        builder = builder.UseFilesystemProject(templateFolder);
+                    else
+                        builder = builder.UseFilesystemProject(Path.Combine(Directory.GetCurrentDirectory(), templateFolder));
+                }
                 
                 _engine = builder.Build();
             }

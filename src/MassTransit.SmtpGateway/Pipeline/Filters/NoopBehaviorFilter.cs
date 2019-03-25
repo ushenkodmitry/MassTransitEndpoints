@@ -3,6 +3,7 @@ using MassTransit.ImapGateway.Contexts;
 using MassTransit.Logging;
 using MassTransit.SmtpGateway.Contexts;
 using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,13 +23,10 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
             _noopInterval = noopInterval;
         }
 
-        public void Probe(ProbeContext context)
-        {
-            var scope = context.CreateFilterScope(nameof(TContext));
-            scope.Add(nameof(_noopInterval), _noopInterval);
-        }
+        void IProbeSite.Probe(ProbeContext context) => context.CreateFilterScope(nameof(TContext)).Add(nameof(_noopInterval), _noopInterval);
 
-        public async Task Send(TContext context, IPipe<TContext> next)
+        [DebuggerNonUserCode]
+        async Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
             _log.Debug(() => "Sending through filter.");
 

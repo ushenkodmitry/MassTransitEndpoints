@@ -15,7 +15,7 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
         static readonly ILog _log = Logger.Get<SmtpGatewayFilter<TContext>>();
 
         [DebuggerNonUserCode]
-        public Task Send(TContext context, IPipe<TContext> next)
+        Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
             _log.Debug(() => "Sending through filter.");
 
@@ -28,7 +28,7 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
             return next.Send(context);
         }
 
-        public void Probe(ProbeContext context) => _ = context.CreateFilterScope(nameof(SmtpGatewayFilter<TContext>));
+        void IProbeSite.Probe(ProbeContext context) => _ = context.CreateFilterScope(nameof(SmtpGatewayFilter<TContext>));
 
         sealed class ConsumeSmtpGatewayContext : SmtpGatewayContext
         {

@@ -2,6 +2,7 @@
 using MassTransit.Logging;
 using MassTransit.SmtpGateway.Contexts;
 using MassTransit.SmtpGateway.Options;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace MassTransit.SmtpGateway.Pipeline.Filters
@@ -21,14 +22,15 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
             _behaviorOptions = behaviorOptions;
         }
 
-        public void Probe(ProbeContext context)
+        void IProbeSite.Probe(ProbeContext context)
         {
             var scope = context.CreateFilterScope(nameof(OptionsFilter<TContext>));
             scope.CreateScope(nameof(ServerOptions)).Set(_serverOptions);
             scope.CreateScope(nameof(BehaviorOptions)).Set(_behaviorOptions);
         }
 
-        public Task Send(TContext context, IPipe<TContext> next)
+        [DebuggerNonUserCode]
+        Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
             _log.Debug(() => "Sending through filter.");
 

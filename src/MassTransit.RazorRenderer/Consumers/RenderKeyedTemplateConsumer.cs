@@ -13,13 +13,20 @@ namespace MassTransit.RazorRenderer.Consumers
         
         public async Task Consume(ConsumeContext<RenderKeyedTemplate> context)
         {
+            object GetModel()
+            {
+                object model = new object();
+                if (!string.IsNullOrWhiteSpace(context.Message.Model))
+                    model = JsonConvert.DeserializeObject(context.Message.Model);
+
+                return model;
+            }
+
             _log.Debug(() => $"Rendering of keyed template. Template key: {context.Message.TemplateKey}.");
-            
-            var model = JsonConvert.DeserializeObject(context.Message.Model);
 
             var rendererContext = context.GetPayload<RendererContext>();
 
-            var output = await rendererContext.CompileRender(context.Message.TemplateKey, model).ConfigureAwait(false);
+            var output = await rendererContext.CompileRender(context.Message.TemplateKey, GetModel()).ConfigureAwait(false);
 
             await context
                 .Publish<TemplateRendered>(new

@@ -1,9 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <LangVersion>latest</LangVersion>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,8 +12,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MassTransit.RazorRenderer\MassTransit.RazorRenderer.csproj" />
     <ProjectReference Include="..\MassTransit.SmtpGateway.Integration\MassTransit.SmtpGateway.Integration.csproj" />
     <ProjectReference Include="..\MassTransit.SmtpGateway\MassTransit.SmtpGateway.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Templates\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Templates\OrderReserved.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,8 @@
 using System.Threading.Tasks;
 using GreenPipes;
-using MassTransit.Options;
+using MassTransit.RazorRenderer.Options;
 using MassTransit.RazorRenderer.Contexts;
+using System.Diagnostics;
 
 namespace MassTransit.RazorRenderer.Pipeline.Filters
 {
@@ -12,7 +13,8 @@ namespace MassTransit.RazorRenderer.Pipeline.Filters
 
         public OptionsFilter(BehaviorOptions behaviorOptions) => _behaviorOptions = behaviorOptions;
 
-        public Task Send(TContext context, IPipe<TContext> next)
+        [DebuggerNonUserCode]
+        Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
             OptionsContext optionsContext = new ConsumeOptionsContext(_behaviorOptions);
 
@@ -21,7 +23,7 @@ namespace MassTransit.RazorRenderer.Pipeline.Filters
             return next.Send(context);
         }
 
-        public void Probe(ProbeContext context)
+        void IProbeSite.Probe(ProbeContext context)
         {
             var scope = context.CreateFilterScope(nameof(OptionsFilter<TContext>));
             scope.CreateScope(nameof(BehaviorOptions)).Set(_behaviorOptions);

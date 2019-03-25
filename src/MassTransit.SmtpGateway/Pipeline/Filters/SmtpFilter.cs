@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using GreenPipes;
 using MailKit.Net.Smtp;
@@ -13,7 +14,8 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
     {
         static readonly ILog _log = Logger.Get<SmtpFilter<TContext>>();
 
-        public async Task Send(TContext context, IPipe<TContext> next)
+        [DebuggerNonUserCode]
+        async Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
             _log.Debug(() => "Sending through filter.");
 
@@ -36,7 +38,7 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
             }
         }
 
-        public void Probe(ProbeContext context) => context.CreateFilterScope(nameof(SmtpFilter<TContext>));
+        void IProbeSite.Probe(ProbeContext context) => context.CreateFilterScope(nameof(SmtpFilter<TContext>));
 
         sealed class ConsumeSmtpContext : SmtpContext
         {

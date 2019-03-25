@@ -16,7 +16,7 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
     [TestFixture]
     public class OptionsFilter_Specs
     {
-        OptionsFilter<PipeContext> _sut;
+        IFilter<PipeContext> _sut;
 
         ServerOptions _serverOptions;
 

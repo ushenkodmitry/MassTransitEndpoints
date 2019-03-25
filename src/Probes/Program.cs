@@ -1,4 +1,6 @@
-﻿using MassTransit;
+﻿using GreenPipes.Internals.Extensions;
+using MassTransit;
+using MassTransit.RazorRenderer.Messages;
 using MassTransit.SmtpGateway;
 using MassTransit.SmtpGateway.Configuration;
 using MassTransit.SmtpGateway.Options;
@@ -6,6 +8,9 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using MassTransit.RazorRenderer.Configuration;
+using RazorRendererBehaviorOptions = MassTransit.RazorRenderer.Options.BehaviorOptions;
+using SmtpGatewayBehaviorOptions = MassTransit.SmtpGateway.Options.BehaviorOptions;
 
 namespace Probes
 {
@@ -15,20 +20,31 @@ namespace Probes
         {
             var bus = Bus.Factory.CreateUsingInMemory(inMemory =>
             {
+                //inMemory.ReceiveEndpoint(endpoint =>
+                //{
+                //    SmtpGatewayConfigurationExtensions.UseSmtpGateway(endpoint, smtp =>
+                //    {
+                //        smtp.UseOptions((ServerOptions options) =>
+                //        {
+                //            options.Host = "";
+                //            options.Port = 465;
+                //            options.Username = "";
+                //            options.Password = "";
+                //            options.UseSsl = true;
+                //        });
+                //        smtp.UseOptions((SmtpGatewayBehaviorOptions options) =>
+                //        {
+                //        });
+                //    });
+                //});
+
                 inMemory.ReceiveEndpoint(endpoint =>
                 {
-                    SmtpGatewayConfigurationExtensions.UseSmtpGateway(endpoint, smtp =>
+                    endpoint.UseRazorRenderer(renderer =>
                     {
-                        smtp.UseOptions((ServerOptions options) =>
+                        renderer.UseOptions((RazorRendererBehaviorOptions options) =>
                         {
-                            options.Host = "";
-                            options.Port = 465;
-                            options.Username = "";
-                            options.Password = "";
-                            options.UseSsl = true;
-                        });
-                        smtp.UseOptions((BehaviorOptions options) =>
-                        {
+                            options.TemplatesFolder = "Templates";
                         });
                     });
                 });
@@ -36,6 +52,16 @@ namespace Probes
 
             await bus.StartAsync();
 
+            //await SendMail(bus);
+            await RenderKeyedTemplate(bus);
+
+            await bus.StopAsync();
+
+            await Console.In.ReadLineAsync();
+        }
+
+        async static Task SendMail(IBus bus)
+        {
             using (MemoryStream ms1 = new MemoryStream())
             using (MemoryStream ms2 = new MemoryStream())
             {
@@ -60,9 +86,16 @@ namespace Probes
                 });
             }
 
-            await bus.StopAsync();
+        }
 
-            await Console.In.ReadLineAsync();
+        async static Task RenderKeyedTemplate(IBus bus)
+        {
+            RenderKeyedTemplate renderKeyedTemplate = TypeCache<RenderKeyedTemplate>.InitializeFromObject(new
+            {
+                TemplateKey = "OrderReserved.cshtml"
+            });
+
+            await bus.Publish(renderKeyedTemplate);
         }
     }
 }
