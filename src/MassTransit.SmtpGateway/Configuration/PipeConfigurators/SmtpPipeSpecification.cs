@@ -7,25 +7,24 @@ using MassTransit.SmtpGateway.Pipeline.Filters;
 
 namespace MassTransit.SmtpGateway.Configuration.PipeConfigurators
 {
-    public sealed class SmtpPipeSpecification<TContext> : IPipeSpecification<TContext>
-        where TContext : class, ConsumeContext
+    public sealed class SmtpPipeSpecification : IPipeSpecification<ConsumeContext>
     {
         readonly Action<ISmtpConfigurator> _configureSmtp;
 
         public SmtpPipeSpecification(Action<ISmtpConfigurator> configureSmtp) => _configureSmtp = configureSmtp;
 
-        public void Apply(IPipeBuilder<TContext> builder)
+        public void Apply(IPipeBuilder<ConsumeContext> builder)
         {
             SmtpConfigurator smtpConfigurator = new SmtpConfigurator();
             _configureSmtp(smtpConfigurator);
 
             var behaviorOptions = smtpConfigurator.BehaviorOptions ?? new BehaviorOptions();
 
-            builder.AddFilter(new OptionsFilter<TContext>(smtpConfigurator.ServerOptions, behaviorOptions));
-            builder.AddFilter(new SmtpFilter<TContext>());
+            builder.AddFilter(new OptionsFilter<ConsumeContext>(smtpConfigurator.ServerOptions, behaviorOptions));
+            builder.AddFilter(new SmtpFilter<ConsumeContext>());
 
             if (behaviorOptions.NoopInterval != default)
-                builder.AddFilter(new NoopBehaviorFilter<TContext>(behaviorOptions.NoopInterval));
+                builder.AddFilter(new NoopBehaviorFilter<ConsumeContext>(behaviorOptions.NoopInterval));
         }
 
         public IEnumerable<ValidationResult> Validate()

@@ -2,7 +2,7 @@
 
 namespace MassTransit.SmtpGateway
 {
-    public interface ISendBuilder : IDisposable
+    public interface ISendBuilder
     {
         IImportanceSelector WithImportance { get; }
 
@@ -27,5 +27,9 @@ namespace MassTransit.SmtpGateway
         ISendBuilder Cc(Action<IMailboxesBuilder> cc);
 
         ISendBuilder Bcc(Action<IMailboxesBuilder> bcc);
+
+        ISendBuilder WithAttachments(Action<IAttachmentsBuilder> attachments);
+
+        ISendBuilder WithBody(Action<IBodyBuilder> body);
     }
 }

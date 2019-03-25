@@ -29,17 +29,16 @@ namespace MassTransit.SmtpGateway
         {
             using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_cancellationToken, cancellationToken))
             {
-                using (SendBuilder builder = new SendBuilder())
-                {
-                    if (_correlationId.HasValue)
-                        builder.WithCorrelationId(_correlationId.Value);
+                SendBuilder builder = new SendBuilder();
+                
+                if (_correlationId.HasValue)
+                    builder.WithCorrelationId(_correlationId.Value);
 
-                    build(builder);
+                build(builder);
 
-                    SendMail sendMail = builder.Build();
+                SendMail sendMail = builder.Build();
 
-                    await _publishEndpoint.Publish(sendMail, cts.Token).ConfigureAwait(false);
-                }
+                await _publishEndpoint.Publish(sendMail, cts.Token).ConfigureAwait(false);
             }
         }
 
@@ -47,24 +46,21 @@ namespace MassTransit.SmtpGateway
         {
             using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_cancellationToken, cancellationToken))
             {
-                using (SendBuilder builder = new SendBuilder())
-                {
-                    if (_correlationId.HasValue)
-                        builder.WithCorrelationId(_correlationId.Value);
+                SendBuilder builder = new SendBuilder();
 
-                    build(builder);
+                if (_correlationId.HasValue)
+                    builder.WithCorrelationId(_correlationId.Value);
 
-                    SendMail sendMail = builder.Build();
+                build(builder);
 
-                    await _publishEndpoint.Publish(sendMail, pipe, cts.Token).ConfigureAwait(false);
-                }
+                SendMail sendMail = builder.Build();
+
+                await _publishEndpoint.Publish(sendMail, pipe, cts.Token).ConfigureAwait(false);
             }
         }
 
         sealed class SendBuilder : ISendBuilder
         {
-            static readonly string UnitSeparator = char.ConvertFromUtf32(31);
-
             string _subject;
 
             string _messageId;
@@ -84,6 +80,8 @@ namespace MassTransit.SmtpGateway
             readonly Lazy<HeadersBuilder> _withHeaders;
 
             readonly Lazy<AttachmentsBuilder> _withAttachments;
+
+            readonly Lazy<BodyBuilder> _withBody;
 
             readonly Lazy<ImportanceSelector> _withImportance;
             public IImportanceSelector WithImportance => _withImportance.Value;
@@ -105,6 +103,7 @@ namespace MassTransit.SmtpGateway
                 _withPriority = new Lazy<PrioritySelector>(() => new PrioritySelector(this));
                 _withXPriority = new Lazy<XPrioritySelector>(() => new XPrioritySelector(this));
                 _withAttachments = new Lazy<AttachmentsBuilder>(() => new AttachmentsBuilder());
+                _withBody = new Lazy<BodyBuilder>(() => new BodyBuilder());
             }
 
             public ISendBuilder WithCorrelationId(Guid correlationId)
@@ -179,7 +178,7 @@ namespace MassTransit.SmtpGateway
 
             public SendMail Build()
             {
-                string[] ToMailboxes(MailboxesBuilder builder) => builder.Mailboxes.Select(m => $"{m.Name}{UnitSeparator}{m.Address}").ToArray();
+                string[] ToMailboxes(MailboxesBuilder builder) => builder.Mailboxes.Select(m => $"{m.Name}{ASCII.UnitSeparator}{m.Address}").ToArray();
 
                 var sendMail = new SendMailMessage
                 {
@@ -201,10 +200,12 @@ namespace MassTransit.SmtpGateway
                         int length = (int)attachment.Stream.Length;
 
                         var buffer = new byte[length];
-                        attachment.Stream.Read(buffer, 0, length);
+                        if(attachment.Stream.CanSeek)
+                            attachment.Stream.Seek(0, SeekOrigin.Begin);
+                        int read = attachment.Stream.Read(buffer, 0, length);
 
                         buffers.Add(buffer);
-                        attachmentMeta.Add($"{attachment.FileName}{UnitSeparator}{attachment.MediaType}{UnitSeparator}{attachment.MediaSubType}{UnitSeparator}{offset}{UnitSeparator}{length}");
+                        attachmentMeta.Add($"{attachment.FileName}{ASCII.UnitSeparator}{attachment.MediaType}{ASCII.UnitSeparator}{attachment.MediaSubType}{ASCII.UnitSeparator}{offset}{ASCII.UnitSeparator}{length}");
 
                         offset += length;
                     }
@@ -225,8 +226,21 @@ namespace MassTransit.SmtpGateway
                     sendMail.Bcc = ToMailboxes(_bcc.Value);
                 if (_withAttachments.IsValueCreated)
                     BuildAttachments(_withAttachments.Value);
+                if(_withBody.IsValueCreated)
+                {
+                    if (_withBody.Value.IsHtmlBody)
+                        sendMail.HtmlBody = _withBody.Value.Body;
+                    sendMail.TextBody = _withBody.Value.Body;
+                }
 
                 return sendMail;
+            }
+
+            public ISendBuilder WithBody(Action<IBodyBuilder> body)
+            {
+                body(_withBody.Value);
+
+                return this;
             }
 
             sealed class SendMailMessage : SendMail
@@ -404,11 +418,26 @@ namespace MassTransit.SmtpGateway
                 }
             }
 
-            void IDisposable.Dispose()
+            sealed class BodyBuilder : IBodyBuilder
             {
-                if (!_withAttachments.IsValueCreated) return;
+                public bool IsHtmlBody { get; private set; }
 
-                foreach (var attachment in _withAttachments.Value.Attachments) attachment.Stream.Dispose();
+                public string Body { get; set; }
+
+                public IBodyBuilder HtmlBody(string body)
+                {
+                    Body = body;
+                    IsHtmlBody = true;
+
+                    return this;
+                }
+
+                public IBodyBuilder TextBody(string body)
+                {
+                    Body = body;
+
+                    return this;
+                }
             }
         }
     }

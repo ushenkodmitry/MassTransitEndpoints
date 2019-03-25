@@ -1,9 +1,9 @@
 ﻿using System;
-using MassTransit.Configuration.PipeConfigurators;
+using MassTransit.SmtpGateway.Configuration.PipeConfigurators;
 
-namespace MassTransit.Configuration
+namespace MassTransit.SmtpGateway.Configuration
 {
-    public static class MailGatewayExtensions
+    public static class SmtpGatewayIntegrationConfigurationExtensions
     {
         public static void UseSmtpGateway(this IConsumePipeConfigurator configurator)
         {

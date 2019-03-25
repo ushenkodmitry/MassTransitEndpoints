@@ -2,7 +2,7 @@
 using GreenPipes;
 using MassTransit.SmtpGateway.Pipeline.Filters;
 
-namespace MassTransit.Configuration.PipeConfigurators
+namespace MassTransit.SmtpGateway.Configuration.PipeConfigurators
 {
     public sealed class SmtpGatewayPipeSpecification<TContext> : IPipeSpecification<TContext>
         where TContext : class, ConsumeContext

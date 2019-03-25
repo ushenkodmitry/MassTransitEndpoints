@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using GreenPipes;
 using MassTransit.Logging;
@@ -28,20 +29,22 @@ namespace MassTransit.SmtpGateway.Consumers
 
         static MimeMessage CreateMimeMessage(ConsumeContext<SendMail> context)
         {
-            string unitSeparator = char.ConvertFromUtf32(31);
-
             MimeMessage mimeMessage = new MimeMessage
             {
-                Importance = (MessageImportance)Enum.Parse(typeof(MessageImportance), context.Message.Importance),
-                Priority = (MessagePriority)Enum.Parse(typeof(MessagePriority), context.Message.Priority),
-                XPriority = (XMessagePriority)Enum.Parse(typeof(XMessagePriority), context.Message.XPriority),
-                MessageId = context.Message.MessageId,
                 Subject = context.Message.Subject,
             };
+            if (!string.IsNullOrWhiteSpace(context.Message.MessageId))
+                mimeMessage.MessageId = context.Message.MessageId;
+            if (!string.IsNullOrWhiteSpace(context.Message.Importance))
+                mimeMessage.Importance = (MessageImportance)Enum.Parse(typeof(MessageImportance), context.Message.Importance);
+            if(!string.IsNullOrWhiteSpace(context.Message.Priority))
+                mimeMessage.Priority = (MessagePriority)Enum.Parse(typeof(MessagePriority), context.Message.Priority);
+            if(!string.IsNullOrWhiteSpace(context.Message.XPriority))
+                mimeMessage.XPriority = (XMessagePriority)Enum.Parse(typeof(XMessagePriority), context.Message.XPriority);
 
             Array.ForEach(context.Message.From, from =>
             {
-                var splitted = from.Split(new[] { unitSeparator }, StringSplitOptions.None);
+                var splitted = from.Split(new[] { ASCII.UnitSeparator }, StringSplitOptions.None);
 
                 if (splitted.Length == 1)
                     mimeMessage.From.Add(new MailboxAddress(splitted[0]));
@@ -51,7 +54,7 @@ namespace MassTransit.SmtpGateway.Consumers
 
             Array.ForEach(context.Message.To, to =>
             {
-                var splitted = to.Split(new[] { unitSeparator }, StringSplitOptions.None);
+                var splitted = to.Split(new[] { ASCII.UnitSeparator }, StringSplitOptions.None);
 
                 if (splitted.Length == 1)
                     mimeMessage.To.Add(new MailboxAddress(splitted[0]));
@@ -61,7 +64,7 @@ namespace MassTransit.SmtpGateway.Consumers
 
             Array.ForEach(context.Message.Cc ?? new string[0], to =>
             {
-                var splitted = to.Split(new[] { unitSeparator }, StringSplitOptions.None);
+                var splitted = to.Split(new[] { ASCII.UnitSeparator }, StringSplitOptions.None);
 
                 if (splitted.Length == 1)
                     mimeMessage.Cc.Add(new MailboxAddress(splitted[0]));
@@ -71,7 +74,7 @@ namespace MassTransit.SmtpGateway.Consumers
 
             Array.ForEach(context.Message.Bcc ?? new string[0], to =>
             {
-                var splitted = to.Split(new[] { unitSeparator }, StringSplitOptions.None);
+                var splitted = to.Split(new[] { ASCII.UnitSeparator }, StringSplitOptions.None);
 
                 if (splitted.Length == 1)
                     mimeMessage.Bcc.Add(new MailboxAddress(splitted[0]));
@@ -79,8 +82,14 @@ namespace MassTransit.SmtpGateway.Consumers
                     mimeMessage.Bcc.Add(new MailboxAddress(splitted[0], splitted[1]));
             });
 
-            var mimeParts =
-                context.Message.AttachmentsMeta
+            TextPart textPart = null;
+            if(!string.IsNullOrWhiteSpace(context.Message.HtmlBody))
+                textPart = new TextPart(TextFormat.Html) { Text = context.Message.HtmlBody };
+            else if(!string.IsNullOrWhiteSpace(context.Message.TextBody))
+                textPart = new TextPart(TextFormat.Text) { Text = context.Message.TextBody };
+
+            var attachmentParts =
+                context.Message.AttachmentsMeta?
                     .Select(m => m.Split(new[] { char.ConvertFromUtf32(31) }, StringSplitOptions.None))
                     .Select(m =>
                     {
@@ -102,18 +111,22 @@ namespace MassTransit.SmtpGateway.Consumers
                             }
                         };
                     })
-                    .ToArray();
+                    .ToArray() ?? new MimePart[0];
 
-            if (mimeParts.Length > 0)
+            if (attachmentParts.Length > 0)
             {
-                TextFormat textFormat = string.IsNullOrWhiteSpace(context.Message.HtmlBody) ? TextFormat.Text : TextFormat.Html;
+                var multipart = new Multipart("mixed");
+                if (textPart != null)
+                    multipart.Add(textPart);
 
-                TextPart textPart = new TextPart(textFormat) { Text = textFormat == TextFormat.Html ? context.Message.HtmlBody : context.Message.TextBody };
-
-                var multipart = new Multipart("mixed") { textPart };
-                Array.ForEach(mimeParts, multipart.Add);
+                Array.ForEach(attachmentParts, multipart.Add);
 
                 mimeMessage.Body = multipart;
+            }
+            else
+            {
+                if (textPart != null)
+                    mimeMessage.Body = textPart;
             }
 
             return mimeMessage;
