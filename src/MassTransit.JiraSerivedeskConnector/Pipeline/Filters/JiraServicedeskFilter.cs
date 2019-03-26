@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using GreenPipes;
-using MassTransit.JiraSerivedeskConnector.Configuration;
 using MassTransit.JiraSerivedeskConnector.Contexts;
 using MassTransit.Logging;
 
@@ -12,23 +11,19 @@ namespace MassTransit.JiraSerivedeskConnector.Pipeline.Filters
     {
         static readonly ILog _log = Logger.Get<JiraServicedeskFilter<TContext>>();
 
-        readonly ServerOptions _serverOptions;
+        readonly ServerOptions _options;
 
-        public JiraServicedeskFilter(Action<IJiraServicedeskConfigurator> configureJiraServicedesk)
-        {
-            var configurator = new JiraServicedeskConfigurator();
-            configureJiraServicedesk(configurator);
-            _serverOptions = configurator.Options;
-        }
+        public JiraServicedeskFilter(ServerOptions options) => _options = options;
 
-        public void Probe(ProbeContext context)
-        {
-            var scope = context.CreateFilterScope(nameof(JiraServicedeskFilter<TContext>));
-            scope.Set(_serverOptions);
-        }
+        public void Probe(ProbeContext context) => context.CreateFilterScope(nameof(JiraServicedeskFilter<TContext>)).Set(_options);
 
         public Task Send(TContext context, IPipe<TContext> next)
         {
+            _log.Debug(() => "Sending through filter.");
+
+            OptionsContext optionsContext = context.GetPayload<OptionsContext>();
+
+
             throw new System.NotImplementedException();
         }
 
