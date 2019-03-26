@@ -92,7 +92,8 @@ namespace Probes
         {
             RenderKeyedTemplate renderKeyedTemplate = TypeCache<RenderKeyedTemplate>.InitializeFromObject(new
             {
-                TemplateKey = "OrderReserved.cshtml"
+                TemplateKey = "Template.cshtml",
+                Model = "{ \"Who\": \"everybody\"}"
             });
 
             await bus.Publish(renderKeyedTemplate);

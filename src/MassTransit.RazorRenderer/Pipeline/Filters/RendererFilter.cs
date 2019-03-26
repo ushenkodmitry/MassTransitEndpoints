@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
@@ -34,8 +35,12 @@ namespace MassTransit.RazorRenderer.Pipeline.Filters
         {
             readonly RazorLightEngine _engine;
 
+            readonly ConcurrentDictionary<string, ITemplatePage> _cache;
+
             public ConsumeRendererContext(string templateFolder)
             {
+                _cache = new ConcurrentDictionary<string, ITemplatePage>();
+
                 var builder = new RazorLightEngineBuilder().UseMemoryCachingProvider();
 
                 if (!string.IsNullOrWhiteSpace(templateFolder))
@@ -49,7 +54,12 @@ namespace MassTransit.RazorRenderer.Pipeline.Filters
                 _engine = builder.Build();
             }
 
-            public Task<string> CompileRender(string templateKey, object model, ExpandoObject viewBag) => _engine.CompileRenderAsync(templateKey, model, viewBag);
+            public async Task<string> CompileRender(string templateKey, object model, ExpandoObject viewBag)
+            {
+                var templatePage = _cache.GetOrAdd(templateKey, await _engine.CompileTemplateAsync(templateKey).ConfigureAwait(false));
+
+                return await _engine.RenderTemplateAsync(templatePage, model, viewBag).ConfigureAwait(false);
+            }
         }
     }
 }
