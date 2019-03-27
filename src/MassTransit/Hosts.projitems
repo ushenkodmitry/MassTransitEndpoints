@@ -26,4 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)RabbitMqOptions\HostOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoutedBy.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Configuration\Configurators\" />
+  </ItemGroup>
 </Project>

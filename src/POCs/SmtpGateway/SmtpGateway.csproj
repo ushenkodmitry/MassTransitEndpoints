@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit" Version="5.3.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MassTransit.SmtpGateway.Integration\MassTransit.SmtpGateway.Integration.csproj" />
+    <ProjectReference Include="..\..\MassTransit.SmtpGateway\MassTransit.SmtpGateway.csproj" />
+  </ItemGroup>
+
+</Project>

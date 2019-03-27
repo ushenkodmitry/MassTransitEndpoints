@@ -9,6 +9,10 @@
     <Import_RootNamespace>Messages</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)JiraServicedeskConnector\CreateCustomerRequest.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JiraServicedeskConnector\CreateRequestComment.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JiraServicedeskConnector\CustomerRequestCreated.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)JiraServicedeskConnector\RequestCommentCreated.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RazorRenderer\RenderKeyedTemplate.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RazorRenderer\TemplateRendered.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpGateway\MailSent.cs" />
