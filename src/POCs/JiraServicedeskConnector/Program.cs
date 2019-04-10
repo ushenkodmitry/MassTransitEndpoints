@@ -23,7 +23,6 @@ namespace JiraServicedeskConnector
                         });
                         jira.UseOptions((BehaviorOptions options) =>
                         {
-                            options.UseNamedClient = "JiraClient";
                         });
                         jira.UseOptions((BasicAuthOptions options) =>
                         {
