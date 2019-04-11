@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MassTransit.RazorRenderer\MassTransit.RazorRenderer.csproj" />
+    <ProjectReference Include="..\..\RAZOR-RENDERER\MassTransit.RazorRenderer\MassTransit.RazorRenderer.csproj" />
   </ItemGroup>
 
   <ItemGroup>

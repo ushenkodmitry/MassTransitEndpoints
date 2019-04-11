@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MassTransit.SmtpGateway.Integration\MassTransit.SmtpGateway.Integration.csproj" />
-    <ProjectReference Include="..\..\MassTransit.SmtpGateway\MassTransit.SmtpGateway.csproj" />
+    <ProjectReference Include="..\..\SMTP-GATEWAY\MassTransit.SmtpGateway.Integration\MassTransit.SmtpGateway.Integration.csproj" />
+    <ProjectReference Include="..\..\SMTP-GATEWAY\MassTransit.SmtpGateway\MassTransit.SmtpGateway.csproj" />
   </ItemGroup>
 
 </Project>

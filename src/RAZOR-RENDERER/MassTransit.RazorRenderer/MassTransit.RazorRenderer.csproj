@@ -16,15 +16,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Include="..\MassTransit\RoutedBy.cs">
-        <Link>RoutedBy.cs</Link>
-      </Compile>
-      <Compile Include="..\Messages\RazorRenderer\RenderKeyedTemplate.cs">
-        <Link>Messages\RenderKeyedTemplate.cs</Link>
-      </Compile>
-      <Compile Include="..\Messages\RazorRenderer\TemplateRendered.cs">
-        <Link>Messages\TemplateRendered.cs</Link>
-      </Compile>
+      <Compile Include="..\..\MassTransit\RoutedBy.cs" Link="RoutedBy.cs" />
+      <Compile Include="..\..\Messages\RazorRenderer\RenderKeyedTemplate.cs" Link="Messages\RenderKeyedTemplate.cs" />
+      <Compile Include="..\..\Messages\RazorRenderer\TemplateRendered.cs" Link="Messages\TemplateRendered.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Messages\" />
     </ItemGroup>
 
 </Project>

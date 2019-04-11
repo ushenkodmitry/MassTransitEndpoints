@@ -15,11 +15,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="..\MassTransit\RoutedBy.cs" Link="RoutedBy.cs" />
-    <Compile Include="..\Messages\SmtpGateway\MailSent.cs" Link="Messages\MailSent.cs" />
-    <Compile Include="..\Messages\SmtpGateway\SendMail.cs" Link="Messages\SendMail.cs" />
-    <Compile Include="..\System\System\Text\ASCII.cs" Link="System\Text\ASCII.cs" />
-    <Compile Include="..\System\System\Threading\Tasks\TaskExtensions.cs" Link="System\Threading\Tasks\TaskExtensions.cs" />
+    <Compile Include="..\..\MassTransit\RoutedBy.cs" Link="RoutedBy.cs" />
+    <Compile Include="..\..\Messages\SmtpGateway\MailSent.cs" Link="Messages\MailSent.cs" />
+    <Compile Include="..\..\Messages\SmtpGateway\SendMail.cs" Link="Messages\SendMail.cs" />
+    <Compile Include="..\..\System\System\Text\ASCII.cs" Link="System\Text\ASCII.cs" />
   </ItemGroup>
 
   <ItemGroup>
