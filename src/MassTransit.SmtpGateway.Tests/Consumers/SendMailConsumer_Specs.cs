@@ -13,6 +13,7 @@ using static Moq.Times;
 using static Moq.It;
 using MimeKit;
 using System.Threading;
+using System.Text;
 
 namespace MassTransit.SmtpGateway
 {
@@ -20,8 +21,6 @@ namespace MassTransit.SmtpGateway
     [TestFixture]
     public class SendMailConsumer_Specs
     {
-        static readonly string UnitSeparator = char.ConvertFromUtf32(31);
-
         InMemoryTestHarness _harness;
 
         Mock<SmtpContext> _smtpContextMock;
@@ -62,8 +61,8 @@ namespace MassTransit.SmtpGateway
                 XPriority = "Low",
                 MessageId = NewId.NextGuid().ToString(),
                 TextBody = "text body",
-                From = new [] { $"me{UnitSeparator}me@mail.com" },
-                To = new[] { $"me{UnitSeparator}me@mail.com" },
+                From = new [] { $"me{ASCII.UnitSeparator}me@mail.com" },
+                To = new[] { $"me{ASCII.UnitSeparator}me@mail.com" },
                 Priority = "Normal",
                 AttachmentsMeta = new string[0]
             });
