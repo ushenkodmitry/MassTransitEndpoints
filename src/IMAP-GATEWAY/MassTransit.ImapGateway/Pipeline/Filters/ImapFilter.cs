@@ -22,29 +22,28 @@ namespace MassTransit.ImapGateway.Pipeline.Filters
 
             OptionsContext optionsContext = context.GetPayload<OptionsContext>();
 
-            using (var imapClient = new ImapClient())
-            {
-                var authenticationCompleted =
-                    imapClient.ConnectAsync(optionsContext.ServerOptions.Host, optionsContext.ServerOptions.Port, optionsContext.ServerOptions.UseSsl)
-                    .ContinueWith(_ => imapClient.AuthenticateAsync(optionsContext.ServerOptions.Username, optionsContext.ServerOptions.Password))
-                    .ContinueWith(async _ =>
-                    {
-                        if (optionsContext.ServerOptions.UseCompression)
-                            await imapClient.CompressAsync().ConfigureAwait(false);
+            using var imapClient = new ImapClient();
 
-                        if (optionsContext.ServerOptions.UseUtf8)
-                            await imapClient.EnableUTF8Async().ConfigureAwait(false);
-                    })
-                    .Unwrap();
+            var authenticationCompleted =
+                imapClient.ConnectAsync(optionsContext.ServerOptions.Host, optionsContext.ServerOptions.Port, optionsContext.ServerOptions.UseSsl)
+                .ContinueWith(_ => imapClient.AuthenticateAsync(optionsContext.ServerOptions.Username, optionsContext.ServerOptions.Password))
+                .ContinueWith(async _ =>
+                {
+                    if (optionsContext.ServerOptions.UseCompression)
+                        await imapClient.CompressAsync().ConfigureAwait(false);
 
-                ImapContext imapContext = new ConsumeImapContext(context, imapClient, authenticationCompleted);
+                    if (optionsContext.ServerOptions.UseUtf8)
+                        await imapClient.EnableUTF8Async().ConfigureAwait(false);
+                })
+                .Unwrap();
 
-                context.GetOrAddPayload(() => imapContext);
+            ImapContext imapContext = new ConsumeImapContext(context, imapClient, authenticationCompleted);
 
-                await next.Send(context).ConfigureAwait(false);
+            context.GetOrAddPayload(() => imapContext);
 
-                await imapClient.DisconnectAsync(true, context.CancellationToken).ConfigureAwait(false);
-            }
+            await next.Send(context).ConfigureAwait(false);
+
+            await imapClient.DisconnectAsync(true, context.CancellationToken).ConfigureAwait(false);
         }
 
         public sealed class ConsumeImapContext : ImapContext
@@ -66,8 +65,9 @@ namespace MassTransit.ImapGateway.Pipeline.Filters
             {
                 await AuthenticationComplated.ConfigureAwait(false);
 
-                using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken))
-                    await _imapClient.NoOpAsync(cts.Token).ConfigureAwait(false);
+                using CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken);
+
+                await _imapClient.NoOpAsync(cts.Token).ConfigureAwait(false);
             }
         }
     }

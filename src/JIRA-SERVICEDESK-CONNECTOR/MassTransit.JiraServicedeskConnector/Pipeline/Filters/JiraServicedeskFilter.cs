@@ -89,25 +89,23 @@ namespace MassTransit.JiraServicedeskConnector.Pipeline.Filters
                     }
                 };
 
-                using (var cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken))
-                {
-                    var createdCustomerRequestModel = await _client.CreateCustomerRequest(_authorization, createCustomerRequestModel, cts.Token).ConfigureAwait(false);
+                using var cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken);
 
-                    return new CreateCustomerRequestResult
-                    {
-                        IssueId = createdCustomerRequestModel.IssueId,
-                        IssueKey = createdCustomerRequestModel.IssueKey,
-                        WebLink = createdCustomerRequestModel.Links.Web
-                    };
-                }
+                var createdCustomerRequestModel = await _client.CreateCustomerRequest(_authorization, createCustomerRequestModel, cts.Token).ConfigureAwait(false);
+
+                return new CreateCustomerRequestResult
+                {
+                    IssueId = createdCustomerRequestModel.IssueId,
+                    IssueKey = createdCustomerRequestModel.IssueKey,
+                    WebLink = createdCustomerRequestModel.Links.Web
+                };
             }
 
             public async Task Send(CustomerRequestQuery query, CancellationToken cancellationToken)
             {
-                using (var cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken))
-                {
-                    await _client.GetCustomerRequestByIdOrKey(_authorization, query.IssueIdOrKey, cts.Token).ConfigureAwait(false);
-                }
+                using var cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken);
+
+                await _client.GetCustomerRequestByIdOrKey(_authorization, query.IssueIdOrKey, cts.Token).ConfigureAwait(false);
             }
 
             public async Task Send(MyCustomerRequestsQuery query, CancellationToken cancellationToken)
@@ -121,10 +119,9 @@ namespace MassTransit.JiraServicedeskConnector.Pipeline.Filters
                     Start = query.Start
                 };
 
-                using (var cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken))
-                {
-                    var myCustomerRequests = await _client.GetMyCustomerRequests(_authorization, getMyCustomerRequestsModel, cts.Token).ConfigureAwait(false);
-                }
+                using var cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken);
+
+                var myCustomerRequests = await _client.GetMyCustomerRequests(_authorization, getMyCustomerRequestsModel, cts.Token).ConfigureAwait(false);
             }
 
             public async Task<CreateRequestCommentResult> Send(CreateRequestCommentCommand command, CancellationToken cancellationToken)
@@ -135,12 +132,11 @@ namespace MassTransit.JiraServicedeskConnector.Pipeline.Filters
                     Public = command.Public
                 };
 
-                using (var cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken))
-                {
-                    var createdRequestCommentModel = await _client.CreateRequestComment(_authorization, command.IssueIdOrKey, createRequestCommandModel, cts.Token).ConfigureAwait(false);
+                using var cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken);
 
-                    return new CreateRequestCommentResult { Id = createdRequestCommentModel.Id };
-                }
+                var createdRequestCommentModel = await _client.CreateRequestComment(_authorization, command.IssueIdOrKey, createRequestCommandModel, cts.Token).ConfigureAwait(false);
+
+                return new CreateRequestCommentResult { Id = createdRequestCommentModel.Id };
             }
         }
     }

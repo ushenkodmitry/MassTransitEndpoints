@@ -62,7 +62,7 @@ namespace MassTransit.SmtpGateway.Consumers
                     mimeMessage.To.Add(new MailboxAddress(splitted[0], splitted[1]));
             });
 
-            Array.ForEach(context.Message.Cc ?? new string[0], to =>
+            Array.ForEach(context.Message.Cc ?? Array.Empty<string>(), to =>
             {
                 var splitted = to.Split(new[] { ASCII.UnitSeparator }, StringSplitOptions.None);
 
@@ -72,7 +72,7 @@ namespace MassTransit.SmtpGateway.Consumers
                     mimeMessage.Cc.Add(new MailboxAddress(splitted[0], splitted[1]));
             });
 
-            Array.ForEach(context.Message.Bcc ?? new string[0], to =>
+            Array.ForEach(context.Message.Bcc ?? Array.Empty<string>(), to =>
             {
                 var splitted = to.Split(new[] { ASCII.UnitSeparator }, StringSplitOptions.None);
 
@@ -111,7 +111,7 @@ namespace MassTransit.SmtpGateway.Consumers
                             }
                         };
                     })
-                    .ToArray() ?? new MimePart[0];
+                    .ToArray() ?? Array.Empty<MimePart>();
 
             if (attachmentParts.Length > 0)
             {

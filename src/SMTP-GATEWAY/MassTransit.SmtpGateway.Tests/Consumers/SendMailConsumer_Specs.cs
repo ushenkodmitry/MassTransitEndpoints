@@ -64,7 +64,7 @@ namespace MassTransit.SmtpGateway
                 From = new [] { $"me{ASCII.UnitSeparator}me@mail.com" },
                 To = new[] { $"me{ASCII.UnitSeparator}me@mail.com" },
                 Priority = "Normal",
-                AttachmentsMeta = new string[0]
+                AttachmentsMeta = Array.Empty<string>()
             });
 
             //

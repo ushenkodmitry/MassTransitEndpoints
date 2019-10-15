@@ -27,36 +27,34 @@ namespace MassTransit.SmtpGateway
 
         public async Task SendMail(Action<ISendBuilder> build, CancellationToken cancellationToken = default)
         {
-            using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_cancellationToken, cancellationToken))
-            {
-                SendBuilder builder = new SendBuilder();
-                
-                if (_correlationId.HasValue)
-                    builder.WithCorrelationId(_correlationId.Value);
+            using CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_cancellationToken, cancellationToken);
 
-                build(builder);
+            SendBuilder builder = new SendBuilder();
 
-                SendMail sendMail = builder.Build();
+            if (_correlationId.HasValue)
+                builder.WithCorrelationId(_correlationId.Value);
 
-                await _publishEndpoint.Publish(sendMail, cts.Token).ConfigureAwait(false);
-            }
+            build(builder);
+
+            SendMail sendMail = builder.Build();
+
+            await _publishEndpoint.Publish(sendMail, cts.Token).ConfigureAwait(false);
         }
 
         public async Task SendMail(Action<ISendBuilder> build, IPipe<PublishContext<SendMail>> pipe, CancellationToken cancellationToken = default)
         {
-            using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_cancellationToken, cancellationToken))
-            {
-                SendBuilder builder = new SendBuilder();
+            using CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_cancellationToken, cancellationToken);
 
-                if (_correlationId.HasValue)
-                    builder.WithCorrelationId(_correlationId.Value);
+            SendBuilder builder = new SendBuilder();
 
-                build(builder);
+            if (_correlationId.HasValue)
+                builder.WithCorrelationId(_correlationId.Value);
 
-                SendMail sendMail = builder.Build();
+            build(builder);
 
-                await _publishEndpoint.Publish(sendMail, pipe, cts.Token).ConfigureAwait(false);
-            }
+            SendMail sendMail = builder.Build();
+
+            await _publishEndpoint.Publish(sendMail, pipe, cts.Token).ConfigureAwait(false);
         }
 
         sealed class SendBuilder : ISendBuilder
@@ -178,7 +176,7 @@ namespace MassTransit.SmtpGateway
 
             public SendMail Build()
             {
-                string[] ToMailboxes(MailboxesBuilder builder) => builder.Mailboxes.Select(m => $"{m.Name}{ASCII.UnitSeparator}{m.Address}").ToArray();
+                static string[] ToMailboxes(MailboxesBuilder builder) => builder.Mailboxes.Select(m => $"{m.Name}{ASCII.UnitSeparator}{m.Address}").ToArray();
 
                 var sendMail = new SendMailMessage
                 {

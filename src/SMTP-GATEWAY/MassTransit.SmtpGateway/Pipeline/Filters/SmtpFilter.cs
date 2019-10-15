@@ -21,21 +21,20 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
 
             OptionsContext optionsContext = context.GetPayload<OptionsContext>();
 
-            using (var smtpClient = new SmtpClient())
-            {
-                var authenticationCompleted = smtpClient
-                    .ConnectAsync(optionsContext.ServerOptions.Host, optionsContext.ServerOptions.Port, optionsContext.ServerOptions.UseSsl)
-                    .ContinueWith(_ => smtpClient.AuthenticateAsync(optionsContext.ServerOptions.Username, optionsContext.ServerOptions.Password))
-                    .Unwrap();
+            using var smtpClient = new SmtpClient();
 
-                SmtpContext smtpContext = new ConsumeSmtpContext(context, smtpClient, authenticationCompleted);
+            var authenticationCompleted = smtpClient
+                .ConnectAsync(optionsContext.ServerOptions.Host, optionsContext.ServerOptions.Port, optionsContext.ServerOptions.UseSsl)
+                .ContinueWith(_ => smtpClient.AuthenticateAsync(optionsContext.ServerOptions.Username, optionsContext.ServerOptions.Password))
+                .Unwrap();
 
-                context.GetOrAddPayload(() => smtpContext);
+            SmtpContext smtpContext = new ConsumeSmtpContext(context, smtpClient, authenticationCompleted);
 
-                await next.Send(context).ConfigureAwait(false);
+            context.GetOrAddPayload(() => smtpContext);
 
-                await smtpClient.DisconnectAsync(true, context.CancellationToken).ConfigureAwait(false);
-            }
+            await next.Send(context).ConfigureAwait(false);
+
+            await smtpClient.DisconnectAsync(true, context.CancellationToken).ConfigureAwait(false);
         }
 
         void IProbeSite.Probe(ProbeContext context) => context.CreateFilterScope(nameof(SmtpFilter<TContext>));
@@ -59,16 +58,18 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
             {
                 await AuthenticationCompleted.ConfigureAwait(false);
 
-                using (var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _context.CancellationToken))
-                    await _smtpClient.SendAsync(message, cancellationTokenSource.Token).ConfigureAwait(false);
+                using var cancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _context.CancellationToken);
+
+                await _smtpClient.SendAsync(message, cancellationTokenSource.Token).ConfigureAwait(false);
             }
 
             public async Task Noop(CancellationToken cancellationToken)
             {
                 await AuthenticationCompleted.ConfigureAwait(false);
 
-                using (CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken))
-                    await _smtpClient.NoOpAsync(cts.Token).ConfigureAwait(false);
+                using CancellationTokenSource cts = CancellationTokenSource.CreateLinkedTokenSource(_context.CancellationToken, cancellationToken);
+
+                await _smtpClient.NoOpAsync(cts.Token).ConfigureAwait(false);
             }
         }
     }

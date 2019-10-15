@@ -30,18 +30,17 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
         {
             _log.Debug(() => "Sending through filter.");
 
-            using (var cts = new CancellationTokenSource())
-            {
-                ConsumeNoopBehaviorContext noopBehaviorContext = new ConsumeNoopBehaviorContext(context, _noopInterval);
+            using var cts = new CancellationTokenSource();
 
-                context.GetOrAddPayload<NoopBehaviorContext>(() => noopBehaviorContext);
+            ConsumeNoopBehaviorContext noopBehaviorContext = new ConsumeNoopBehaviorContext(context, _noopInterval);
 
-                await noopBehaviorContext.ApplyBehavior(cts.Token).ConfigureAwait(false);
+            context.GetOrAddPayload<NoopBehaviorContext>(() => noopBehaviorContext);
 
-                await next.Send(context).ConfigureAwait(false);
+            await noopBehaviorContext.ApplyBehavior(cts.Token).ConfigureAwait(false);
 
-                cts.Cancel();
-            }
+            await next.Send(context).ConfigureAwait(false);
+
+            cts.Cancel();
         }
 
         sealed class ConsumeNoopBehaviorContext : NoopBehaviorContext
@@ -64,12 +63,11 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
 
                 while(!cancellationToken.IsCancellationRequested)
                 {
-                    using (var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _context.CancellationToken))
-                    {
-                        await Task.Delay(_noopInterval, cts.Token).ConfigureAwait(false);
+                    using var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, _context.CancellationToken);
 
-                        await imapContext.Noop(cts.Token).ConfigureAwait(false);
-                    }
+                    await Task.Delay(_noopInterval, cts.Token).ConfigureAwait(false);
+
+                    await imapContext.Noop(cts.Token).ConfigureAwait(false);
                 }
             }
         }
