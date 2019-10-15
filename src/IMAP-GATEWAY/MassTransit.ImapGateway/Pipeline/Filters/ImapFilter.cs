@@ -46,7 +46,7 @@ namespace MassTransit.ImapGateway.Pipeline.Filters
             await imapClient.DisconnectAsync(true, context.CancellationToken).ConfigureAwait(false);
         }
 
-        public sealed class ConsumeImapContext : ImapContext
+        sealed class ConsumeImapContext : ImapContext
         {
             readonly ConsumeContext _context;
 
