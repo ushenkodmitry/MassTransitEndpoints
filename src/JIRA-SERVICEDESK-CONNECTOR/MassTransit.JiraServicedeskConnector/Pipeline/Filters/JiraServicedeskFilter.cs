@@ -6,7 +6,6 @@ using MassTransit.JiraServicedeskConnector.Contexts.Commands;
 using MassTransit.JiraServicedeskConnector.Contexts.Queries;
 using MassTransit.JiraServicedeskConnector.Contexts.Results;
 using MassTransit.JiraServicedeskConnector.Options;
-using MassTransit.JiraServicedeskConnector;
 using MassTransit.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
