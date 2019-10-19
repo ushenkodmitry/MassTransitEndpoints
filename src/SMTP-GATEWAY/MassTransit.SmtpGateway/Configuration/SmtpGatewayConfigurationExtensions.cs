@@ -6,14 +6,14 @@ namespace MassTransit.SmtpGateway.Configuration
 {
     public static partial class SmtpGatewayConfigurationExtensions
     {
-        static void UseSmtp(this IReceiveEndpointConfigurator configurator, Action<ISmtpConfigurator> configureSmtp) 
+        static void UseSmtp(this IBusFactoryConfigurator configurator, Action<ISmtpConfigurator> configureSmtp) 
             => configurator.AddPipeSpecification(new SmtpPipeSpecification(configureSmtp));
 
-        public static void UseSmtpGateway(this IReceiveEndpointConfigurator configureEndpoint, Action<ISmtpConfigurator> configureSmtp)
+        public static void UseSmtpGateway(this IBusFactoryConfigurator configureEndpoint, Action<ISmtpConfigurator> configureSmtp)
         {
             configureEndpoint.UseSmtp(configureSmtp);
 
-            configureEndpoint.Consumer<SendMailConsumer>();
+            //configureEndpoint.Consumer<SendMailConsumer>();
         }
     }
 }

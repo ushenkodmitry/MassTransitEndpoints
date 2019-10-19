@@ -15,21 +15,18 @@ namespace SmtpGateway
         {
             var bus = Bus.Factory.CreateUsingInMemory(inMemory =>
             {
-                inMemory.ReceiveEndpoint(endpoint =>
+                inMemory.UseSmtpGateway(smtp =>
                 {
-                    SmtpGatewayConfigurationExtensions.UseSmtpGateway(endpoint, smtp =>
+                    smtp.UseOptions((ServerOptions options) =>
                     {
-                        smtp.UseOptions((ServerOptions options) =>
-                        {
-                            options.Host = "";
-                            options.Port = 465;
-                            options.Username = "";
-                            options.Password = "";
-                            options.UseSsl = true;
-                        });
-                        smtp.UseOptions((BehaviorOptions options) =>
-                        {
-                        });
+                        options.Host = "";
+                        options.Port = 465;
+                        options.Username = "";
+                        options.Password = "";
+                        options.UseSsl = true;
+                    });
+                    smtp.UseOptions((BehaviorOptions options) =>
+                    {
                     });
                 });
             });

@@ -5,7 +5,7 @@ namespace MassTransit.SmtpGateway.Configuration
 {
     public static class SmtpGatewayIntegrationConfigurationExtensions
     {
-        public static void UseSmtpGateway(this IConsumePipeConfigurator configurator)
+        public static void UseSmtpGateway(this IBusFactoryConfigurator configurator)
         {
             if (configurator == null)
                 throw new ArgumentNullException(nameof(configurator));
