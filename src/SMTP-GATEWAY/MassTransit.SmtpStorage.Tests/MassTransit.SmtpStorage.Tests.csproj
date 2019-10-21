@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MassTransit.SmtpGateway\MassTransit.SmtpGateway.csproj" />
+    <ProjectReference Include="..\MassTransit.SmtpStorage\MassTransit.SmtpStorage.csproj" />
   </ItemGroup>
 
 </Project>

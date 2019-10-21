@@ -15,7 +15,7 @@ using MimeKit;
 using System.Threading;
 using System.Text;
 
-namespace MassTransit.SmtpGateway
+namespace MassTransit.Consumers
 {
     [Category("SmtpGateway")]
     [TestFixture]

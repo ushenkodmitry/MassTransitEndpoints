@@ -1,14 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <RootNamespace>MassTransit</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\Messages\SmtpStorage\CreateSmtpServer.cs" Link="Messages\CreateSmtpServer.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\SmtpServerCreated.cs" Link="Messages\SmtpServerCreated.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Messages\" />
-    <Folder Include="Consumers\" />
-    <Folder Include="Repositories\" />
+    <Folder Include="Objects\Queries\" />
   </ItemGroup>
 
   <ItemGroup>

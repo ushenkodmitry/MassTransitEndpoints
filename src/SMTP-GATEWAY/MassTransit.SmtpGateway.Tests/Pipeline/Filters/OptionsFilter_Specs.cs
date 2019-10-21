@@ -10,7 +10,7 @@ using static Moq.It;
 using static Moq.Times;
 using FluentAssertions;
 
-namespace MassTransit.SmtpGateway.Pipeline.Filters
+namespace MassTransit.Pipeline.Filters
 {
     [Category("SmtpGateway")]
     [TestFixture]

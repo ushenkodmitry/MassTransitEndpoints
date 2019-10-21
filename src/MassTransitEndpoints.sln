@@ -54,9 +54,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.ImapGateway", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.ImapGateway.Integration", "IMAP-GATEWAY\MassTransit.ImapGateway.Integration\MassTransit.ImapGateway.Integration.csproj", "{0C8B75B2-D3B6-4EAA-9D5D-85BF7B6EE8F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.SmtpStorage", "SMTP-GATEWAY\MassTransit.SmtpStorage\MassTransit.SmtpStorage.csproj", "{A26B3B85-E4B9-455F-9A15-3F7FE078FCF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.SmtpStorage", "SMTP-GATEWAY\MassTransit.SmtpStorage\MassTransit.SmtpStorage.csproj", "{A26B3B85-E4B9-455F-9A15-3F7FE078FCF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmtpStorage", "POCs\SmtpStorage\SmtpStorage.csproj", "{B526E616-05E3-41CC-BEBB-FA833634A019}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmtpStorage", "POCs\SmtpStorage\SmtpStorage.csproj", "{B526E616-05E3-41CC-BEBB-FA833634A019}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.SmtpStorage.Tests", "SMTP-GATEWAY\MassTransit.SmtpStorage.Tests\MassTransit.SmtpStorage.Tests.csproj", "{C3ED8648-3030-494F-BF7B-927AA711C8FB}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -121,6 +123,10 @@ Global
 		{B526E616-05E3-41CC-BEBB-FA833634A019}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B526E616-05E3-41CC-BEBB-FA833634A019}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B526E616-05E3-41CC-BEBB-FA833634A019}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3ED8648-3030-494F-BF7B-927AA711C8FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3ED8648-3030-494F-BF7B-927AA711C8FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3ED8648-3030-494F-BF7B-927AA711C8FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3ED8648-3030-494F-BF7B-927AA711C8FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -139,6 +145,7 @@ Global
 		{0C8B75B2-D3B6-4EAA-9D5D-85BF7B6EE8F1} = {F1055E42-6E33-41D6-AEA8-2424295047DA}
 		{A26B3B85-E4B9-455F-9A15-3F7FE078FCF3} = {CEB53367-7980-44E0-8820-9BEE456E6BBF}
 		{B526E616-05E3-41CC-BEBB-FA833634A019} = {2E3ECB19-8B9D-4DDC-B6BD-F254CD72460D}
+		{C3ED8648-3030-494F-BF7B-927AA711C8FB} = {CEB53367-7980-44E0-8820-9BEE456E6BBF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9AD2991F-A3DE-4988-8B42-AF00FA71A833}

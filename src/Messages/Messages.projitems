@@ -17,5 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)RazorRenderer\TemplateRendered.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpGateway\MailSent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpGateway\SendMail.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\CreateSmtpServer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\SmtpServerCreated.cs" />
   </ItemGroup>
 </Project>
