@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <Compile Include="..\..\Messages\SmtpStorage\CreateSmtpServer.cs" Link="Messages\CreateSmtpServer.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\CreateUserCredentials.cs" Link="Messages\CreateUserCredentials.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\SmtpServerCreated.cs" Link="Messages\SmtpServerCreated.cs" />
   </ItemGroup>
 
@@ -18,8 +19,8 @@
   <ItemGroup>
     <PackageReference Include="Marten" Version="3.9.0" />
     <PackageReference Include="Marten.Analyzers" Version="1.5.0" />
-    <PackageReference Include="MassTransit" Version="5.5.5" />
-    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="5.5.5" />
+    <PackageReference Include="MassTransit" Version="5.5.6" />
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="5.5.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.0.0" />
   </ItemGroup>
 

@@ -23,20 +23,20 @@ namespace MassTransit.Consumers
 {
     [Category("Consumer, SmtpStorage")]
     [TestFixture]
-    public sealed class CreateSmtpServerConsumer_Specs
+    public sealed class CreateUserCredentialsConsumer_Specs
     {
         InMemoryTestHarness _harness;
 
-        Mock<ISmtpServersRepository> _smtpServersRepositoryMock;
+        Mock<IUserCredentialsRepository> _userCredentialsRepositoryMock;
 
         Mock<IDocumentSession> _documentSessionMock;
 
-        CreateSmtpServer _createSmtpServer;
+        CreateUserCredentials _createUserCredentials;
 
         [OneTimeSetUp]
         public async Task A_consumer_being_tested()
         {
-            _smtpServersRepositoryMock = new Mock<ISmtpServersRepository>();
+            _userCredentialsRepositoryMock = new Mock<IUserCredentialsRepository>();
 
             _documentSessionMock = new Mock<IDocumentSession>();
 
@@ -55,9 +55,9 @@ namespace MassTransit.Consumers
                 });
             };
 
-            var sut = _harness.Consumer(() => new CreateSmtpServerConsumer(_smtpServersRepositoryMock.Object));
+            var sut = _harness.Consumer(() => new CreateUserCredentialsConsumer(_userCredentialsRepositoryMock.Object));
 
-            _createSmtpServer = TypeCache<CreateSmtpServer>.InitializeFromObject(new
+            _createUserCredentials = TypeCache<CreateUserCredentials>.InitializeFromObject(new
             {
                 Name = Guid.NewGuid().ToString(),
                 Host = "host.com",
@@ -67,45 +67,45 @@ namespace MassTransit.Consumers
 
             await _harness.Start();
 
-            await _harness.InputQueueSendEndpoint.Send(_createSmtpServer);
+            await _harness.InputQueueSendEndpoint.Send(_createUserCredentials);
         }
 
         [SetUp]
-        public void Before_each() => _smtpServersRepositoryMock.Reset();
+        public void Before_each() => _userCredentialsRepositoryMock.Reset();
 
         [Test]
-        public void Should_store_smtp_server_once()
+        public void Should_store_user_credentials_once()
         {
             //
-            CreateSmtpServerCommand createSmtpServerCommand = null;
-            _smtpServersRepositoryMock
-                .Setup(x => x.SendCommand(IsAny<PipeContext>(), IsAny<CreateSmtpServerCommand>(), IsAny<CancellationToken>()))
-                .Callback<PipeContext, CreateSmtpServerCommand, CancellationToken>((context, command, __) =>
+            CreateUserCredentialsCommand createUserCredentialsCommand = null;
+            _userCredentialsRepositoryMock
+                .Setup(x => x.SendCommand(IsAny<PipeContext>(), IsAny<CreateUserCredentialsCommand>(), IsAny<CancellationToken>()))
+                .Callback<PipeContext, CreateUserCredentialsCommand, CancellationToken>((context, command, __) =>
                 {
-                    createSmtpServerCommand = command;
+                    createUserCredentialsCommand = command;
 
-                    var identity = context.GetOrAddPayload(() => new Identity<SmtpServer, int>(100));
+                    var identity = context.GetOrAddPayload(() => new Identity<UserCredentials, int>(1000));
                 })
                 .Returns(Task.CompletedTask);
 
             //
-            var consumed = _harness.Consumed.Select<CreateSmtpServer>().Single();
+            var consumed = _harness.Consumed.Select<CreateUserCredentials>().Single();
 
             //
-            createSmtpServerCommand.Should().BeEquivalentTo(_createSmtpServer);
+            createUserCredentialsCommand.Should().BeEquivalentTo(_createUserCredentials);
         }
 
         [Test]
-        public void Should_publish_smtp_server_created()
+        public void Should_publish_user_credentials_created()
         {
             //
             const int id = 1000;
 
-            _smtpServersRepositoryMock
-                .Setup(x => x.SendCommand(IsAny<PipeContext>(), IsAny<CreateSmtpServerCommand>(), IsAny<CancellationToken>()))
-                .Callback<PipeContext, CreateSmtpServerCommand, CancellationToken>((context, __, ___) =>
+            _userCredentialsRepositoryMock
+                .Setup(x => x.SendCommand(IsAny<PipeContext>(), IsAny<CreateUserCredentialsCommand>(), IsAny<CancellationToken>()))
+                .Callback<PipeContext, CreateUserCredentialsCommand, CancellationToken>((context, __, ___) =>
                 {
-                    var identity = context.AddOrUpdatePayload(() => new Identity<SmtpServer, int>(id), (identity) => new Identity<SmtpServer, int>(id));
+                    var identity = context.AddOrUpdatePayload(() => new Identity<UserCredentials, int>(id), (identity) => new Identity<UserCredentials, int>(id));
                 })
                 .Returns(Task.CompletedTask);
 

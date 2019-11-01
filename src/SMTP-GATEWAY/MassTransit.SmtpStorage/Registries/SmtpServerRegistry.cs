@@ -11,7 +11,8 @@ namespace MassTransit.Registries
 
             mapping
                 .Identity(e => e.Id)
-                .Duplicate(e => e.Name);
+                .Duplicate(e => e.Name)
+                .DocumentAlias("smtpservers");
         }
     }
 }
