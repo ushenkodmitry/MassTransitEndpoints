@@ -26,9 +26,11 @@ namespace MassTransit.Repositories
 
             await session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            var identity = new Identity<UserCredentials, int>(userCredentials.Id);
+            var _ = new Identity<UserCredentials, int>(userCredentials.Id);
 
-            identity = context.AddOrUpdatePayload(() => identity, (_) => identity);
+            _ = context.AddOrUpdatePayload(
+                () => new Identity<UserCredentials, int>(userCredentials.Id),
+                (_) => new Identity<UserCredentials, int>(userCredentials.Id));
         }
     }
 }

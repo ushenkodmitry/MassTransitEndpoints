@@ -30,7 +30,7 @@ namespace MassTransit.Repositories
 
             _ = context.AddOrUpdatePayload(
                 () => new Identity<SmtpServer, int>(smtpServer.Id),
-                (identity) => new Identity<SmtpServer, int>(smtpServer.Id));
+                (_) => new Identity<SmtpServer, int>(smtpServer.Id));
         }
     }
 }

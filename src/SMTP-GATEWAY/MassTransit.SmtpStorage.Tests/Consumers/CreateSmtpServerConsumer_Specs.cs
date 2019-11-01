@@ -33,10 +33,23 @@ namespace MassTransit.Consumers
 
         CreateSmtpServer _createSmtpServer;
 
-        [OneTimeSetUp]
+        CreateSmtpServerCommand _createSmtpServerCommand;
+
+        const int _id = 1000;
+
+        [SetUp]
         public async Task A_consumer_being_tested()
         {
             _smtpServersRepositoryMock = new Mock<ISmtpServersRepository>();
+            _smtpServersRepositoryMock
+                .Setup(x => x.SendCommand(IsAny<PipeContext>(), IsAny<CreateSmtpServerCommand>(), IsAny<CancellationToken>()))
+                .Callback<PipeContext, CreateSmtpServerCommand, CancellationToken>((context, command, __) =>
+                {
+                    _createSmtpServerCommand = command;
+
+                    var identity = context.GetOrAddPayload(() => new Identity<SmtpServer, int>(_id));
+                })
+                .Returns(Task.CompletedTask);
 
             _documentSessionMock = new Mock<IDocumentSession>();
 
@@ -44,7 +57,7 @@ namespace MassTransit.Consumers
                 x.LightweightSession(IsAny<string>(), IsAny<IsolationLevel>()) == new ValueTask<IDocumentSession>(_documentSessionMock.Object) &&
                 x.OpenSession(IsAny<string>(), IsAny<IsolationLevel>()) == new ValueTask<IDocumentSession>(_documentSessionMock.Object));
 
-            _harness = new InMemoryTestHarness { TestTimeout = TimeSpan.FromSeconds(5) };
+            _harness = new InMemoryTestHarness { TestTimeout = TimeSpan.FromSeconds(2) };
             _harness.OnConfigureReceiveEndpoint += configurator =>
             {
                 configurator.UseInlineFilter((context, next) =>
@@ -70,50 +83,32 @@ namespace MassTransit.Consumers
             await _harness.InputQueueSendEndpoint.Send(_createSmtpServer);
         }
 
-        [SetUp]
-        public void Before_each() => _smtpServersRepositoryMock.Reset();
+        [TearDown]
+        public async Task Before_each()
+        {
+            _smtpServersRepositoryMock.Reset();
+
+            await _harness.Stop();
+        }
 
         [Test]
         public void Should_store_smtp_server_once()
         {
             //
-            CreateSmtpServerCommand createSmtpServerCommand = null;
-            _smtpServersRepositoryMock
-                .Setup(x => x.SendCommand(IsAny<PipeContext>(), IsAny<CreateSmtpServerCommand>(), IsAny<CancellationToken>()))
-                .Callback<PipeContext, CreateSmtpServerCommand, CancellationToken>((context, command, __) =>
-                {
-                    createSmtpServerCommand = command;
-
-                    var identity = context.GetOrAddPayload(() => new Identity<SmtpServer, int>(100));
-                })
-                .Returns(Task.CompletedTask);
-
-            //
             var consumed = _harness.Consumed.Select<CreateSmtpServer>().Single();
 
             //
-            createSmtpServerCommand.Should().BeEquivalentTo(_createSmtpServer);
+            _createSmtpServerCommand.Should().BeEquivalentTo(_createSmtpServer);
         }
 
         [Test]
         public void Should_publish_smtp_server_created()
         {
             //
-            const int id = 1000;
-
-            _smtpServersRepositoryMock
-                .Setup(x => x.SendCommand(IsAny<PipeContext>(), IsAny<CreateSmtpServerCommand>(), IsAny<CancellationToken>()))
-                .Callback<PipeContext, CreateSmtpServerCommand, CancellationToken>((context, __, ___) =>
-                {
-                    var identity = context.AddOrUpdatePayload(() => new Identity<SmtpServer, int>(id), (identity) => new Identity<SmtpServer, int>(id));
-                })
-                .Returns(Task.CompletedTask);
-
-            //
             var published = _harness.Published.Select<SmtpServerCreated>().Single();
 
             //
-            published.Context.Message.Id.Should().Be(id);
+            published.Context.Message.Id.Should().Be(_id);
         }
     }
 }

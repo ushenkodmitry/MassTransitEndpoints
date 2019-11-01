@@ -23,9 +23,9 @@ namespace MassTransit.Consumers
 
             var identity = context.GetPayload<Identity<UserCredentials, int>>();
 
-            var smtpServerCreated = TypeCache<SmtpServerCreated>.InitializeFromObject(identity);
+            var userCredentialsCreated = TypeCache<UserCredentialsCreated>.InitializeFromObject(identity);
 
-            await context.Publish(smtpServerCreated).ConfigureAwait(false);
+            await context.Publish(userCredentialsCreated).ConfigureAwait(false);
         }
     }
 }
