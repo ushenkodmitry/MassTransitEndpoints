@@ -12,7 +12,7 @@ namespace SmtpStorage
 {
     class Program
     {
-        static Task Main(string[] args)
+        static Task Main()
         {
             return new HostBuilder()
                 .ConfigureAppConfiguration((context, builder) => builder.AddEnvironmentVariables())

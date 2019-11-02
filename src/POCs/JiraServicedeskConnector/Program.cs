@@ -9,7 +9,7 @@ namespace JiraServicedeskConnector
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static async Task Main()
         {
             var bus = Bus.Factory.CreateUsingInMemory(inMemory =>
             {

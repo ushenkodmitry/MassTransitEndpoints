@@ -93,7 +93,7 @@ namespace MassTransit.Consumers
         public void Should_store_user_credentials_once()
         {
             //
-            var consumed = _harness.Consumed.Select<CreateUserCredentials>().Single();
+            _ = _harness.Consumed.Select<CreateUserCredentials>().Single();
 
             //
             _createUserCredentialsCommand.Should().BeEquivalentTo(_createUserCredentials);

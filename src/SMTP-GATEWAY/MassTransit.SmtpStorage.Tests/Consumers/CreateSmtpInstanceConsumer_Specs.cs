@@ -95,7 +95,7 @@ namespace MassTransit.Consumers
         public void Should_store_smtp_instance()
         {
             //
-            var consumed = _harness.Consumed.Select<CreateSmtpInstance>().Single();
+            _ = _harness.Consumed.Select<CreateSmtpInstance>().Single();
 
             //
             _createSmtpInstanceCommand.Should().BeEquivalentTo(_createSmtpInstance);

@@ -17,12 +17,12 @@ namespace MassTransit.Pipeline.Filters
 
         void IProbeSite.Probe(ProbeContext context)
         {
-            var scope = context.CreateScope("documentStore");
+            _ = context.CreateScope("documentStore");
         }
 
         Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
-            DocumentStoreContext documentStoreContext = new ConsumeDocumentSessionContext(context, _documentStore);
+            DocumentStoreContext documentStoreContext = new ConsumeDocumentSessionContext(_documentStore);
 
             _ = context.GetOrAddPayload(() => documentStoreContext);
 
@@ -33,7 +33,7 @@ namespace MassTransit.Pipeline.Filters
         {
             readonly IDocumentStore _documentStore;
 
-            public ConsumeDocumentSessionContext(PipeContext context, IDocumentStore documentStore)
+            public ConsumeDocumentSessionContext(IDocumentStore documentStore)
                 => _documentStore = documentStore;
 
             ValueTask<IDocumentSession> DocumentStoreContext.OpenSession(string tenantId, IsolationLevel isolationLevel)

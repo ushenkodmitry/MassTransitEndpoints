@@ -95,7 +95,7 @@ namespace MassTransit.Consumers
         public void Should_store_smtp_connection_once()
         {
             //
-            var consumed = _harness.Consumed.Select<CreateSmtpConnection>().Single();
+            _ = _harness.Consumed.Select<CreateSmtpConnection>().Single();
 
             //
             _createSmtpServerCommand.Should().BeEquivalentTo(_createSmtpConnection);
