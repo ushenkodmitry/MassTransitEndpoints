@@ -12,20 +12,21 @@ namespace MassTransit.Pipeline.Filters
     {
         readonly IDocumentStore _documentStore;
 
-        public DocumentStoreFilter(Action<StoreOptions> buildOptions) => _documentStore = DocumentStore.For(buildOptions);
+        public DocumentStoreFilter(Action<StoreOptions> buildOptions, IDocumentStoreFactory documentStoreFactory)
+            => _documentStore = documentStoreFactory.Create(buildOptions);
 
         void IProbeSite.Probe(ProbeContext context)
         {
             var scope = context.CreateScope("documentStore");
         }
 
-        async Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
+        Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
             DocumentStoreContext documentStoreContext = new ConsumeDocumentSessionContext(context, _documentStore);
 
-            context.GetOrAddPayload(() => documentStoreContext);
+            _ = context.GetOrAddPayload(() => documentStoreContext);
 
-            await next.Send(context).ConfigureAwait(false);
+            return next.Send(context);
         }
 
         sealed class ConsumeDocumentSessionContext : DocumentStoreContext

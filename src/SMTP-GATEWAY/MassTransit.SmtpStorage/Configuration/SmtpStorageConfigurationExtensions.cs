@@ -1,5 +1,4 @@
 ﻿using System;
-using GreenPipes;
 using Marten;
 using MassTransit.Configuration.PipeConfigurators;
 using MassTransit.Consumers;
@@ -17,15 +16,18 @@ namespace MassTransit.Configuration
             configureSmtpStorage?.Invoke(smtpStorageConfigurator);
 
             busFactoryConfigurator
-                .AddPipeSpecification(new DocumentStorePipeSpecification<ConsumeContext>(options =>
-                {
-                    options.Connection(smtpStorageConfigurator.ConnectionStringsOptions.SmtpStorage);
-                    options.PLV8Enabled = false;
-                    options.AutoCreateSchemaObjects = AutoCreate.CreateOrUpdate;
+                .AddPipeSpecification(
+                    new DocumentStorePipeSpecification<ConsumeContext>(
+                        options =>
+                        {
+                            options.Connection(smtpStorageConfigurator.ConnectionStringsOptions.SmtpStorage);
+                            options.PLV8Enabled = false;
+                            options.AutoCreateSchemaObjects = AutoCreate.CreateOrUpdate;
 
-                    options.Schema.Include<SmtpConnectionRegistry>();
-                    options.Schema.Include<UserCredentialsRegistry>();
-                }));
+                            options.Schema.Include<SmtpConnectionRegistry>();
+                            options.Schema.Include<UserCredentialsRegistry>();
+                        },
+                        new DocumentStoreFactory()));
 
             busFactoryConfigurator.ReceiveEndpoint("SmtpStorage", endpoint =>
             {

@@ -11,8 +11,8 @@ namespace MassTransit.Configuration.PipeConfigurators
     {
         readonly DocumentStoreFilter<TContext> _filter;
 
-        public DocumentStorePipeSpecification(Action<StoreOptions> buildOptions)
-            => _filter = new DocumentStoreFilter<TContext>(buildOptions);
+        public DocumentStorePipeSpecification(Action<StoreOptions> buildOptions, IDocumentStoreFactory documentStoreFactory)
+            => _filter = new DocumentStoreFilter<TContext>(buildOptions, documentStoreFactory);
 
         void IPipeSpecification<TContext>.Apply(IPipeBuilder<TContext> builder) => builder.AddFilter(_filter);
 
