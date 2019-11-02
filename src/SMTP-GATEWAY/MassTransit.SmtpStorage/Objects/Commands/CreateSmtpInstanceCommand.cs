@@ -3,8 +3,13 @@
     /// <summary>
     /// Repository command to create instance by connect smtpserver and usercredentials.
     /// </summary>
-    public sealed class CreateSmtpInstanceComand
+    public sealed class CreateSmtpInstanceCommand
     {
+        /// <summary>
+        /// Gets or sets instance friendly name.
+        /// </summary>
+        public string Name { get; set; }
+
         /// <summary>
         /// Gets or sets id of smtp connection to use.
         /// </summary>

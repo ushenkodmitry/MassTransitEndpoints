@@ -23,31 +23,31 @@ namespace MassTransit.Consumers
 {
     [Category("SmtpStorage, Consumers")]
     [TestFixture]
-    public sealed class CreateUserCredentialsConsumer_Specs
+    public sealed class CreateSmtpConnectionConsumer_Specs
     {
         InMemoryTestHarness _harness;
 
-        Mock<IUserCredentialsRepository> _userCredentialsRepositoryMock;
+        Mock<ISmtpConnectionsRepository> _smtpServersRepositoryMock;
 
         Mock<IDocumentSession> _documentSessionMock;
 
-        CreateUserCredentials _createUserCredentials;
+        CreateSmtpConnection _createSmtpConnection;
 
-        CreateUserCredentialsCommand _createUserCredentialsCommand;
+        CreateSmtpConnectionCommand _createSmtpServerCommand;
 
         const int _id = 1000;
 
         [SetUp]
         public async Task A_consumer_being_tested()
         {
-            _userCredentialsRepositoryMock = new Mock<IUserCredentialsRepository>();
-            _userCredentialsRepositoryMock
-                .Setup(x => x.SendCommand(IsAny<PipeContext>(), IsAny<CreateUserCredentialsCommand>(), IsAny<CancellationToken>()))
-                .Callback<PipeContext, CreateUserCredentialsCommand, CancellationToken>((context, command, __) =>
+            _smtpServersRepositoryMock = new Mock<ISmtpConnectionsRepository>();
+            _smtpServersRepositoryMock
+                .Setup(x => x.SendCommand(IsAny<PipeContext>(), IsAny<CreateSmtpConnectionCommand>(), IsAny<CancellationToken>()))
+                .Callback<PipeContext, CreateSmtpConnectionCommand, CancellationToken>((context, command, __) =>
                 {
-                    _createUserCredentialsCommand = command;
+                    _createSmtpServerCommand = command;
 
-                    _ = context.GetOrAddPayload(() => new Identity<UserCredentials, int>(_id));
+                    var identity = context.GetOrAddPayload(() => new Identity<SmtpConnection, int>(_id));
                 })
                 .Returns(Task.CompletedTask);
 
@@ -68,42 +68,44 @@ namespace MassTransit.Consumers
                 });
             };
 
-            var sut = _harness.Consumer(() => new CreateUserCredentialsConsumer(_userCredentialsRepositoryMock.Object));
+            var sut = _harness.Consumer(() => new CreateSmtpConnectionConsumer(_smtpServersRepositoryMock.Object));
 
-            _createUserCredentials = TypeCache<CreateUserCredentials>.InitializeFromObject(new
+            _createSmtpConnection = TypeCache<CreateSmtpConnection>.InitializeFromObject(new
             {
-                UserName = Guid.NewGuid().ToString(),
-                Password = Guid.NewGuid().ToString()
+                Name = Guid.NewGuid().ToString(),
+                Host = "host.com",
+                Port = 1000,
+                UseSsl = true
             });
 
             await _harness.Start();
 
-            await _harness.InputQueueSendEndpoint.Send(_createUserCredentials);
+            await _harness.InputQueueSendEndpoint.Send(_createSmtpConnection);
         }
 
         [TearDown]
         public async Task Before_each()
         {
-            _userCredentialsRepositoryMock.Reset();
+            _smtpServersRepositoryMock.Reset();
 
             await _harness.Stop();
         }
 
         [Test]
-        public void Should_store_user_credentials_once()
+        public void Should_store_smtp_connection_once()
         {
             //
-            var consumed = _harness.Consumed.Select<CreateUserCredentials>().Single();
+            var consumed = _harness.Consumed.Select<CreateSmtpConnection>().Single();
 
             //
-            _createUserCredentialsCommand.Should().BeEquivalentTo(_createUserCredentials);
+            _createSmtpServerCommand.Should().BeEquivalentTo(_createSmtpConnection);
         }
 
         [Test]
-        public void Should_publish_user_credentials_created()
+        public void Should_publish_smtp_connection_created()
         {
             //
-            var published = _harness.Published.Select<UserCredentialsCreated>().Single();
+            var published = _harness.Published.Select<SmtpConnectionCreated>().Single();
 
             //
             published.Context.Message.Id.Should().Be(_id);

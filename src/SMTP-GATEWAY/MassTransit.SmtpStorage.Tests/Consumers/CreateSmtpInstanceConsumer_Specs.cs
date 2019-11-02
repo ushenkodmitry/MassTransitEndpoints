@@ -21,33 +21,33 @@ using static Moq.Mock;
 
 namespace MassTransit.Consumers
 {
-    [Category("Consumer, SmtpStorage")]
+    [Category("SmtpStorage, Consumers")]
     [TestFixture]
-    public sealed class CreateSmtpConnectionConsumer_Specs
+    public sealed class CreateSmtpInstanceConsumer_Specs
     {
         InMemoryTestHarness _harness;
 
-        Mock<ISmtpConnectionsRepository> _smtpServersRepositoryMock;
+        Mock<ISmtpInstancesRepository> _smtpInstancesRepositoryMock;
 
         Mock<IDocumentSession> _documentSessionMock;
 
-        CreateSmtpConnection _createSmtpConnection;
+        CreateSmtpInstance _createSmtpInstance;
 
-        CreateSmtpConnectionCommand _createSmtpServerCommand;
+        CreateSmtpInstanceCommand _createSmtpInstanceCommand;
 
         const int _id = 1000;
 
         [SetUp]
         public async Task A_consumer_being_tested()
         {
-            _smtpServersRepositoryMock = new Mock<ISmtpConnectionsRepository>();
-            _smtpServersRepositoryMock
-                .Setup(x => x.SendCommand(IsAny<PipeContext>(), IsAny<CreateSmtpConnectionCommand>(), IsAny<CancellationToken>()))
-                .Callback<PipeContext, CreateSmtpConnectionCommand, CancellationToken>((context, command, __) =>
+            _smtpInstancesRepositoryMock = new Mock<ISmtpInstancesRepository>();
+            _smtpInstancesRepositoryMock
+                .Setup(x => x.SendCommand(IsAny<PipeContext>(), IsAny<CreateSmtpInstanceCommand>(), IsAny<CancellationToken>()))
+                .Callback<PipeContext, CreateSmtpInstanceCommand, CancellationToken>((context, command, __) =>
                 {
-                    _createSmtpServerCommand = command;
+                    _createSmtpInstanceCommand = command;
 
-                    var identity = context.GetOrAddPayload(() => new Identity<SmtpConnection, int>(_id));
+                    var identity = context.GetOrAddPayload(() => new Identity<SmtpInstance, int>(_id));
                 })
                 .Returns(Task.CompletedTask);
 
@@ -68,44 +68,44 @@ namespace MassTransit.Consumers
                 });
             };
 
-            var sut = _harness.Consumer(() => new CreateSmtpConnectionConsumer(_smtpServersRepositoryMock.Object));
+            var sut = _harness.Consumer(() => new CreateSmtpInstanceConsumer(_smtpInstancesRepositoryMock.Object));
 
-            _createSmtpConnection = TypeCache<CreateSmtpConnection>.InitializeFromObject(new
+            _createSmtpInstance = TypeCache<CreateSmtpInstance>.InitializeFromObject(new
             {
                 Name = Guid.NewGuid().ToString(),
-                Host = "host.com",
-                Port = 1000,
-                UseSsl = true
+                SmtpConnectionId = 1000,
+                UserCredentialsId = 100,
+                InstancesCount = 2
             });
 
             await _harness.Start();
 
-            await _harness.InputQueueSendEndpoint.Send(_createSmtpConnection);
+            await _harness.InputQueueSendEndpoint.Send(_createSmtpInstance);
         }
 
         [TearDown]
         public async Task Before_each()
         {
-            _smtpServersRepositoryMock.Reset();
+            _smtpInstancesRepositoryMock.Reset();
 
             await _harness.Stop();
         }
 
         [Test]
-        public void Should_store_smtp_connection_once()
+        public void Should_store_smtp_instance()
         {
             //
-            var consumed = _harness.Consumed.Select<CreateSmtpConnection>().Single();
+            var consumed = _harness.Consumed.Select<CreateSmtpInstance>().Single();
 
             //
-            _createSmtpServerCommand.Should().BeEquivalentTo(_createSmtpConnection);
+            _createSmtpInstanceCommand.Should().BeEquivalentTo(_createSmtpInstance);
         }
 
         [Test]
-        public void Should_publish_smtp_connection_created()
+        public void Should_publish_smtp_instance_created()
         {
             //
-            var published = _harness.Published.Select<SmtpConnectionCreated>().Single();
+            var published = _harness.Published.Select<SmtpInstanceCreated>().Single();
 
             //
             published.Context.Message.Id.Should().Be(_id);

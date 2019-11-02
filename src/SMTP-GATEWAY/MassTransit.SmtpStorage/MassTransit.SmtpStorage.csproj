@@ -7,8 +7,10 @@
 
   <ItemGroup>
     <Compile Include="..\..\Messages\SmtpStorage\CreateSmtpConnection.cs" Link="Messages\CreateSmtpConnection.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\CreateSmtpInstance.cs" Link="Messages\CreateSmtpInstance.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\CreateUserCredentials.cs" Link="Messages\CreateUserCredentials.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\SmtpConnectionCreated.cs" Link="Messages\SmtpConnectionCreated.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\SmtpInstanceCreated.cs" Link="Messages\SmtpInstanceCreated.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\UserCredentialsCreated.cs" Link="Messages\UserCredentialsCreated.cs" />
   </ItemGroup>
 

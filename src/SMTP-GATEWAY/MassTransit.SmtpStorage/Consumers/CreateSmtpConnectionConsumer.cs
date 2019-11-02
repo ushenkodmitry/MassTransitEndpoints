@@ -17,15 +17,15 @@ namespace MassTransit.Consumers
 
         public async Task Consume(ConsumeContext<CreateSmtpConnection> context)
         {
-            var createSmtpServerCommand = TypeCache<CreateSmtpConnectionCommand>.InitializeFromObject(context.Message);
+            var createSmtpConnectionCommand = TypeCache<CreateSmtpConnectionCommand>.InitializeFromObject(context.Message);
 
-            await _repository.SendCommand(context, createSmtpServerCommand, context.CancellationToken).ConfigureAwait(false);
+            await _repository.SendCommand(context, createSmtpConnectionCommand, context.CancellationToken).ConfigureAwait(false);
 
             var identity = context.GetPayload<Identity<SmtpConnection, int>>();
 
-            var smtpServerCreated = TypeCache<SmtpConnectionCreated>.InitializeFromObject(identity);
+            var smtpConnectionCreated = TypeCache<SmtpConnectionCreated>.InitializeFromObject(identity);
 
-            await context.Publish(smtpServerCreated).ConfigureAwait(false);
+            await context.Publish(smtpConnectionCreated).ConfigureAwait(false);
         }
     }
 }
