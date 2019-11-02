@@ -1,25 +1,25 @@
 ﻿using System;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentAssertions;
 using GreenPipes;
+using Marten;
 using MassTransit.Contexts;
 using MassTransit.Objects.Commands;
+using MassTransit.Objects.Models;
+using MassTransit.Payloads;
 using Moq;
 using NUnit.Framework;
-using static Moq.Mock;
 using static Moq.It;
-using Marten;
-using System.Data;
-using MassTransit.Objects.Models;
+using static Moq.Mock;
 using static Moq.Times;
-using FluentAssertions;
-using MassTransit.Payloads;
 
 namespace MassTransit.Repositories
 {
     [Category("SmtpStorage, Repositories")]
     [TestFixture]
-    public class SmtpServersRepository_Specs
+    public class SmtpConnectionsRepository_Specs
     {
         SmtpConnectionsRepository _sut;
 
