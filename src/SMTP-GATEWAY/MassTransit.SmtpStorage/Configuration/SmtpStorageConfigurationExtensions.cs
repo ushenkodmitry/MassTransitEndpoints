@@ -23,13 +23,13 @@ namespace MassTransit.Configuration
                     options.PLV8Enabled = false;
                     options.AutoCreateSchemaObjects = AutoCreate.CreateOrUpdate;
 
-                    options.Schema.Include<SmtpServerRegistry>();
+                    options.Schema.Include<SmtpConnectionRegistry>();
                     options.Schema.Include<UserCredentialsRegistry>();
                 }));
 
             busFactoryConfigurator.ReceiveEndpoint("SmtpStorage", endpoint =>
             {
-                endpoint.Consumer(() => new CreateSmtpServerConsumer(new SmtpServersRepository()));
+                endpoint.Consumer(() => new CreateSmtpConnectionConsumer(new SmtpConnectionsRepository()));
             });
         }
     }

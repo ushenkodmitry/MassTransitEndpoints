@@ -21,7 +21,7 @@ namespace MassTransit.Repositories
     [TestFixture]
     public class SmtpServersRepository_Specs
     {
-        SmtpServersRepository _sut;
+        SmtpConnectionsRepository _sut;
 
         Mock<PipeContext> _contextMock;
 
@@ -40,7 +40,7 @@ namespace MassTransit.Repositories
                 .Setup(x => x.TryGetPayload(out documentStoreContext))
                 .Returns(true);
 
-            _sut = new SmtpServersRepository();
+            _sut = new SmtpConnectionsRepository();
         }
 
         [SetUp]
@@ -52,7 +52,7 @@ namespace MassTransit.Repositories
             //
             const int id = 100;
 
-            var createSmtpServerCommand = new CreateSmtpServerCommand
+            var createSmtpServerCommand = new CreateSmtpConnectionCommand
             {
                 Host = Guid.NewGuid().ToString(),
                 Name = Guid.NewGuid().ToString(),
@@ -60,10 +60,10 @@ namespace MassTransit.Repositories
                 UseSsl = true
             };
 
-            SmtpServer smtpServer = null;
+            SmtpConnection smtpServer = null;
             _documentSessionMock
-                .Setup(x => x.Insert(IsAny<SmtpServer>()))
-                .Callback<SmtpServer[]>(servers =>
+                .Setup(x => x.Insert(IsAny<SmtpConnection>()))
+                .Callback<SmtpConnection[]>(servers =>
                 {
                     smtpServer = servers[0];
                     smtpServer.Id = id;
@@ -84,21 +84,21 @@ namespace MassTransit.Repositories
             //
             const int id = 100;
 
-            PayloadFactory<Identity<SmtpServer, int>> payloadFactory = null;
+            PayloadFactory<Identity<SmtpConnection, int>> payloadFactory = null;
             _contextMock
-                .Setup(x => x.AddOrUpdatePayload(IsAny<PayloadFactory<Identity<SmtpServer, int>>>(), IsAny<UpdatePayloadFactory<Identity<SmtpServer, int>>>()))
-                .Callback<PayloadFactory<Identity<SmtpServer, int>>, UpdatePayloadFactory<Identity<SmtpServer, int>>>((factory, _) => payloadFactory = factory);
+                .Setup(x => x.AddOrUpdatePayload(IsAny<PayloadFactory<Identity<SmtpConnection, int>>>(), IsAny<UpdatePayloadFactory<Identity<SmtpConnection, int>>>()))
+                .Callback<PayloadFactory<Identity<SmtpConnection, int>>, UpdatePayloadFactory<Identity<SmtpConnection, int>>>((factory, _) => payloadFactory = factory);
 
             _documentSessionMock
-                .Setup(x => x.Insert(IsAny<SmtpServer>()))
-                .Callback<SmtpServer[]>(servers =>
+                .Setup(x => x.Insert(IsAny<SmtpConnection>()))
+                .Callback<SmtpConnection[]>(servers =>
                 {
                     var smtpServer = servers[0];
                     smtpServer.Id = id;
                 });
 
             //
-            await _sut.SendCommand(_contextMock.Object, new CreateSmtpServerCommand(), CancellationToken.None);
+            await _sut.SendCommand(_contextMock.Object, new CreateSmtpConnectionCommand(), CancellationToken.None);
 
             //
             var payload = payloadFactory();

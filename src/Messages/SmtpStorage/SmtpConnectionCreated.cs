@@ -3,10 +3,10 @@
     /// <summary>
     /// Event about successful smtp server creation.
     /// </summary>
-    public interface SmtpServerCreated
+    public interface SmtpConnectionCreated
     {
         /// <summary>
-        /// Gets an identity of the created smtp server.
+        /// Gets an identity of the created smtp connection.
         /// </summary>
         int Id { get; }
     }

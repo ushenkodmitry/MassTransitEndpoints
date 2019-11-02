@@ -3,16 +3,16 @@ using MassTransit.Objects.Models;
 
 namespace MassTransit.Registries
 {
-    sealed class SmtpServerRegistry : MartenRegistry
+    sealed class SmtpConnectionRegistry : MartenRegistry
     {
-        public SmtpServerRegistry()
+        public SmtpConnectionRegistry()
         {
-            var mapping = For<SmtpServer>();
+            var mapping = For<SmtpConnection>();
 
             mapping
                 .Identity(e => e.Id)
                 .Duplicate(e => e.Name)
-                .DocumentAlias("smtpservers");
+                .DocumentAlias("smtpconnections");
         }
     }
 }

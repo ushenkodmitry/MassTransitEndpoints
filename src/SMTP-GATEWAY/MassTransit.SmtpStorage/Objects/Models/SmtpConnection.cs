@@ -1,6 +1,6 @@
 ﻿namespace MassTransit.Objects.Models
 {
-    public sealed class SmtpServer
+    public sealed class SmtpConnection
     {
         public int Id { get; set; }
 

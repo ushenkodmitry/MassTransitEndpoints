@@ -1,9 +1,9 @@
 ﻿namespace MassTransit.Messages
 {
     /// <summary>
-    /// A command to create smtp definition.
+    /// A command to create smtp connection.
     /// </summary>
-    public interface CreateSmtpServer
+    public interface CreateSmtpConnection
     {
         /// <summary>
         /// Gets a server's friendly name.

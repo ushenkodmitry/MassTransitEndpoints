@@ -8,13 +8,13 @@ using MassTransit.Payloads;
 
 namespace MassTransit.Repositories
 {
-    public sealed class SmtpServersRepository : ISmtpServersRepository
+    public sealed class SmtpConnectionsRepository : ISmtpConnectionsRepository
     {
-        public async Task SendCommand(PipeContext context, CreateSmtpServerCommand command, CancellationToken cancellationToken = default)
+        public async Task SendCommand(PipeContext context, CreateSmtpConnectionCommand command, CancellationToken cancellationToken = default)
         {
             var documentStoreContext = context.GetPayload<DocumentStoreContext>();
 
-            var smtpServer = new SmtpServer
+            var smtpServer = new SmtpConnection
             {
                 Host = command.Host,
                 Name = command.Name,
@@ -29,8 +29,8 @@ namespace MassTransit.Repositories
             await session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
             _ = context.AddOrUpdatePayload(
-                () => new Identity<SmtpServer, int>(smtpServer.Id),
-                (_) => new Identity<SmtpServer, int>(smtpServer.Id));
+                () => new Identity<SmtpConnection, int>(smtpServer.Id),
+                (_) => new Identity<SmtpConnection, int>(smtpServer.Id));
         }
     }
 }

@@ -1,6 +1,9 @@
 ﻿namespace MassTransit.Objects.Commands
 {
-    public sealed class CreateSmtpServerCommand
+    /// <summary>
+    /// Repository command to create smtp connection.
+    /// </summary>
+    public sealed class CreateSmtpConnectionCommand
     {
         /// <summary>
         /// Gets or sets a server's friendly name.

@@ -17,9 +17,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)RazorRenderer\TemplateRendered.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpGateway\MailSent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpGateway\SendMail.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\CreateSmtpServer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\CreateSmtpConnection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\CreateUserCredentials.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\SmtpServerCreated.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\SmtpConnectionCreated.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\UserCredentialsCreated.cs" />
   </ItemGroup>
 </Project>

@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="..\..\Messages\SmtpStorage\CreateSmtpServer.cs" Link="Messages\CreateSmtpServer.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\CreateSmtpConnection.cs" Link="Messages\CreateSmtpConnection.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\CreateUserCredentials.cs" Link="Messages\CreateUserCredentials.cs" />
-    <Compile Include="..\..\Messages\SmtpStorage\SmtpServerCreated.cs" Link="Messages\SmtpServerCreated.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\SmtpConnectionCreated.cs" Link="Messages\SmtpConnectionCreated.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\UserCredentialsCreated.cs" Link="Messages\UserCredentialsCreated.cs" />
   </ItemGroup>
 
