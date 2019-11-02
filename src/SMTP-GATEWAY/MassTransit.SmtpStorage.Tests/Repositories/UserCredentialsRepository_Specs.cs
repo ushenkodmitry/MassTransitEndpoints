@@ -71,8 +71,6 @@ namespace MassTransit.Repositories
             await _sut.SendCommand(_contextMock.Object, createUserCredentialsCommand, CancellationToken.None);
 
             //
-            _documentSessionMock
-                .Verify(x => x.SaveChangesAsync(IsAny<CancellationToken>()), Once);
             userCredentials.Should().BeEquivalentTo(createUserCredentialsCommand, opts => opts.ExcludingMissingMembers());
         }
 
