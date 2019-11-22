@@ -25,6 +25,7 @@ namespace MassTransit.Configuration
                             options.AutoCreateSchemaObjects = AutoCreate.CreateOrUpdate;
 
                             options.Schema.Include<SmtpConnectionRegistry>();
+                            options.Schema.Include<SmtpInstanceRegistry>();
                             options.Schema.Include<UserCredentialsRegistry>();
                         },
                         new DocumentStoreFactory()));
