@@ -1,4 +1,4 @@
-﻿namespace RabbitMqOptions
+﻿namespace Options.MassTransit
 {
     public sealed class BusOptions
     {

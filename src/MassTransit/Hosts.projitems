@@ -21,12 +21,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Contexts\AutoMapperContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)HostedServices\MassTransitHostedService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Pipeline\Filters\AutoMapperFilter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RabbitMqOptions\BusOptions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RabbitMqOptions\EndpointOptions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RabbitMqOptions\HostOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Options\MassTransit\BusOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Options\MassTransit\EndpointOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Options\RabbitMq\HostOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)RoutedBy.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Configuration\Configurators\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Options\MassTransit\" />
   </ItemGroup>
 </Project>

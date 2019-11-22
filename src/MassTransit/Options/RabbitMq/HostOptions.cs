@@ -1,6 +1,4 @@
-﻿using MassTransit.Testing;
-
-namespace RabbitMqOptions
+﻿namespace Options.RabbitMq
 {
     public sealed class HostOptions
     {

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using MassTransit.Configuration;
 using MassTransit.Options;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using HostOptions = Options.RabbitMq.HostOptions;
 
 namespace SmtpStorage
 {
@@ -19,16 +21,24 @@ namespace SmtpStorage
                 .ConfigureServices((context, services) =>
                 {
                     services
-                        .AddOptions()
                         .AddHostedService<MassTransitHostedService>()
                         .AddMassTransit(massTransit =>
                         {
-                            massTransit.AddBus(provider => Bus.Factory.CreateUsingInMemory(inMemory =>
+                            massTransit.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(rabbitMq =>
                             {
-                                inMemory.UseBsonSerializer();
-                                inMemory.UseExtensionsLogging(provider.GetRequiredService<ILoggerFactory>());
+                                var hostOptions = new HostOptions();
+                                context.Configuration.GetSection("Host").Bind(hostOptions);
 
-                                inMemory.UseSmtpStorage(smtpStorage =>
+                                var rabbitMqHost = rabbitMq.Host(hostOptions.Host, hostOptions.VirtualHost, host =>
+                                {
+                                    host.Username(hostOptions.Username);
+                                    host.Password(hostOptions.Password);
+                                });
+
+                                rabbitMq.UseBsonSerializer();
+                                rabbitMq.UseExtensionsLogging(provider.GetRequiredService<ILoggerFactory>());
+
+                                rabbitMq.UseSmtpStorage(smtpStorage =>
                                 {
                                     smtpStorage.Configure((ConnectionStringsOptions options) =>
                                     {

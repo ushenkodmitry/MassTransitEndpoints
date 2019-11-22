@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "SmtpStorage": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "Host__Username": "MassTransitEndpointsUser",
+        "ConnectionStrings__SmtpStorage": "Server=localhost;Port=5432;Database=smtp-storage;User Id=postgres",
+        "Host__Host": "localhost",
+        "Host__Password": "MassTransitEndpointsUser$",
+        "Host__VirtualHost": "MassTransitEndpoints"
+      }
+    }
+  }
+}

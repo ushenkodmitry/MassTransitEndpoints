@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RabbitMqOptions
+namespace Options.MassTransit
 {
     public sealed class EndpointOptions
     {

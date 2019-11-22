@@ -32,6 +32,8 @@ namespace MassTransit.Configuration
             busFactoryConfigurator.ReceiveEndpoint("SmtpStorage", endpoint =>
             {
                 endpoint.Consumer(() => new CreateSmtpConnectionConsumer(new SmtpConnectionsRepository()));
+                endpoint.Consumer(() => new CreateSmtpInstanceConsumer(new SmtpInstancesRepository()));
+                endpoint.Consumer(() => new CreateUserCredentialsConsumer(new UserCredentialsRepository()));
             });
         }
     }

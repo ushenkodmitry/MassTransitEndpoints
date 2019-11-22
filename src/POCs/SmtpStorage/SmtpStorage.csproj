@@ -7,12 +7,14 @@
 
   <ItemGroup>
     <Compile Include="..\..\MassTransit\HostedServices\MassTransitHostedService.cs" Link="HostedServices\MassTransitHostedService.cs" />
+    <Compile Include="..\..\MassTransit\Options\RabbitMq\HostOptions.cs" Link="Options\RabbitMq\HostOptions.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MassTransit" Version="5.5.6" />
     <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="5.5.6" />
     <PackageReference Include="MassTransit.Extensions.Logging" Version="5.5.6" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="5.5.6" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="3.0.1" />
   </ItemGroup>
@@ -23,6 +25,8 @@
 
   <ItemGroup>
     <Folder Include="HostedServices\" />
+    <Folder Include="Options\RabbitMq\" />
+    <Folder Include="RabbitMqOptions\" />
   </ItemGroup>
 
 </Project>
