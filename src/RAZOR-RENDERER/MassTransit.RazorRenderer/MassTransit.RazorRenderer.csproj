@@ -21,8 +21,4 @@
       <Compile Include="..\..\Messages\RazorRenderer\TemplateRendered.cs" Link="Messages\TemplateRendered.cs" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Messages\" />
-    </ItemGroup>
-
 </Project>
