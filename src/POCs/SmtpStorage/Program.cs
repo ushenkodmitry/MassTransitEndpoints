@@ -1,13 +1,14 @@
-﻿using HostedServices;
+﻿using System;
+using System.Threading.Tasks;
+using HostedServices;
 using MassTransit;
+using MassTransit.Configuration;
+using MassTransit.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
-using MassTransit.Configuration;
-using MassTransit.Options;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Options.MassTransit;
 using HostOptions = Options.RabbitMq.HostOptions;
 
 namespace SmtpStorage
@@ -35,7 +36,12 @@ namespace SmtpStorage
                                     host.Password(hostOptions.Password);
                                 });
 
-                                rabbitMq.UseBsonSerializer();
+                                var busOptions = new BusOptions();
+                                context.Configuration.GetSection("Bus").Bind(busOptions);
+
+                                if(string.Equals("bson", busOptions.Serializer, StringComparison.OrdinalIgnoreCase))
+                                    rabbitMq.UseBsonSerializer();
+
                                 rabbitMq.UseExtensionsLogging(provider.GetRequiredService<ILoggerFactory>());
 
                                 rabbitMq.UseSmtpStorage(smtpStorage =>

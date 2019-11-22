@@ -7,6 +7,8 @@
 
   <ItemGroup>
     <Compile Include="..\..\MassTransit\HostedServices\MassTransitHostedService.cs" Link="HostedServices\MassTransitHostedService.cs" />
+    <Compile Include="..\..\MassTransit\Options\MassTransit\BusOptions.cs" Link="Options\MassTransit\BusOptions.cs" />
+    <Compile Include="..\..\MassTransit\Options\MassTransit\EndpointOptions.cs" Link="Options\MassTransit\EndpointOptions.cs" />
     <Compile Include="..\..\MassTransit\Options\RabbitMq\HostOptions.cs" Link="Options\RabbitMq\HostOptions.cs" />
   </ItemGroup>
 
@@ -25,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="HostedServices\" />
+    <Folder Include="Options\MassTransit\" />
     <Folder Include="Options\RabbitMq\" />
     <Folder Include="RabbitMqOptions\" />
   </ItemGroup>
