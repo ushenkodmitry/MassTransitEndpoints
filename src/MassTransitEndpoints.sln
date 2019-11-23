@@ -58,7 +58,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.SmtpStorage", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmtpStorage", "POCs\SmtpStorage\SmtpStorage.csproj", "{B526E616-05E3-41CC-BEBB-FA833634A019}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MassTransit.SmtpStorage.Tests", "SMTP-GATEWAY\MassTransit.SmtpStorage.Tests\MassTransit.SmtpStorage.Tests.csproj", "{C3ED8648-3030-494F-BF7B-927AA711C8FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.SmtpStorage.Tests", "SMTP-GATEWAY\MassTransit.SmtpStorage.Tests\MassTransit.SmtpStorage.Tests.csproj", "{C3ED8648-3030-494F-BF7B-927AA711C8FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmtpManagement", "POCs\SmtpManagement\SmtpManagement.csproj", "{95C42732-36FF-412F-B15B-008D01A02047}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -127,6 +129,10 @@ Global
 		{C3ED8648-3030-494F-BF7B-927AA711C8FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3ED8648-3030-494F-BF7B-927AA711C8FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C3ED8648-3030-494F-BF7B-927AA711C8FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95C42732-36FF-412F-B15B-008D01A02047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95C42732-36FF-412F-B15B-008D01A02047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95C42732-36FF-412F-B15B-008D01A02047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95C42732-36FF-412F-B15B-008D01A02047}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +152,7 @@ Global
 		{A26B3B85-E4B9-455F-9A15-3F7FE078FCF3} = {CEB53367-7980-44E0-8820-9BEE456E6BBF}
 		{B526E616-05E3-41CC-BEBB-FA833634A019} = {2E3ECB19-8B9D-4DDC-B6BD-F254CD72460D}
 		{C3ED8648-3030-494F-BF7B-927AA711C8FB} = {CEB53367-7980-44E0-8820-9BEE456E6BBF}
+		{95C42732-36FF-412F-B15B-008D01A02047} = {2E3ECB19-8B9D-4DDC-B6BD-F254CD72460D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9AD2991F-A3DE-4988-8B42-AF00FA71A833}

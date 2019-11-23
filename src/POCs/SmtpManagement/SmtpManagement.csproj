@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\MassTransit\HostedServices\MassTransitHostedService.cs" Link="HostedServices\MassTransitHostedService.cs" />
+    <Compile Include="..\..\MassTransit\Options\MassTransit\BusOptions.cs" Link="Options\MassTransit\BusOptions.cs" />
+    <Compile Include="..\..\MassTransit\Options\MassTransit\EndpointOptions.cs" Link="Options\MassTransit\EndpointOptions.cs" />
+    <Compile Include="..\..\MassTransit\Options\RabbitMq\HostOptions.cs" Link="Options\RabbitMq\HostOptions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="5.5.6" />
+    <PackageReference Include="MassTransit.Extensions.Logging" Version="5.5.6" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="5.5.6" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="HostedServices\" />
+    <Folder Include="Options\MassTransit\" />
+    <Folder Include="Options\RabbitMq\" />
+  </ItemGroup>
+
+</Project>
