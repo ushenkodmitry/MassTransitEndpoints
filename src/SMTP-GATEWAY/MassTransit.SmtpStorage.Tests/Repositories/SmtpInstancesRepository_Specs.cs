@@ -76,15 +76,16 @@ namespace MassTransit.Repositories
         }
 
         [Test]
-        public async Task Should_add_identity_payload()
+        public async Task Should_set_id_on_createdid_payload()
         {
             //
             const int id = 100;
 
-            PayloadFactory<Identity<SmtpInstance, int>> payloadFactory = null;
+            CreatedId<SmtpInstance, int> createdId = new CreatedId<SmtpInstance, int>();
+
             _contextMock
-                .Setup(x => x.AddOrUpdatePayload(IsAny<PayloadFactory<Identity<SmtpInstance, int>>>(), IsAny<UpdatePayloadFactory<Identity<SmtpInstance, int>>>()))
-                .Callback<PayloadFactory<Identity<SmtpInstance, int>>, UpdatePayloadFactory<Identity<SmtpInstance, int>>>((factory, _) => payloadFactory = factory);
+                .Setup(x => x.TryGetPayload(out createdId))
+                .Returns(true);
 
             _documentSessionMock
                 .Setup(x => x.Insert(IsAny<SmtpInstance>()))
@@ -98,8 +99,7 @@ namespace MassTransit.Repositories
             await _sut.SendCommand(_contextMock.Object, new CreateSmtpInstanceCommand(), CancellationToken.None);
 
             //
-            var payload = payloadFactory();
-            payload.Id.Should().Be(id);
+            createdId.Id.Should().Be(id);
         }
     }
 }

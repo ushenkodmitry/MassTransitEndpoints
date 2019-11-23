@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using GreenPipes;
 using GreenPipes.Internals.Extensions;
 using MassTransit.Messages;
 using MassTransit.Objects.Commands;
@@ -19,11 +18,11 @@ namespace MassTransit.Consumers
         {
             var createSmtpConnectionCommand = TypeCache<CreateSmtpConnectionCommand>.InitializeFromObject(context.Message);
 
+            var createdId = context.AddCreatedId<SmtpConnection, int>();
+
             await _repository.SendCommand(context, createSmtpConnectionCommand, context.CancellationToken).ConfigureAwait(false);
 
-            var identity = context.GetPayload<Identity<SmtpConnection, int>>();
-
-            var smtpConnectionCreated = TypeCache<SmtpConnectionCreated>.InitializeFromObject(identity);
+            var smtpConnectionCreated = TypeCache<SmtpConnectionCreated>.InitializeFromObject(createdId);
 
             await context.Publish(smtpConnectionCreated).ConfigureAwait(false);
         }

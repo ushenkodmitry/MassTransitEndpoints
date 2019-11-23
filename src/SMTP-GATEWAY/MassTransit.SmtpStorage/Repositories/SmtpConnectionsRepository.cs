@@ -28,9 +28,8 @@ namespace MassTransit.Repositories
 
             await session.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
 
-            _ = context.AddOrUpdatePayload(
-                () => new Identity<SmtpConnection, int>(smtpServer.Id),
-                (_) => new Identity<SmtpConnection, int>(smtpServer.Id));
+            if (context.TryGetCreatedId<SmtpConnection, int>(out var createdId))
+                createdId.Id = smtpServer.Id;
         }
     }
 }

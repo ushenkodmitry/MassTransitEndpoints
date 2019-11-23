@@ -19,11 +19,11 @@ namespace MassTransit.Consumers
         {
             var createSmtpInstanceCommand = TypeCache<CreateSmtpInstanceCommand>.InitializeFromObject(context.Message);
 
+            var createdId = context.AddCreatedId<SmtpInstance, int>();
+
             await _repository.SendCommand(context, createSmtpInstanceCommand, context.CancellationToken).ConfigureAwait(false);
 
-            var identity = context.GetPayload<Identity<SmtpInstance, int>>();
-
-            var smtpInstanceCreated = TypeCache<SmtpInstanceCreated>.InitializeFromObject(identity);
+            var smtpInstanceCreated = TypeCache<SmtpInstanceCreated>.InitializeFromObject(createdId);
 
             await context.Publish(smtpInstanceCreated).ConfigureAwait(false);
         }

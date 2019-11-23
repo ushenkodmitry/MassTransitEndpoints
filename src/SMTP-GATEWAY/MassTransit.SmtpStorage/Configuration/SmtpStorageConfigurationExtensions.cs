@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Text;
 using Marten;
 using MassTransit.Configuration.PipeConfigurators;
 using MassTransit.Consumers;
 using MassTransit.Registries;
 using MassTransit.Repositories;
+using static System.Text.ASCII;
 
 namespace MassTransit.Configuration
 {
@@ -30,7 +32,7 @@ namespace MassTransit.Configuration
                         },
                         new DocumentStoreFactory()));
 
-            busFactoryConfigurator.ReceiveEndpoint("SmtpStorage", endpoint =>
+            busFactoryConfigurator.ReceiveEndpoint("SmtpStorage_Commands", endpoint =>
             {
                 endpoint.Consumer(() => new CreateSmtpConnectionConsumer(new SmtpConnectionsRepository()));
                 endpoint.Consumer(() => new CreateSmtpInstanceConsumer(new SmtpInstancesRepository()));

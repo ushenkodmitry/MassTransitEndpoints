@@ -47,7 +47,7 @@ namespace MassTransit.Consumers
                 {
                     _createUserCredentialsCommand = command;
 
-                    _ = context.GetOrAddPayload(() => new Identity<UserCredentials, int>(_id));
+                    context.GetPayload<CreatedId<UserCredentials, int>>().Id = _id;
                 })
                 .Returns(Task.CompletedTask);
 

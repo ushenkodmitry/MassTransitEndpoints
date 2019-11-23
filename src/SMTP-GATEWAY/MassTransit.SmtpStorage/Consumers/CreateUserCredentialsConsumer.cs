@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using GreenPipes;
 using GreenPipes.Internals.Extensions;
 using MassTransit.Messages;
 using MassTransit.Objects.Commands;
@@ -19,11 +18,11 @@ namespace MassTransit.Consumers
         {
             var createUserCredentialsCommand = TypeCache<CreateUserCredentialsCommand>.InitializeFromObject(context.Message);
 
+            var createdId = context.AddCreatedId<UserCredentials, int>();
+
             await _repository.SendCommand(context, createUserCredentialsCommand, context.CancellationToken).ConfigureAwait(false);
 
-            var identity = context.GetPayload<Identity<UserCredentials, int>>();
-
-            var userCredentialsCreated = TypeCache<UserCredentialsCreated>.InitializeFromObject(identity);
+            var userCredentialsCreated = TypeCache<UserCredentialsCreated>.InitializeFromObject(createdId);
 
             await context.Publish(userCredentialsCreated).ConfigureAwait(false);
         }

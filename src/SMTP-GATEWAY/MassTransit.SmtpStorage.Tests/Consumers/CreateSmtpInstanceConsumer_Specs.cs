@@ -47,7 +47,7 @@ namespace MassTransit.Consumers
                 {
                     _createSmtpInstanceCommand = command;
 
-                    var identity = context.GetOrAddPayload(() => new Identity<SmtpInstance, int>(_id));
+                    context.GetPayload<CreatedId<SmtpInstance, int>>().Id = _id;
                 })
                 .Returns(Task.CompletedTask);
 

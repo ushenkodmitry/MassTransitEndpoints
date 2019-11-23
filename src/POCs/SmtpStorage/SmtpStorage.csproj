@@ -29,7 +29,6 @@
     <Folder Include="HostedServices\" />
     <Folder Include="Options\MassTransit\" />
     <Folder Include="Options\RabbitMq\" />
-    <Folder Include="RabbitMqOptions\" />
   </ItemGroup>
 
 </Project>

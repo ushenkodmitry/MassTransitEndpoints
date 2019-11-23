@@ -74,15 +74,16 @@ namespace MassTransit.Repositories
         }
 
         [Test]
-        public async Task Should_add_identity_payload()
+        public async Task Should_set_id_on_createdid_payload()
         {
             //
             const int id = 100;
 
-            PayloadFactory<Identity<UserCredentials, int>> payloadFactory = null;
+            CreatedId<UserCredentials, int> createdId = new CreatedId<UserCredentials, int>();
+
             _contextMock
-                .Setup(x => x.AddOrUpdatePayload(IsAny<PayloadFactory<Identity<UserCredentials, int>>>(), IsAny<UpdatePayloadFactory<Identity<UserCredentials, int>>>()))
-                .Callback<PayloadFactory<Identity<UserCredentials, int>>, UpdatePayloadFactory<Identity<UserCredentials, int>>>((factory, _) => payloadFactory = factory);
+                .Setup(x => x.TryGetPayload(out createdId))
+                .Returns(true);
 
             _documentSessionMock
                 .Setup(x => x.Insert(IsAny<UserCredentials>()))
@@ -96,8 +97,7 @@ namespace MassTransit.Repositories
             await _sut.SendCommand(_contextMock.Object, new CreateUserCredentialsCommand(), CancellationToken.None);
 
             //
-            var payload = payloadFactory();
-            payload.Id.Should().Be(id);
+            createdId.Id.Should().Be(id);
         }
     }
 }

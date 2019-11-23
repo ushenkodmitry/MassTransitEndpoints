@@ -27,27 +27,27 @@ namespace MassTransit.Consumers
     {
         InMemoryTestHarness _harness;
 
-        Mock<ISmtpConnectionsRepository> _smtpServersRepositoryMock;
+        Mock<ISmtpConnectionsRepository> _smtpConnectionsRepositoryMock;
 
         Mock<IDocumentSession> _documentSessionMock;
 
         CreateSmtpConnection _createSmtpConnection;
 
-        CreateSmtpConnectionCommand _createSmtpServerCommand;
+        CreateSmtpConnectionCommand _createSmtpConnectionCommand;
 
         const int _id = 1000;
 
         [SetUp]
         public async Task A_consumer_being_tested()
         {
-            _smtpServersRepositoryMock = new Mock<ISmtpConnectionsRepository>();
-            _smtpServersRepositoryMock
+            _smtpConnectionsRepositoryMock = new Mock<ISmtpConnectionsRepository>();
+            _smtpConnectionsRepositoryMock
                 .Setup(x => x.SendCommand(IsAny<PipeContext>(), IsAny<CreateSmtpConnectionCommand>(), IsAny<CancellationToken>()))
                 .Callback<PipeContext, CreateSmtpConnectionCommand, CancellationToken>((context, command, __) =>
                 {
-                    _createSmtpServerCommand = command;
+                    _createSmtpConnectionCommand = command;
 
-                    var identity = context.GetOrAddPayload(() => new Identity<SmtpConnection, int>(_id));
+                    context.GetPayload<CreatedId<SmtpConnection, int>>().Id = _id;
                 })
                 .Returns(Task.CompletedTask);
 
@@ -68,7 +68,7 @@ namespace MassTransit.Consumers
                 });
             };
 
-            var sut = _harness.Consumer(() => new CreateSmtpConnectionConsumer(_smtpServersRepositoryMock.Object));
+            var sut = _harness.Consumer(() => new CreateSmtpConnectionConsumer(_smtpConnectionsRepositoryMock.Object));
 
             _createSmtpConnection = TypeCache<CreateSmtpConnection>.InitializeFromObject(new
             {
@@ -86,7 +86,7 @@ namespace MassTransit.Consumers
         [TearDown]
         public async Task Before_each()
         {
-            _smtpServersRepositoryMock.Reset();
+            _smtpConnectionsRepositoryMock.Reset();
 
             await _harness.Stop();
         }
@@ -98,7 +98,7 @@ namespace MassTransit.Consumers
             _ = _harness.Consumed.Select<CreateSmtpConnection>().Single();
 
             //
-            _createSmtpServerCommand.Should().BeEquivalentTo(_createSmtpConnection);
+            _createSmtpConnectionCommand.Should().BeEquivalentTo(_createSmtpConnection);
         }
 
         [Test]

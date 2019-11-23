@@ -12,11 +12,13 @@
     <Compile Include="..\..\Messages\SmtpStorage\SmtpConnectionCreated.cs" Link="Messages\SmtpConnectionCreated.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\SmtpInstanceCreated.cs" Link="Messages\SmtpInstanceCreated.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\UserCredentialsCreated.cs" Link="Messages\UserCredentialsCreated.cs" />
+    <Compile Include="..\..\System\System\Text\ASCII.cs" Link="System\Text\ASCII.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Messages\" />
     <Folder Include="Objects\Queries\" />
+    <Folder Include="System\Text\" />
   </ItemGroup>
 
   <ItemGroup>
