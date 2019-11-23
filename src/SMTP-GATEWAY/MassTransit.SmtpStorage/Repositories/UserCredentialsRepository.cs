@@ -10,7 +10,7 @@ namespace MassTransit.Repositories
 {
     public sealed class UserCredentialsRepository : IUserCredentialsRepository
     {
-        public async Task SendCommand(PipeContext context, CreateUserCredentialsCommand command, CancellationToken cancellationToken = default)
+        public async Task SendCommand(PipeContext context, CreateUserCredentialsCommand command, CancellationToken cancellationToken)
         {
             var documentStoreContext = context.GetPayload<DocumentStoreContext>();
 

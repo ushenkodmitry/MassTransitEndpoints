@@ -10,7 +10,7 @@ namespace MassTransit.Repositories
 {
     sealed class SmtpInstancesRepository : ISmtpInstancesRepository
     {
-        public async Task SendCommand(PipeContext context, CreateSmtpInstanceCommand command, CancellationToken cancellationToken = default)
+        public async Task SendCommand(PipeContext context, CreateSmtpInstanceCommand command, CancellationToken cancellationToken)
         {
             var documentStoreContext = context.GetPayload<DocumentStoreContext>();
 
