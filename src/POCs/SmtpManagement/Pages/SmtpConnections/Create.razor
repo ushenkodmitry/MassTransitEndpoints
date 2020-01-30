@@ -1,0 +1,48 @@
+﻿@page "/smtp-connections/create"
+
+@namespace SmtpManagement.Pages.SmtpConnections
+
+@using SmtpManagement.Models.SmtpConnections;
+@using MassTransit.Messages;
+@using MassTransit;
+
+@inject NavigationManager NavigationManager;
+@inject IBus Bus;
+
+<h3>Create</h3>
+
+<EditForm Model="@Model" OnValidSubmit="@HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <p>
+        <label for="name">Name: </label>
+        <InputText id="name" @bind-Value="Model.Name" />
+    </p>
+    <p>
+        <label for="host">Host: </label>
+        <InputText id="host" @bind-Value="Model.Host" />
+    </p>
+    <p>
+        <label for="port">Port: </label>
+        <InputNumber id="port" @bind-Value="Model.Port" />
+    </p>
+    <p>
+        <label for="useSsl">Use ssl: </label>
+        <InputCheckbox id="useSsl" @bind-Value="Model.UseSsl" />
+    </p>
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+
+    CreateModel Model = new CreateModel();
+
+    async Task HandleSubmit()
+    {
+        await Bus.Publish<CreateSmtpConnection>(Model);
+
+        NavigationManager.NavigateTo("/smtp-connections/list");
+    }
+
+}

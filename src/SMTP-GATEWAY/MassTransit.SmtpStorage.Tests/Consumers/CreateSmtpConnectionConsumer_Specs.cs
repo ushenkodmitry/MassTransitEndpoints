@@ -10,7 +10,6 @@ using Marten;
 using MassTransit.Contexts;
 using MassTransit.Messages;
 using MassTransit.Objects.Commands;
-using MassTransit.Objects.Models;
 using MassTransit.Payloads;
 using MassTransit.Repositories;
 using MassTransit.Testing;
@@ -18,6 +17,7 @@ using Moq;
 using NUnit.Framework;
 using static Moq.It;
 using static Moq.Mock;
+using SmtpConnection = MassTransit.Objects.Models.SmtpConnection;
 
 namespace MassTransit.Consumers
 {

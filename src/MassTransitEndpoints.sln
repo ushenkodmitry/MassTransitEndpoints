@@ -60,7 +60,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmtpStorage", "POCs\SmtpSto
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MassTransit.SmtpStorage.Tests", "SMTP-GATEWAY\MassTransit.SmtpStorage.Tests\MassTransit.SmtpStorage.Tests.csproj", "{C3ED8648-3030-494F-BF7B-927AA711C8FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SmtpManagement", "POCs\SmtpManagement\SmtpManagement.csproj", "{95C42732-36FF-412F-B15B-008D01A02047}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmtpManagement", "POCs\SmtpManagement\SmtpManagement.csproj", "{95C42732-36FF-412F-B15B-008D01A02047}"
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution

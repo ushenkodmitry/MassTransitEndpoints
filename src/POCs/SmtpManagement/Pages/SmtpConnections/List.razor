@@ -1,0 +1,50 @@
+﻿@page "/smtp-connections/list"
+
+@namespace SmtpManagement.Pages.SmtpConnections
+
+@using Radzen;
+@using Radzen.Blazor;
+@using MassTransit;
+@using MassTransit.Messages;
+
+@inject NavigationManager NavigationManager;
+@inject IRequestClient<QuerySmtpConnections> RequestClient;
+
+<h3>SmtpConnections</h3>
+
+<div>
+    <RadzenButton Click="@((args) => HandleCreate())" Text="Create new smtp connection" />
+</div>
+<div>
+    @if (Model == null)
+    {
+        <p><em>Loading...</em></p>
+    }
+    else
+    {
+        <RadzenGrid AllowFiltering="true" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" AllowPaging="true" PageSize="4" AllowSorting="true" Data="@Model" TItem="SmtpConnection" ColumnWidth="200px">
+            <Columns>
+                <RadzenGridColumn TItem="SmtpConnection" Property="Id" Title="Id" />
+                <RadzenGridColumn TItem="SmtpConnection" Property="Name" Title="Connection name" />
+                <RadzenGridColumn TItem="SmtpConnection" Property="Host" Title="Server host" />
+            </Columns>
+        </RadzenGrid>
+    }
+</div>
+
+
+@code {
+
+    SmtpConnection[] Model;
+
+    void HandleCreate() => NavigationManager.NavigateTo("/smtp-connections/create");
+
+    protected override async Task OnInitializedAsync()
+    {
+        var client = RequestClient.Create(new { });
+
+        var response = await client.GetResponse<SmtpConnectionsQueried>();
+
+        Model = response.Message.SmtpConnections;
+    }
+}

@@ -42,8 +42,6 @@ namespace SmtpStorage
                                 if(string.Equals("bson", busOptions.Serializer, StringComparison.OrdinalIgnoreCase))
                                     rabbitMq.UseBsonSerializer();
 
-                                rabbitMq.UseExtensionsLogging(provider.GetRequiredService<ILoggerFactory>());
-
                                 rabbitMq.UseSmtpStorage(smtpStorage =>
                                 {
                                     smtpStorage.Configure((ConnectionStringsOptions options) =>

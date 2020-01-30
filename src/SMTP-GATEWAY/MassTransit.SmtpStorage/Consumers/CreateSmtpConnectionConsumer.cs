@@ -5,6 +5,7 @@ using MassTransit.Objects.Commands;
 using MassTransit.Objects.Models;
 using MassTransit.Payloads;
 using MassTransit.Repositories;
+using SmtpConnection = MassTransit.Objects.Models.SmtpConnection;
 
 namespace MassTransit.Consumers
 {

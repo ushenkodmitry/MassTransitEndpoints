@@ -1,4 +1,5 @@
 ﻿using GreenPipes;
+using MassTransit.Context;
 using MassTransit.JiraServicedeskConnector.Contexts;
 using MassTransit.JiraServicedeskConnector.Options;
 using MassTransit.Logging;
@@ -10,8 +11,6 @@ namespace MassTransit.JiraServicedeskConnector.Pipeline.Filters
     public sealed class JiraOAuthFilter<TContext> : IFilter<TContext>
         where TContext : class, PipeContext
     {
-        static readonly ILog _log = Logger.Get<JiraOAuthFilter<TContext>>();
-
         readonly OAuthOptions _options;
 
         public JiraOAuthFilter(OAuthOptions options) => _options = options;
@@ -20,7 +19,7 @@ namespace MassTransit.JiraServicedeskConnector.Pipeline.Filters
 
         public Task Send(TContext context, IPipe<TContext> next)
         {
-            _log.Debug(() => "Sending through filter.");
+            LogContext.Debug?.Log("Sending through filter.");
 
             OptionsContext optionsContext = context.GetPayload<OptionsContext>();
 

@@ -9,7 +9,10 @@
     <Compile Include="..\..\Messages\SmtpStorage\CreateSmtpConnection.cs" Link="Messages\CreateSmtpConnection.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\CreateSmtpInstance.cs" Link="Messages\CreateSmtpInstance.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\CreateUserCredentials.cs" Link="Messages\CreateUserCredentials.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\QuerySmtpConnections.cs" Link="Messages\QuerySmtpConnections.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\SmtpConnection.cs" Link="Messages\SmtpConnection.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\SmtpConnectionCreated.cs" Link="Messages\SmtpConnectionCreated.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\SmtpConnectionsQueried.cs" Link="Messages\SmtpConnectionsQueried.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\SmtpInstanceCreated.cs" Link="Messages\SmtpInstanceCreated.cs" />
     <Compile Include="..\..\Messages\SmtpStorage\UserCredentialsCreated.cs" Link="Messages\UserCredentialsCreated.cs" />
     <Compile Include="..\..\System\System\Text\ASCII.cs" Link="System\Text\ASCII.cs" />
@@ -17,15 +20,14 @@
 
   <ItemGroup>
     <Folder Include="Messages\" />
-    <Folder Include="Objects\Queries\" />
     <Folder Include="System\Text\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Marten" Version="3.10.0" />
     <PackageReference Include="Marten.Analyzers" Version="1.5.0" />
-    <PackageReference Include="MassTransit" Version="5.5.6" />
-    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="5.5.6" />
+    <PackageReference Include="MassTransit" Version="6.0.2" />
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="6.0.2" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.0.1" />
   </ItemGroup>
 

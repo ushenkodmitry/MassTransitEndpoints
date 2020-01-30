@@ -1,0 +1,41 @@
+﻿@page "/user-credentials/create"
+
+@namespace SmtpManagement.Pages.UserCredentials
+
+@using SmtpManagement.Models.UserCredentials;
+@using MassTransit.Messages;
+@using MassTransit;
+
+@inject NavigationManager NavigationManager;
+@inject IBus Bus;
+
+<h3>Create</h3>
+
+<EditForm Model="@Model" OnValidSubmit="@HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <p>
+        <label for="username">Username: </label>
+        <InputText id="username" @bind-Value="Model.Username" />
+    </p>
+    <p>
+        <label for="password">Password: </label>
+        <InputText id="password" @bind-Value="Model.Password" />
+    </p>
+    <button type="submit">Submit</button>
+</EditForm>
+
+
+@code {
+
+    CreateModel Model = new CreateModel();
+
+    async Task HandleSubmit()
+    {
+        await Bus.Publish<CreateUserCredentials>(Model);
+
+        NavigationManager.NavigateTo("/user-credentials/list");
+    }
+
+}

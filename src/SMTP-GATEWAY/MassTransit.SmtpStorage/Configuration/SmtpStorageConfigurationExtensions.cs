@@ -32,11 +32,16 @@ namespace MassTransit.Configuration
                         },
                         new DocumentStoreFactory()));
 
-            busFactoryConfigurator.ReceiveEndpoint("SmtpStorage_Commands", endpoint =>
+            busFactoryConfigurator.ReceiveEndpoint("SmtpStorage-Commands", endpoint =>
             {
                 endpoint.Consumer(() => new CreateSmtpConnectionConsumer(new SmtpConnectionsRepository()));
                 endpoint.Consumer(() => new CreateSmtpInstanceConsumer(new SmtpInstancesRepository()));
                 endpoint.Consumer(() => new CreateUserCredentialsConsumer(new UserCredentialsRepository()));
+            });
+
+            busFactoryConfigurator.ReceiveEndpoint("SmtpStorage-Queries", endpoint =>
+            {
+                endpoint.Consumer(() => new QuerySmtpConnectionsConsumer(new SmtpConnectionsRepository()));
             });
         }
     }

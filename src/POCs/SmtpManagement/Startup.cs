@@ -1,12 +1,12 @@
 using System;
 using HostedServices;
 using MassTransit;
+using MassTransit.Messages;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Options.MassTransit;
 using HostOptions = Options.RabbitMq.HostOptions;
 
@@ -27,6 +27,9 @@ namespace SmtpManagement
                 .AddHostedService<MassTransitHostedService>()
                 .AddMassTransit(massTransit =>
                 {
+                    massTransit.AddRequestClient<QuerySmtpConnections>();
+                    massTransit.AddRequestClient<QueryUserCredentials>();
+
                     massTransit.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(rabbitMq =>
                     {
                         var hostOptions = new HostOptions();
@@ -43,8 +46,6 @@ namespace SmtpManagement
 
                         if (string.Equals("bson", busOptions.Serializer, StringComparison.OrdinalIgnoreCase))
                             rabbitMq.UseBsonSerializer();
-
-                        rabbitMq.UseExtensionsLogging(provider.GetRequiredService<ILoggerFactory>());
                     }));
                 });
 

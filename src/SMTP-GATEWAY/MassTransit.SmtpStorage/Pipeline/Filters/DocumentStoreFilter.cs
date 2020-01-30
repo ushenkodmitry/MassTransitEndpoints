@@ -36,19 +36,14 @@ namespace MassTransit.Pipeline.Filters
             public ConsumeDocumentSessionContext(IDocumentStore documentStore)
                 => _documentStore = documentStore;
 
-            ValueTask<IDocumentSession> DocumentStoreContext.OpenSession(string tenantId, IsolationLevel isolationLevel)
-            {
-                var session = _documentStore.OpenSession(tenantId, isolationLevel: isolationLevel);
+            ValueTask<IDocumentSession> DocumentStoreContext.OpenSession(string tenantId, IsolationLevel isolationLevel) =>
+                new ValueTask<IDocumentSession>(_documentStore.OpenSession(tenantId, isolationLevel: isolationLevel));
 
-                return new ValueTask<IDocumentSession>(session);
-            }
+            ValueTask<IDocumentSession> DocumentStoreContext.LightweightSession(string tenantId, IsolationLevel isolationLevel) =>
+                new ValueTask<IDocumentSession>(_documentStore.LightweightSession(tenantId, isolationLevel));
 
-            ValueTask<IDocumentSession> DocumentStoreContext.LightweightSession(string tenantId, IsolationLevel isolationLevel)
-            {
-                var session = _documentStore.LightweightSession(tenantId, isolationLevel);
-
-                return new ValueTask<IDocumentSession>(session);
-            }
+            public ValueTask<IQuerySession> QuerySession(string tenantId) =>
+                new ValueTask<IQuerySession>(_documentStore.QuerySession(tenantId));
         }
     }
 }

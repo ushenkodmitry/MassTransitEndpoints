@@ -1,5 +1,6 @@
 ﻿using GreenPipes;
 using MailKit.Net.Imap;
+using MassTransit.Context;
 using MassTransit.ImapGateway.Contexts;
 using MassTransit.Logging;
 using System.Diagnostics;
@@ -11,14 +12,12 @@ namespace MassTransit.ImapGateway.Pipeline.Filters
     public sealed class ImapFilter<TContext> : IFilter<TContext>
         where TContext : class, ConsumeContext
     {
-        static readonly ILog _log = Logger.Get<ImapFilter<TContext>>();
-
         void IProbeSite.Probe(ProbeContext context) => context.CreateFilterScope(nameof(ImapFilter<TContext>));
 
         [DebuggerNonUserCode]
         async Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
-            _log.Debug(() => "Sending through filter.");
+            LogContext.Debug?.Log("Sending through filter.");
 
             OptionsContext optionsContext = context.GetPayload<OptionsContext>();
 

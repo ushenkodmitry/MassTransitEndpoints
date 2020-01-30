@@ -20,8 +20,14 @@
     <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\CreateSmtpConnection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\CreateSmtpInstance.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\CreateUserCredentials.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\QuerySmtpConnections.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\QueryUserCredentials.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\SmtpConnection.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\SmtpConnectionCreated.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\SmtpInstanceCreated.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\SmtpConnectionsQueried.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\UserCredentials.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\UserCredentialsCreated.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SmtpStorage\UserCredentialsQueried.cs" />
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GreenPipes;
 using MailKit.Net.Smtp;
+using MassTransit.Context;
 using MassTransit.Logging;
 using MassTransit.SmtpGateway.Contexts;
 using MimeKit;
@@ -12,12 +13,10 @@ namespace MassTransit.SmtpGateway.Pipeline.Filters
     public sealed class SmtpFilter<TContext> : IFilter<TContext>
         where TContext : class, PipeContext
     {
-        static readonly ILog _log = Logger.Get<SmtpFilter<TContext>>();
-
         [DebuggerNonUserCode]
         async Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
-            _log.Debug(() => "Sending through filter.");
+            LogContext.Debug?.Log("Sending through filter.");
 
             OptionsContext optionsContext = context.GetPayload<OptionsContext>();
 

@@ -1,4 +1,5 @@
 ﻿using GreenPipes;
+using MassTransit.Context;
 using MassTransit.ImapGateway.Contexts;
 using MassTransit.ImapGateway.Options;
 using MassTransit.Logging;
@@ -10,8 +11,6 @@ namespace MassTransit.ImapGateway.Pipeline.Filters
     sealed class OptionsFilter<TContext> : IFilter<TContext>
         where TContext : class, ConsumeContext
     {
-        static readonly ILog _log = Logger.Get<OptionsFilter<TContext>>();
-
         readonly ServerOptions _serverOptions;
 
         readonly BehaviorOptions _behaviorOptions;
@@ -32,7 +31,7 @@ namespace MassTransit.ImapGateway.Pipeline.Filters
         [DebuggerNonUserCode]
         Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
-            _log.Debug(() => "Sending through filter.");
+            LogContext.Debug?.Log("Sending through filter.");
 
             OptionsContext optionsContext = new ConsumeOptionsContext(_serverOptions, _behaviorOptions);
 

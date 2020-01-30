@@ -1,0 +1,20 @@
+﻿@page "/user-credentials/list"
+
+@using Radzen.Blazor;
+@using MassTransit;
+@using MassTransit.Messages;
+
+@inject NavigationManager NavigationManager;
+
+<h3>List</h3>
+
+<div>
+    <RadzenButton Click="@((args) => HandleCreate())" Text="Create new user credentials" />
+</div>
+
+@code {
+
+    void HandleCreate() => NavigationManager.NavigateTo("/user-credentials/create");
+
+
+}

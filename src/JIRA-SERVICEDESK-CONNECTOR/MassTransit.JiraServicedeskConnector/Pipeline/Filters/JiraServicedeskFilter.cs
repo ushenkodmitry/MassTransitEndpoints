@@ -1,12 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using GreenPipes;
+using MassTransit.Context;
 using MassTransit.JiraServicedeskConnector.Contexts;
 using MassTransit.JiraServicedeskConnector.Contexts.Commands;
 using MassTransit.JiraServicedeskConnector.Contexts.Queries;
 using MassTransit.JiraServicedeskConnector.Contexts.Results;
 using MassTransit.JiraServicedeskConnector.Options;
-using MassTransit.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Refit;
@@ -16,8 +16,6 @@ namespace MassTransit.JiraServicedeskConnector.Pipeline.Filters
     public sealed class JiraServicedeskFilter<TContext> : IFilter<TContext>
         where TContext : class, ConsumeContext
     {
-        static readonly ILog _log = Logger.Get<JiraServicedeskFilter<TContext>>();
-
         readonly ServerOptions _serverOptions;
 
         readonly BehaviorOptions _behaviorOptions;
@@ -47,7 +45,7 @@ namespace MassTransit.JiraServicedeskConnector.Pipeline.Filters
 
         public async Task Send(TContext context, IPipe<TContext> next)
         {
-            _log.Debug(() => "Sending through filter.");
+            LogContext.Debug?.Log("Sending through filter.");
 
             var jiraAuthorizationContext = context.GetPayload<JiraAuthorizationContext>();
 

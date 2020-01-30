@@ -9,20 +9,32 @@
     <Compile Include="..\..\MassTransit\Options\MassTransit\BusOptions.cs" Link="Options\MassTransit\BusOptions.cs" />
     <Compile Include="..\..\MassTransit\Options\MassTransit\EndpointOptions.cs" Link="Options\MassTransit\EndpointOptions.cs" />
     <Compile Include="..\..\MassTransit\Options\RabbitMq\HostOptions.cs" Link="Options\RabbitMq\HostOptions.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\CreateSmtpConnection.cs" Link="Messages\CreateSmtpConnection.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\CreateUserCredentials.cs" Link="Messages\CreateUserCredentials.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\QuerySmtpConnections.cs" Link="Messages\QuerySmtpConnections.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\QueryUserCredentials.cs" Link="Messages\QueryUserCredentials.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\SmtpConnection.cs" Link="Messages\SmtpConnection.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\SmtpConnectionCreated.cs" Link="Messages\SmtpConnectionCreated.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\SmtpConnectionsQueried.cs" Link="Messages\SmtpConnectionsQueried.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\UserCredentials.cs" Link="Messages\UserCredentials.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\UserCredentialsCreated.cs" Link="Messages\UserCredentialsCreated.cs" />
+    <Compile Include="..\..\Messages\SmtpStorage\UserCredentialsQueried.cs" Link="Messages\UserCredentialsQueried.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="5.5.6" />
+    <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="6.0.2" />
     <PackageReference Include="MassTransit.Extensions.Logging" Version="5.5.6" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="5.5.6" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="6.0.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Radzen.Blazor" Version="1.2.5" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="HostedServices\" />
+    <Folder Include="Messages\" />
     <Folder Include="Options\MassTransit\" />
     <Folder Include="Options\RabbitMq\" />
   </ItemGroup>

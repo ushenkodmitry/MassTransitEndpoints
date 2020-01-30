@@ -1,4 +1,5 @@
 ﻿using GreenPipes;
+using MassTransit.Context;
 using MassTransit.ImapGateway.Contexts;
 using MassTransit.Logging;
 using System;
@@ -11,8 +12,6 @@ namespace MassTransit.ImapGateway.Pipeline.Filters
     public sealed class NoopBehaviorFilter<TContext> : IFilter<TContext>
         where TContext : class, ConsumeContext
     {
-        static readonly ILog _log = Logger.Get<NoopBehaviorFilter<TContext>>();
-
         readonly TimeSpan _noopInterval;
 
         public NoopBehaviorFilter(TimeSpan noopInterval)
@@ -31,7 +30,7 @@ namespace MassTransit.ImapGateway.Pipeline.Filters
         [DebuggerNonUserCode]
         async Task IFilter<TContext>.Send(TContext context, IPipe<TContext> next)
         {
-            _log.Debug(() => "Sending through filter.");
+            LogContext.Debug?.Log("Sending through filter.");
 
             using var cts = new CancellationTokenSource();
 

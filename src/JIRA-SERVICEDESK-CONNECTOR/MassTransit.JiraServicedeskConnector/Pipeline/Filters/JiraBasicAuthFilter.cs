@@ -1,18 +1,16 @@
-﻿using GreenPipes;
-using MassTransit.JiraServicedeskConnector.Contexts;
-using MassTransit.JiraServicedeskConnector.Options;
-using MassTransit.Logging;
-using System;
+﻿using System;
 using System.Text;
 using System.Threading.Tasks;
+using GreenPipes;
+using MassTransit.Context;
+using MassTransit.JiraServicedeskConnector.Contexts;
+using MassTransit.JiraServicedeskConnector.Options;
 
 namespace MassTransit.JiraServicedeskConnector.Pipeline.Filters
 {
     public sealed class JiraBasicAuthFilter<TContext> : IFilter<TContext>
         where TContext : class, PipeContext
     {
-        static readonly ILog _log = Logger.Get<JiraBasicAuthFilter<TContext>>();
-
         readonly Task<string> _authorization;
 
         public JiraBasicAuthFilter(BasicAuthOptions options)
@@ -26,7 +24,7 @@ namespace MassTransit.JiraServicedeskConnector.Pipeline.Filters
 
         public Task Send(TContext context, IPipe<TContext> next)
         {
-            _log.Debug(() => "Sending through filter.");
+            LogContext.Debug?.Log("Sending through filter.");
 
             JiraAuthorizationContext jiraAuthorizationContext = new ConsumeJiraAuthorizationContext(_authorization);
 

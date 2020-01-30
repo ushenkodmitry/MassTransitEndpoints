@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using GreenPipes;
-using MassTransit.Logging;
+using MassTransit.Context;
 using MassTransit.RazorRenderer.Contexts;
 using MassTransit.RazorRenderer.Messages;
 using Newtonsoft.Json;
@@ -9,8 +9,6 @@ namespace MassTransit.RazorRenderer.Consumers
 {
     sealed class RenderKeyedTemplateConsumer : IConsumer<RenderKeyedTemplate>
     {
-        static readonly ILog _log = Logger.Get<RenderKeyedTemplateConsumer>();
-        
         public async Task Consume(ConsumeContext<RenderKeyedTemplate> context)
         {
             object GetModel()
@@ -22,7 +20,7 @@ namespace MassTransit.RazorRenderer.Consumers
                 return model;
             }
 
-            _log.Debug(() => $"Rendering of keyed template. Template key: {context.Message.TemplateKey}.");
+            LogContext.Debug?.Log($"Rendering of keyed template. Template key: {context.Message.TemplateKey}.");
 
             var rendererContext = context.GetPayload<RendererContext>();
 
@@ -36,7 +34,7 @@ namespace MassTransit.RazorRenderer.Consumers
                 })
                 .ConfigureAwait(false);
             
-            _log.Info(() => $"Keyed template rendered: Template key: {context.Message.TemplateKey}.");
+            LogContext.Info?.Log($"Keyed template rendered: Template key: {context.Message.TemplateKey}.");
         }
     }
 }

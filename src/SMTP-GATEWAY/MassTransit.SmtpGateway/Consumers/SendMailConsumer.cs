@@ -14,8 +14,6 @@ namespace MassTransit.SmtpGateway.Consumers
 {
     public sealed class SendMailConsumer : IConsumer<SendMail>
     {
-        static readonly ILog _log = Logger.Get(nameof(SendMailConsumer));
-
         public async Task Consume(ConsumeContext<SendMail> context)
         {
             var smtpContext = context.GetPayload<SmtpContext>();
