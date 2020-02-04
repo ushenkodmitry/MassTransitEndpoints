@@ -1,13 +1,13 @@
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Dynamic;
-using System.IO;
 using System.Threading.Tasks;
 using GreenPipes;
 using MassTransit.Context;
-using MassTransit.Logging;
 using MassTransit.RazorRenderer.Contexts;
 using RazorLight;
+using static System.IO.Directory;
+using static System.IO.Path;
 
 namespace MassTransit.RazorRenderer.Pipeline.Filters
 {
@@ -20,7 +20,7 @@ namespace MassTransit.RazorRenderer.Pipeline.Filters
             LogContext.Debug?.Log("Sending through filter.");
             
             OptionsContext optionsContext = context.GetPayload<OptionsContext>();
-            
+
             RendererContext rendererContext = new ConsumeRendererContext(optionsContext.BehaviorOptions.TemplatesFolder);
             
             context.GetOrAddPayload(() => rendererContext);
@@ -44,10 +44,10 @@ namespace MassTransit.RazorRenderer.Pipeline.Filters
 
                 if (!string.IsNullOrWhiteSpace(templateFolder))
                 {
-                    if (Path.IsPathRooted(templateFolder))
+                    if (IsPathRooted(templateFolder))
                         builder = builder.UseFilesystemProject(templateFolder);
                     else
-                        builder = builder.UseFilesystemProject(Path.Combine(Directory.GetCurrentDirectory(), templateFolder));
+                        builder = builder.UseFilesystemProject(Combine(GetCurrentDirectory(), templateFolder));
                 }
                 
                 _engine = builder.Build();
