@@ -12,9 +12,10 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
-        "Host__Username": "MassTransitEndpointsUser",
-        "Host__Host": "localhost",
-        "Host__Password": "MassTransitEndpointsUser$",
+        "HostOptions__Password": "SmtpUser$",
+        "HostOptions_VirtualHost": "Smtp",
+        "HostOptions__Username": "SmtpUser",
+        "HostOptions__Host": "localhost",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "Host__VirtualHost": "MassTransitEndpoints"
       },

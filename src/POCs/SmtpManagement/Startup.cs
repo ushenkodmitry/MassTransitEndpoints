@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Options.MassTransit;
 using HostOptions = Options.RabbitMq.HostOptions;
 
@@ -24,6 +25,11 @@ namespace SmtpManagement
             services.AddServerSideBlazor();
 
             services
+                .AddOptions()
+                .Configure<HostOptions>(Configuration.GetSection(nameof(HostOptions)))
+                .Configure<BusOptions>(Configuration.GetSection(nameof(BusOptions)));
+
+            services
                 .AddHostedService<MassTransitHostedService>()
                 .AddMassTransit(massTransit =>
                 {
@@ -32,19 +38,17 @@ namespace SmtpManagement
 
                     massTransit.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(rabbitMq =>
                     {
-                        var hostOptions = new HostOptions();
-                        Configuration.GetSection("Host").Bind(hostOptions);
+                        var hostOptions = provider.GetRequiredService<IOptions<HostOptions>>();
 
-                        var rabbitMqHost = rabbitMq.Host(hostOptions.Host, hostOptions.VirtualHost, host =>
+                        var rabbitMqHost = rabbitMq.Host(hostOptions.Value.Host, hostOptions.Value.VirtualHost, host =>
                         {
-                            host.Username(hostOptions.Username);
-                            host.Password(hostOptions.Password);
+                            host.Username(hostOptions.Value.Username);
+                            host.Password(hostOptions.Value.Password);
                         });
 
-                        var busOptions = new BusOptions();
-                        Configuration.GetSection("Bus").Bind(busOptions);
+                        var busOptions = provider.GetRequiredService<IOptions<BusOptions>>();
 
-                        if (string.Equals("bson", busOptions.Serializer, StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals("bson", busOptions.Value.Serializer, StringComparison.OrdinalIgnoreCase))
                             rabbitMq.UseBsonSerializer();
                     }));
                 });
